@@ -107,14 +107,11 @@ export default class World {
       lamp.position.set(5, 43, 0);
       this.lighthouse.add(lamp);
 
-      this.lampLight = new THREE.SpotLight(0xFFF3BA, 2, 200, 0.3, 0.3);
-      // lamp.shadow.camera.near = 1;
-      // lamp.shadow.camera.far = 20;
-      // lamp.shadow.bias = 0.0001;
+      this.lampLight = new THREE.SpotLight(0xFFF3BA, 2, 200, 0.7, 0.3);
       this.lampLight.shadow.mapSize.width = 1024;
       this.lampLight.shadow.mapSize.height = 1024;
       this.lampLight.castShadow = true;
-      this.lampLight.position.set(40, -20, 50);
+      this.lampLight.position.set(100, -20, 50);
 
       this.lighthouse.add(this.lampLight);
     });
@@ -166,17 +163,15 @@ export default class World {
       this.lighthouse.position.y = yPos + 3;
       this.lighthouse.rotation.z = 0.04 * zRot;
 
-      if (this.mouseDown && this.monster.position.y < 7) {
-        this.monster.position.y += 0.1;
-        this.lampLight.position.y += 0.5;
+      if (this.mouseDown && this.lampLight.position.y < 60) {
+        this.monster.position.y += 0.3;
+        this.lampLight.position.y += 0.8;
       }
 
       if (this.monster.position.y > 5) {
         this.monster.position.y = yPos + 7;
         this.monster.rotation.z = 0.02 * -zRot;
       }
-
-      // this.lampLight.lookAt(this.monster.position);
     }
 
     this.render();

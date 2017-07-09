@@ -1,11 +1,15 @@
 <template lang='pug'>
-  #app
+  .app
+    app-menu
     router-view
 </template>
 
 <script>
+import AppMenu from '@/components/AppMenu';
+
 export default {
   name: 'app',
+  components: { AppMenu },
 };
 </script>
 

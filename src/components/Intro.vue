@@ -2,19 +2,18 @@
   .intro
     transition(name='text-toggle')
       .intro-text(v-if='frame === 0')
-        h3 Turn into a pixel with
-        h1 Pxlhead
+        h3.subtitle Turn into a pixel with
+        h1.title Pxlhead
     transition(name='text-toggle')
-      .about-text(v-if='frame === 1')
-        h1 About us
-        p
+      .about(v-if='frame === 1')
+        h1.title About us
+        p.description
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
 </template>
 
 <script>
 import { TweenLite, Power1 } from 'gsap';
-
 import {
   Scene,
   PerspectiveCamera,
@@ -38,6 +37,7 @@ export default {
       scene: null,
       camera: null,
       renderer: null,
+      mouse: { x: 0, y: 0 },
 
       planet: null,
       island1: null,
@@ -72,6 +72,8 @@ export default {
       distance: 0,
       speed: 0.1,
       delay: false,
+
+      showMenu: false,
     };
   },
   mounted() {
@@ -175,6 +177,8 @@ export default {
       this.width = window.innerWidth;
       this.height = window.innerHeight - 3;
     },
+
+    // events
     onResize() {
       this.setSize();
       this.camera.aspect = this.width / this.height;
@@ -248,12 +252,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-$color-white: #F4FFFF;
+@import '~global';
 
 .intro {
-  background: #12233f;
-  // background-image:
-  //   radial-gradient(circle farthest-side at top left, #4B80A0 0%, #12233f 70%);
+  background-color: $color-main;
   overflow: hidden;
   position: relative;
 }
@@ -263,27 +265,27 @@ $color-white: #F4FFFF;
   left: 10rem;
   text-transform: uppercase;
 }
-h3 {
+.subtitle {
   color: $color-white;
   font-family: 'Lato', sans-serif;
   letter-spacing: 2px;
   font-size: 2em;
 }
-h1 {
+.title {
   font-family: 'Montserrat', sans-serif;
   font-size: 7em;
   font-weight: 700;
   letter-spacing: 3px;
   color: #F79B22;
 }
-p {
+.description {
   color: $color-white;
   font-family: 'Lato', sans-serif;
   font-size: 2em;
   font-weight: 400;
   margin-top: 2rem;
 }
-.about-text {
+.about {
   position: absolute;
   top: 5rem;
   right: 20vw;

@@ -2,18 +2,39 @@
   .intro
     transition(name='text-toggle')
       .intro-text(v-if='frame === 0')
-        h3.subtitle Turn into a pixel with
-        h1.title Pxlhead
+        h3 Turn into a pixel with
+        h1 Pxlhead
     transition(name='text-toggle')
-      .about(v-if='frame === 1')
-        h1.title About us
-        p.description
+      .about-text(v-if='frame === 1')
+        h1 ABOUT US
+        p
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
+    transition(name='text-toggle')
+      .team-text(v-if='frame === 2')
+        h1 OUR TEAM
+        p
+          | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          | tempor incididunt ut labore et dolore magna aliqua.
+    transition(name='text-toggle')
+      .project-text(v-if='frame === 3')
+        h1 OUR PROJECTS
+        p
+          | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          | tempor incididunt ut labore et dolore magna aliqua.
+    transition(name='text-toggle')
+      .contact-text(v-if='frame === 4')
+        h1 CONTACTS
+        p
+          | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          | tempor incididunt ut labore et dolore magna aliqua.
+    nav.main-nav
+      a.nav-link(v-for='n in 5')
 </template>
 
 <script>
 import { TweenLite, Power1 } from 'gsap';
+
 import {
   Scene,
   PerspectiveCamera,
@@ -37,7 +58,6 @@ export default {
       scene: null,
       camera: null,
       renderer: null,
-      mouse: { x: 0, y: 0 },
 
       planet: null,
       island1: null,
@@ -72,8 +92,6 @@ export default {
       distance: 0,
       speed: 0.1,
       delay: false,
-
-      showMenu: false,
     };
   },
   mounted() {
@@ -177,8 +195,6 @@ export default {
       this.width = window.innerWidth;
       this.height = window.innerHeight - 3;
     },
-
-    // events
     onResize() {
       this.setSize();
       this.camera.aspect = this.width / this.height;
@@ -252,10 +268,12 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '~global';
+$color-white: #F4FFFF;
 
 .intro {
-  background-color: $color-main;
+  background: #12233f;
+  // background-image:
+  //   radial-gradient(circle farthest-side at top left, #4B80A0 0%, #12233f 70%);
   overflow: hidden;
   position: relative;
 }
@@ -265,41 +283,122 @@ export default {
   left: 10rem;
   text-transform: uppercase;
 }
-.subtitle {
+h3 {
   color: $color-white;
   font-family: 'Lato', sans-serif;
   letter-spacing: 2px;
   font-size: 2em;
 }
-.title {
+h1 {
   font-family: 'Montserrat', sans-serif;
   font-size: 7em;
   font-weight: 700;
   letter-spacing: 3px;
   color: #F79B22;
 }
-.description {
+p {
   color: $color-white;
   font-family: 'Lato', sans-serif;
   font-size: 2em;
   font-weight: 400;
-  margin-top: 2rem;
+  margin-top: 4rem;
+  opacity: 0.8;
 }
-.about {
+.about-text {
   position: absolute;
-  top: 5rem;
-  right: 20vw;
+  top: 10rem;
+  right: 22vw;
   width: 40vw;
   text-align: center;
+}
+.team-text {
+  position: absolute;
+  top: 5rem;
+  right: 40vw;
+  width: 40vw;
+  text-align: center;
+}
+.project-text {
+  position: absolute;
+  top: 11rem;
+  right: 49vw;
+  width: 40vw;
+  text-align: center;
+}
+.contact-text {
+  position: absolute;
+  top: 50rem;
+  right: 59vw;
+  width: 40vw;
+  text-align: center;
+}
+.music-btn {
+  position: absolute;
+  bottom: 4rem;
+  right: 6rem;
+  height: 1rem;
+  width: 1rem;
+  background-color: $color-white;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.7;
+  transform: scale(0.8);
+  transition: ease-in-out 0.5s;
+  &:hover {
+    transform: scale(1);
+    transition: ease-in-out 0.5s;
+  }
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: -1.7rem;
+    right: -1.7rem;
+    height: 4rem;
+    width: 4rem;
+    border: 0.2rem solid $color-white;
+    border-radius: 50%;
+  }
+}
+.main-nav {
+  position: absolute;
+  top: calc(50% - 20rem / 2);
+  right: 6rem;
+  width: 1.5rem;
+  height: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.nav-link {
+  // flex-basis: 12%;
+  height: 1rem;
+  width: 1rem;
+  display: block;
+  cursor: pointer;
+  border: 0.7rem solid $color-white;
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: ease-in-out 0.3s;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+.nav-link--active {
+  height: 1.9rem;
+  width: 1.9rem;
+  opacity: 0.7;
+  border: 0.3rem solid $color-white;
+  transition: ease-in-out 0.3s;
 }
 
 .text-toggle-enter-active,
 .text-toggle-leave-active {
-  transition: all .8s ease-in;
+  transition: all .8s ease-in-out;
 }
 .text-toggle-enter,
 .text-toggle-leave-to {
   transform: translateY(10rem);
   opacity: 0;
 }
-</style>
+</style>L

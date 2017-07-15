@@ -2,34 +2,35 @@
   .intro
     transition(name='text-toggle')
       .intro-text(v-if='frame === 0')
-        h3 Turn into a pixel with
-        h1 Pxlhead
+        h3.subtitle Turn into a pixel with
+        h1.title Pxlhead
     transition(name='text-toggle')
       .about-text(v-if='frame === 1')
-        h1 ABOUT US
-        p
+        h1.title ABOUT US
+        p.description
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
     transition(name='text-toggle')
       .team-text(v-if='frame === 2')
-        h1 OUR TEAM
-        p
+        h1.title OUR TEAM
+        p.description
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
     transition(name='text-toggle')
       .project-text(v-if='frame === 3')
-        h1 OUR PROJECTS
-        p
+        h1.title OUR PROJECTS
+        p.description
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
     transition(name='text-toggle')
       .contact-text(v-if='frame === 4')
-        h1 CONTACTS
-        p
+        h1.title CONTACTS
+        p.description
           | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
           | tempor incididunt ut labore et dolore magna aliqua.
-    nav.main-nav
-      a.nav-link(v-for='n in 5')
+    nav.intro-nav
+      a.nav-link(v-for='n in 5' v-bind:class='{ "nav-link--active": n === frame + 1 }'
+                @click='frame = n - 1')
 </template>
 
 <script>
@@ -49,7 +50,6 @@ import {
   Points,
 } from 'three';
 
-// TODO: remove in production
 /* eslint-disable global-require */
 export default {
   name: 'intro',
@@ -60,8 +60,6 @@ export default {
       renderer: null,
 
       planet: null,
-      island1: null,
-      island2: null,
       starSystem: null,
 
       width: 0,
@@ -75,14 +73,15 @@ export default {
       }, {
         // basic info
         camera: { xP: 50, yP: 20, zP: 100, xR: 0.5, yR: 0.2 },
+        planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         // about us
-        camera: { xP: 22.4, yP: 55, zP: 82, xR: -0.15, yR: -0.6, zR: -0.1 },
+        camera: { xP: 6, yP: 70, zP: 82, xR: -0.15, yR: -0.6, zR: -0.1 },
         planet: { xR: 1, yR: 1.7, zR: 1 },
       }, {
-        // what we do
-        camera: { xP: 50, yP: 55, zP: 62, xR: -0.06, yR: 0.15, zR: 0.1 },
-        planet: { xR: -1, yR: 0.9, zR: -1 },
+        // projects
+        camera: { xP: 34, yP: 55, zP: 62, xR: -0.06, yR: 0.15, zR: 0.1 },
+        planet: { xR: -1, yR: 0.7, zR: -1 },
       }, {
         // contacts
         camera: { xP: 11.4, yP: 60, zP: 55.5, xR: -0.25, yR: -0.16, zR: 0 },
@@ -135,26 +134,6 @@ export default {
         window.addEventListener('wheel', this.onWheel);
       });
 
-      loader.load('/static/models/island1.json', (geometry, materials) => {
-        this.island1 = new Mesh(geometry, materials);
-
-        this.island1.castShadow = true;
-        this.island1.receiveShadow = true;
-        this.island1.position.set(-40, 60, -30);
-        this.island1.rotation.x = 0.5;
-        this.scene.add(this.island1);
-      });
-
-      loader.load('/static/models/island2.json', (geometry, materials) => {
-        this.island2 = new Mesh(geometry, materials);
-
-        this.island2.castShadow = true;
-        this.island2.receiveShadow = true;
-        this.island2.position.set(200, 80, -150);
-        this.island2.rotation.x = 0.3;
-        this.scene.add(this.island2);
-      });
-
       this.drawStars();
     },
     drawStars() {
@@ -193,7 +172,8 @@ export default {
     },
     setSize() {
       this.width = window.innerWidth;
-      this.height = window.innerHeight - 3;
+      // TODO: fix scrollbar bug
+      this.height = window.innerHeight - 2;
     },
     onResize() {
       this.setSize();
@@ -268,12 +248,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-$color-white: #F4FFFF;
+@import '~global';
 
 .intro {
   background: #12233f;
-  // background-image:
-  //   radial-gradient(circle farthest-side at top left, #4B80A0 0%, #12233f 70%);
   overflow: hidden;
   position: relative;
 }
@@ -283,19 +261,19 @@ $color-white: #F4FFFF;
   left: 10rem;
   text-transform: uppercase;
 }
-h3 {
-  color: $color-white;
-  letter-spacing: 2px;
-  font-size: 2em;
-}
-h1 {
+.title {
   font-family: 'Montserrat', sans-serif;
   font-size: 7em;
   font-weight: 700;
   letter-spacing: 3px;
-  color: #F79B22;
+  color: $color-orange;
 }
-p {
+.subtitle {
+  color: $color-white;
+  letter-spacing: 2px;
+  font-size: 2em;
+}
+.description {
   color: $color-white;
   font-size: 2em;
   font-weight: 400;
@@ -311,65 +289,38 @@ p {
 }
 .team-text {
   position: absolute;
-  top: 5rem;
-  right: 40vw;
+  top: 10rem;
+  right: 27vw;
   width: 40vw;
   text-align: center;
 }
 .project-text {
   position: absolute;
-  top: 11rem;
-  right: 49vw;
+  top: 15rem;
+  right: 55vw;
   width: 40vw;
   text-align: center;
 }
 .contact-text {
   position: absolute;
-  top: 50rem;
+  top: 35rem;
   right: 59vw;
   width: 40vw;
   text-align: center;
 }
-.music-btn {
-  position: absolute;
-  bottom: 4rem;
-  right: 6rem;
-  height: 1rem;
-  width: 1rem;
-  background-color: $color-white;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0.7;
-  transform: scale(0.8);
-  transition: ease-in-out 0.5s;
-  &:hover {
-    transform: scale(1);
-    transition: ease-in-out 0.5s;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    bottom: -1.7rem;
-    right: -1.7rem;
-    height: 4rem;
-    width: 4rem;
-    border: 0.2rem solid $color-white;
-    border-radius: 50%;
-  }
-}
-.main-nav {
+// TODO: dots
+.intro-nav {
   position: absolute;
   top: calc(50% - 20rem / 2);
   right: 6rem;
-  width: 1.5rem;
+  width: 3rem;
   height: 30rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 }
 .nav-link {
-  // flex-basis: 12%;
   height: 1rem;
   width: 1rem;
   display: block;
@@ -383,16 +334,19 @@ p {
   }
 }
 .nav-link--active {
-  height: 1.9rem;
-  width: 1.9rem;
+  height: 2.5rem;
+  width: 2.5rem;
   opacity: 0.7;
-  border: 0.3rem solid $color-white;
+  border: 0.3rem solid $color-orange;
   transition: ease-in-out 0.3s;
 }
 
 .text-toggle-enter-active,
 .text-toggle-leave-active {
   transition: all .8s ease-in-out;
+}
+.text-toggle-enter-active {
+  transition-delay: 0.5s;
 }
 .text-toggle-enter,
 .text-toggle-leave-to {

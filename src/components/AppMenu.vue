@@ -1,6 +1,6 @@
 <template lang='pug'>
   .menu
-    a.menu-btn(@clock='showModal = true')
+    a.menu-btn(@click='showModal = !showModal')
     .menu-modal
       router-link(to='/experiments') Experiments
 </template>
@@ -28,8 +28,8 @@ export default {
 .menu-btn {
   display: block;
   position: absolute;
-  top: 6rem;
-  left: 6rem;
+  top: 5rem;
+  left: 5rem;
   width: 6rem;
   height: 6rem;
   background-color: rgba(255, 255, 255, 0.2);
@@ -38,7 +38,7 @@ export default {
   transition: transform ease-out 0.1s, background 0.2s;
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(0.93);
+    transform: scale(0.9);
     transition: transform ease-out 0.1s, background 0.2s;
     &::after {
       animation: sonar 1.3s ease-out 75ms;

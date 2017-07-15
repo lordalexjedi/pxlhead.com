@@ -267,7 +267,6 @@ export default {
 }
 .subtitle {
   color: $color-white;
-  font-family: 'Lato', sans-serif;
   letter-spacing: 2px;
   font-size: 2em;
 }
@@ -280,7 +279,6 @@ export default {
 }
 .description {
   color: $color-white;
-  font-family: 'Lato', sans-serif;
   font-size: 2em;
   font-weight: 400;
   margin-top: 2rem;

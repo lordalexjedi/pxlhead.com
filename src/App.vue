@@ -24,4 +24,8 @@ export default {
 html {
   font-size: 62.5%;
 }
+.app {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+}
 </style>

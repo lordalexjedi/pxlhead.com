@@ -2,8 +2,8 @@
   .intro
     transition(name='text-toggle')
       .intro-text(v-if='frame === 0')
-        h3.subtitle Turn into a pixel with
-        h1.title Pxlhead
+        h3.main-subtitle Turn into a pixel with
+        h1.main-title.title Pxlhead
     transition(name='text-toggle')
       .about-text(v-if='frame === 1')
         h1.title ABOUT US
@@ -268,10 +268,15 @@ export default {
   letter-spacing: 3px;
   color: $color-orange;
 }
-.subtitle {
+.main-title {
+  font-size: 5vw;
+  font-family: 'Montserrat', sans-serif;
+}
+.main-subtitle {
+  font-size: 1.5vw;
+  font-family: 'Montserrat', sans-serif;
   color: $color-white;
   letter-spacing: 2px;
-  font-size: 2em;
 }
 .description {
   color: $color-white;
@@ -308,7 +313,6 @@ export default {
   width: 40vw;
   text-align: center;
 }
-// TODO: dots
 .intro-nav {
   position: absolute;
   top: calc(50% - 20rem / 2);
@@ -353,4 +357,4 @@ export default {
   transform: translateY(10rem);
   opacity: 0;
 }
-</style>L
+</style>

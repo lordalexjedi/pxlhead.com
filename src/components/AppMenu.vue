@@ -84,7 +84,7 @@ export default {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url('../assets/icons/logo.svg') no-repeat center / 50%;
+    background: url('../assets/icons/logo.svg') no-repeat center / 40%;
   }
 }
 
@@ -97,6 +97,7 @@ export default {
   height: 100vh;
   z-index: 1000;
   background-color: $color-main;
+  visibility: hidden; //!!!
 }
 .menu-esc {
   position: absolute;

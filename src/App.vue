@@ -24,6 +24,9 @@ export default {
 html {
   font-size: 62.5%;
 }
+body {
+  overflow: hidden;
+}
 .app {
   font-family: 'Lato', sans-serif;
   font-weight: 400;

@@ -1,3 +1,3 @@
-# pxlhead
+# pxlhead.com
 
-> Pxlhead website
+Pxlhead website. Work in progress.

@@ -13,6 +13,7 @@ export function createStore () {
       activeSort: 'top',
       itemsPerPage: 2,
       items: {/* [id: number]: Item */},
+      comments: {/* [id: number]: Comment */},
       lists: {
         articles: [],
         projects: [],

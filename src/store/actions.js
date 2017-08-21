@@ -1,6 +1,7 @@
 import {
   fetchItems,
-  fetchIdsByType
+  fetchIdsByType,
+  fetchComments
 } from '../api'
 
 export default {
@@ -32,9 +33,13 @@ export default {
       return false
     })
     if (ids.length) {
-      return fetchItems(state.activeType, ids).then(items => commit('SET_ITEMS', { items }))
+      return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
     } else {
       return Promise.resolve()
     }
   },
+
+  FETCH_COMMENTS: ({ commit, state }, { ids }) => {
+    return fetchComments(ids).then(comments => commit('SET_COMMENTS', { comments }))
+  }
 }

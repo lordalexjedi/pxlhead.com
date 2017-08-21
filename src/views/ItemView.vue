@@ -12,15 +12,18 @@
         router-link(v-if='hasMore'  :to='`/${type}/(page + 1)`') more &gt;
         a.disabled(v-else) more &gt;
       .item-view-comments
+        spinner(:show='loading')
+        .comment-children(v-if='!loading')
+          comment(v-for='id in item.commentIds'  :key='id'  :id='id')
 </template>
 
 <script>
-// import Spinner from '../components/Spinner.vue'
-// import Comment from '../components/Comment.vue'
+import Spinner from '../components/Spinner.vue'
+import Comment from '../components/Comment.vue'
 
 export default {
   name: 'item-view',
-  // components: { Spinner, Comment },
+  components: { Spinner, Comment },
 
   data: () => ({
     loading: true
@@ -42,34 +45,35 @@ export default {
     return store.dispatch('FETCH_ITEMS', { ids: [id] })
   },
 
-  // Fetch comments when mounted on the client
-  beforeMount () {
-    // this.fetchComments()
+  title () {
+    return this.item.title
   },
 
-  // refetch comments if item changed
+  beforeMount () {
+    this.fetchComments()
+  },
+
   watch: {
-    // item: 'fetchComments'
+    item: 'fetchComments'
   },
 
   methods: {
     fetchComments () {
-      this.loading = true
-      fetchComments(this.$store, this.item).then(() => {
-        this.loading = false
-      })
+      if (this.item.commentIds) {
+        this.loading = true
+        fetchComments(this.$store, this.item).then(() => {
+          this.loading = false
+        })
+      }
     }
   }
 }
 
-// recursively fetch all descendent comments
 function fetchComments (store, item) {
-  if (item && item.kids) {
-    return store.dispatch('FETCH_ITEMS', {
-      ids: item.kids
-    }).then(() => Promise.all(item.kids.map(id => {
-      return fetchComments(store, store.state.items[id])
-    })))
+  if (item && item.commentIds) {
+    return store.dispatch('FETCH_COMMENTS', {
+      ids: item.commentIds
+    })
   }
 }
 </script>

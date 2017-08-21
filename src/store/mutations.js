@@ -19,5 +19,13 @@ export default {
         Vue.set(state.items, item.id, item)
       }
     })
+  },
+
+  SET_COMMENTS: (state, { comments }) => {
+    comments.forEach(comment => {
+      if (comment) {
+        Vue.set(state.comments, comment.id, comment)
+      }
+    })
   }
 }

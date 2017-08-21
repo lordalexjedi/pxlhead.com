@@ -2,10 +2,13 @@
   #app
     .app-menu
       a.app-menu-btn
+      span.app-menu-title PXLHEAD
     router-view
 </template>
 
 <style lang='scss'>
+@import '~style';
+
 * {
   margin: 0;
   padding: 0;
@@ -26,16 +29,16 @@ body {
 .app-menu-btn {
   display: block;
   position: absolute;
-  top: 5rem;
+  top: 3rem;
   left: 5rem;
-  width: 6rem;
-  height: 6rem;
-  background-color: rgba(255, 255, 255, 0.2);
+  width: 5rem;
+  height: 5rem;
+  background-color: transparentize($color-white, 0.8);
   border-radius: 50%;
   cursor: pointer;
   transition: transform ease-out 0.1s, background 0.2s;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: transparentize($color-white, 0.9);
     transform: scale(0.9);
     transition: transform ease-out 0.1s, background 0.2s;
     &::after {
@@ -49,7 +52,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 2px transparentize($color-white, 0.9);
     opacity: 0;
     transform: scale(0.7);
     width: 100%;
@@ -62,8 +65,17 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: url('./assets/icons/logo.svg') no-repeat center / 50%;
+    background: url('assets/icons/logo.svg') no-repeat center / 40%;
   }
+}
+.app-menu-title {
+  display: block;
+  position: absolute;
+  top: 4.5rem;
+  left: 12rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: $color-white;
 }
 @keyframes sonar {
   0% {

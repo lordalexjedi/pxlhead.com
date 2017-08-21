@@ -2,11 +2,11 @@
   .intro
     transition(name='text-vertical-toggle')
       .intro-text(v-if='frameIdx == 0' key='intro')
-        h3.subtitle Turn into a pixel with
-        h1.title Pxlhead
+        h3.intro-subtitle Turn into a pixel with
+        h1.intro-title Pxlhead
       .info-text(v-else v-bind='{ key: frame.name, class: `${frame.name}-text` }')
-        h1.title {{ frame.title }}
-        p.description {{ frame.description }}
+        h1.intro-title {{ frame.title }}
+        p.intro-description {{ frame.description }}
     nav.intro-nav
       a.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
         v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
@@ -229,25 +229,26 @@ export default {
   background: $color-main;
   overflow: hidden;
   position: relative;
-  .title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 7em;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: $color-orange;
-  }
-  .subtitle {
-    color: $color-white;
-    letter-spacing: 2px;
-    font-size: 2em;
-  }
-  .description {
-    color: $color-white;
-    font-size: 2em;
-    font-weight: 400;
-    margin-top: 4rem;
-    opacity: 0.8;
-  }
+}
+.intro-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #43A4F1;
+}
+.intro-subtitle {
+  color: $color-white;
+  opacity: 0.8;
+  letter-spacing: 1.5px;
+  font-size: 2.6rem;
+}
+.intro-description {
+  color: $color-white;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-top: 4rem;
+  opacity: 0.8;
 }
 .intro-text {
   position: absolute;
@@ -255,28 +256,33 @@ export default {
   left: 10rem;
   text-transform: uppercase;
 }
+
+// text positioning
 .info-text {
   position: absolute;
   width: 40vw;
-  text-align: center;
-  text-transform: uppercase;
+  .intro-title {
+    font-size: 6rem;
+    text-transform: uppercase;
+  }
 }
 .about-text {
-  top: 10rem;
-  right: 22vw;
+  top: 15rem;
+  left: 22vw;
 }
 .team-text {
   top: 10rem;
   right: 27vw;
 }
 .projects-text {
-  top: 15rem;
+  top: 25rem;
   right: 55vw;
 }
 .contacts-text {
   top: 35rem;
-  right: 59vw;
+  right: 55vw;
 }
+
 .intro-nav {
   position: absolute;
   top: calc(50% - 20rem / 2);
@@ -292,19 +298,19 @@ export default {
     width: 1rem;
     display: block;
     cursor: pointer;
-    border: 0.7rem solid $color-white;
+    background-color: $color-blue;
     border-radius: 50%;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: ease-in-out 0.3s;
     &:hover {
-      opacity: 0.7;
+      opacity: 1;
     }
   }
   .nav-link--active {
-    height: 2.5rem;
-    width: 2.5rem;
-    opacity: 0.7;
-    border: 0.3rem solid $color-orange;
+    height: 1.5rem;
+    width: 1.5rem;
+    opacity: 1;
+    background-color: #43A4F1;
     transition: ease-in-out 0.3s;
   }
 }

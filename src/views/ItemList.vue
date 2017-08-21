@@ -5,13 +5,12 @@
         a.sort-item(@click='sortItems("top")') Top
         a.sort-item(@click='sortItems("new")') New
       .search-box(@click='searching = true')
-        input.search(type='search' name='search' v-model='search'
+        input.search(type='search' name='search' placeholder='droids u r looking for...' v-model='search'
           :class='{ "search--active": searching }'
           @blur='searching = false')
     transition-group.gallery(name='item')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
-    .nav-scroll
-      .scroll-btn
+    a.btn-back
 </template>
 
 <script>
@@ -109,23 +108,24 @@ export default {
 }
 .toolbox {
   background-color: $color-main;
-  padding: 5rem 12rem;
+  padding: 3rem 5rem;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .sorter {
   display: flex;
 }
 .sort-item {
-  width: 12rem;
-  height: 5rem;
+  width: 8rem;
+  height: 4rem;
   border-radius: 40px;
   margin-right: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   text-transform: uppercase;
   color: $color-white;
   cursor: pointer;
@@ -154,6 +154,9 @@ export default {
 }
 .search {
   appearance: none;
+  background-color: $color-white;
+  color: $color-main;
+  padding: 0 2rem;
   width: 5rem;
   height: 5rem;
   border-radius: 40px;
@@ -164,50 +167,41 @@ export default {
 }
 .search--active {
   width: 30rem;
-  padding: 0 4rem;
+  padding: 0 5rem;
+}
+.search--active ::placeholder {
+  display: block;
 }
 .gallery {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 6rem 12rem;
+  padding: 6rem 5rem;
 }
-.nav-scroll {
-  position: absolute;
-  display: block;
-  right: 7rem;
-  top: calc(50% - 20rem / 2);
-  height: 35rem;
-  width: 1.3rem;
-  border-radius: 50px;
-  background-color: #c4c4c4;
-  box-shadow: inset 0px 4px 20px rgba(0, 0, 0, 0.25);
-  @include screen-style(iphoneSE) { display: none;};
-  @include screen-style(iphone7) { display: none;};
-  @include screen-style(ipadAir) { display: none;};
-  @include screen-style(ipadPro) { display: none;};
-}
-.scroll-btn {
-  position: absolute;
-  left: calc(50% - 4rem / 2);
-  top: 10%;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50px;
-  background-color: $color-blue;
+.btn-back {
+  position: fixed;
+  bottom: 2rem;
+  right: 5rem;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
   cursor: pointer;
+  background-color: $color-pink;
+  transition: 0.3s ease-in-out;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  &::after {
+  &:after {
     position: absolute;
     display: block;
     content: '';
-    left: calc(50% - 2rem / 2);
-    top: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50px;
-    background-color: $color-white;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+    width: 50%;
+    height: 50%;
+    top: 25%;
+    left: 25%;
+    background: url('../assets/icons/arrow-small.svg') no-repeat center / 100%;
+  }
+  &:hover {
+    background-color: darken($color-pink, 10%);
+    transition: 0.3s ease-in-out;
   }
 }
 

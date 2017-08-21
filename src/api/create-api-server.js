@@ -20,10 +20,8 @@ export function createAPI ({ config }) {
     // cache the latest story ids
     api.cachedIds = {}
     ;['articles', 'projects', 'experiments', 'music', 'art'].forEach(type => {
-      api.child(type).orderByChild('views').on('value', snapshot => {
+      api.child(`postIds/${type}`).on('value', snapshot => {
         api.cachedIds[type] = snapshot.val()
-          ? Object.keys(snapshot.val()).reverse()
-          : []
       })
     })
   }

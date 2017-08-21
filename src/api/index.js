@@ -19,26 +19,14 @@ function fetch (child) {
     return Promise.resolve(cache.get(child))
   } else {
     return new Promise((resolve, reject) => {
-      let val
-      if (child.includes('/')) {
-        // get item
-        api.child(child)
-          .once('value', snapshot => {
-            val = snapshot.val()
-          }, reject)
-      } else {
-        // get array of item ids sorted by views
-        api.child(child).orderByChild('views')
-          .once('value', snapshot => {
-            val = snapshot.val()
-              ? Object.keys(snapshot.val()).reverse()
-              : []
-          }, reject)
-      }
-      if (val) val.__lastUpdated = Date.now()
-      cache && cache.set(child, val)
-      logRequests && console.log(`fetched ${child}.`)
-      resolve(val)
+      api.child(child).once('value', snapshot => {
+        const val = snapshot.val()
+        // mark the timestamp when this item is cached
+        if (val) val.__lastUpdated = Date.now()
+        cache && cache.set(child, val)
+        logRequests && console.log(`fetched ${child}.`)
+        resolve(val)
+      }, reject)
     })
   }
 }
@@ -46,20 +34,24 @@ function fetch (child) {
 export function fetchIdsByType (type) {
   return api.cachedIds && api.cachedIds[type]
     ? Promise.resolve(api.cachedIds[type])
-    : fetch(type)
+    : fetch(`postIds/${type}`)
 }
 
-export function fetchItem (type, id) {
-  return fetch(`${type}/${id}`)
+export function fetchItem (id) {
+  return fetch(`posts/${id}`)
 }
 
-export function fetchItems (type, ids) {
-  return Promise.all(ids.map(id => fetchItem(type, id)))
+export function fetchItems (ids) {
+  return Promise.all(ids.map(id => fetchItem(id)))
+}
+
+export function fetchComments (ids) {
+  return Promise.all(ids.map(id => fetch(`comments/${id}`)))
 }
 
 export function watchList (type, cb) {
   let first = true
-  const ref = api.child(type)
+  const ref = api.child(`postIds/${type}`)
   const handler = snapshot => {
     if (first) {
       first = false

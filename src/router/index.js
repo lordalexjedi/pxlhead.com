@@ -19,7 +19,7 @@ export function createRouter () {
       { path: '/experiments/:page(\\d+)?', component: createListView('experiments') },
       { path: '/music/:page(\\d+)?', component: createListView('music') },
       { path: '/art/:page(\\d+)?', component: createListView('art') },
-      { path: '/item/:id(\\d+)', component: ItemView },
+      { path: '/item/:id', component: ItemView },
       { path: '/', redirect: '/intro' }
     ]
   })

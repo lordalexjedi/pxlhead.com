@@ -5,7 +5,7 @@
       router-link.item-name(:to='`/item/${item.id}`') {{ item.title }}
       p.item-description {{ item.description }}
       .item-info
-        span.item-views 1001
+        span.item-views {{ item.views }}
         span.item-comment 21
 </template>
 

@@ -10,12 +10,11 @@ export default {
     const start = (page - 1) * itemsPerPage
     const end = page * itemsPerPage
 
-    if (activeSort === 'new') {
-      const newItems = Object.keys(items)
-        .filter(id => items[id].type === activeType)
-        .sort((aId, bId) => items[aId].time > items[bId].time ? -1 : 1)
-
-      return newItems.slice(start, end)
+    if (Object.keys(items).length) {
+      const sortKey = activeSort === 'top' ? 'views' : 'time'
+      return lists[activeType].slice(start, end).sort((aId, bId) => {
+        return items[aId][sortKey] - items[bId][sortKey]
+      })
     }
 
     return lists[activeType].slice(start, end)

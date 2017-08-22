@@ -90,11 +90,9 @@ export default {
         this.$bar.finish()
       })
     },
-    sortItems (sortType) {
-      this.$store.commit('SET_ACTIVE_SORT', { sort: sortType })
-      this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
-        this.displayedItems = this.$store.getters.activeItems
-      })
+    sortItems (sort) {
+      this.$store.commit('SET_ACTIVE_SORT', { sort })
+      this.displayedItems = this.$store.getters.activeItems
     }
   }
 }

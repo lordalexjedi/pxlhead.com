@@ -1,5 +1,16 @@
 <template lang='pug'>
   .comment(v-if='comment')
+    .comment-header
+      .comment-title COMMENTS
+        span.comment-counter (42)
+      a.comment-submit
+    .comment-item
+      .comment-img
+      .comment-body
+        h2.comment-author elliepooh
+          span.comment-date 23.12.2017
+        p.comment-text
+    a.comment-up
 </template>
 
 <script>
@@ -22,4 +33,17 @@ export default {
 }
 </script>
 
-<style lang='scss'></style>
+<style lang='scss'>
+@import '~style';
+
+.comment{
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: $color-white;
+}
+
+
+</style>

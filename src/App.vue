@@ -9,6 +9,9 @@
 <style lang='scss'>
 @import '~style';
 
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400');
+
 * {
   margin: 0;
   padding: 0;
@@ -17,7 +20,8 @@ html {
   font-size: 62.5%;
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
 }
 
 .app-menu {

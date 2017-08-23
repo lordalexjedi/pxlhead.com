@@ -4,8 +4,12 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 // route-level code splitting
-const createListView = id => () => import('../views/CreateListView').then(m => m.default(id))
-const ItemView = () => import('../views/ItemView.vue')
+const createListView = id => () => import('../views/list/CreateListView').then(m => m.default(id))
+const ItemView = () => import('../views/single/ItemView.vue')
+
+const ArticleView = () => import('../views/single/ArticleView.vue')
+const PlaylistView = () => import('../views/single/PlaylistView.vue')
+
 const Intro = () => import('../views/Intro.vue')
 
 export function createRouter () {
@@ -20,7 +24,9 @@ export function createRouter () {
       { path: '/music/:page(\\d+)?', component: createListView('music') },
       { path: '/art/:page(\\d+)?', component: createListView('art') },
       { path: '/item/:id', component: ItemView },
-      { path: '/', redirect: '/intro' }
+      { path: '/article/:id', component: ArticleView },
+      { path: '/playlist/:id', component: PlaylistView },
+      { path: '/', redirect: '/articles' }
     ]
   })
 }

@@ -18,6 +18,7 @@ module.exports = {
   resolve: {
     alias: {
       'public': path.resolve(__dirname, '../public'),
+      '@': path.resolve(__dirname, '../src'),
       'style': path.resolve(__dirname, '../src/assets/style/global.scss')
     }
   },

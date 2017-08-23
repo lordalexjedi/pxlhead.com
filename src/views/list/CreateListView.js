@@ -1,4 +1,5 @@
 import ItemList from './ItemList.vue'
+import ProjectList from './ProjectList.vue'
 
 const camelize = str => str.charAt(0).toUpperCase() + str.slice(1)
 
@@ -13,7 +14,8 @@ export default function createListView (type) {
     title: camelize(type),
 
     render (h) {
-      return h(ItemList, { props: { type }})
+      const list = type === 'projects' ? ProjectList : ItemList
+      return h(list, { props: { type }})
     }
   }
 }

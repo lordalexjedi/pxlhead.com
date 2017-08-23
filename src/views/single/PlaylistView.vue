@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import Spinner from '../components/Spinner.vue'
-import Comment from '../components/Comment.vue'
+import Spinner from '@/components/Spinner.vue'
+import Comment from '@/components/Comment.vue'
 
 export default {
-  name: 'item-view',
+  name: 'playlist-view',
   components: { Spinner, Comment },
 
   data: () => ({

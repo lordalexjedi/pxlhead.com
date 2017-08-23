@@ -2,7 +2,7 @@
   .item
     .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
     .item-text
-      router-link.item-name(:to='`/item/${item.id}`') {{ item.title }}
+      router-link.item-name(:to='itemLink') {{ item.title }}
       p.item-description {{ item.description }}
       .item-info
         span.item-views {{ item.views }}
@@ -15,6 +15,16 @@ import { timeAgo } from '../util/filters'
 export default {
   name: 'news-item',
   props: ['item'],
+  computed: {
+    itemLink() {
+      if (this.item.type === 'articles') {
+        return `/article/${this.item.id}`
+      } else if (this.item.type === 'music') {
+        return `/playlist/${this.item.id}`
+      }
+      return `/item/${this.item.id}`
+    }
+  },
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`
   }

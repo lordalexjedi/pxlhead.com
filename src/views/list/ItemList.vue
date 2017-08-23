@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { watchList } from '../api'
-import Item from '../components/Item.vue'
+import { watchList } from '@/api'
+import Item from '@/components/Item.vue'
 
 // TODO: add infinite scroll
 export default {
@@ -147,7 +147,7 @@ export default {
     left: 0;
     width: 5rem;
     height: 5rem;
-    background: url('../assets/icons/search.svg') no-repeat center / 60%;
+    background: url('~@/assets/icons/search.svg') no-repeat center / 60%;
   }
 }
 .search {
@@ -195,7 +195,7 @@ export default {
     height: 50%;
     top: 25%;
     left: 25%;
-    background: url('../assets/icons/arrow-small.svg') no-repeat center / 100%;
+    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 100%;
   }
   &:hover {
     background-color: darken($color-pink, 10%);

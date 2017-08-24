@@ -117,7 +117,9 @@ function fetchComments (store, item) {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  top: calc(55% - 60% / 2);
+  top: calc(55% - 60% / 2);  background: $color-pink;
+  background-position: center;
+  background-size: cover;
   left: calc(46% - 70% / 2);
   width: 70%;
   height: 60%;

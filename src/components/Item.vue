@@ -37,7 +37,7 @@ export default {
   flex-basis: 20vw;
   height: 33rem;
   position: relative;
-  margin-bottom: 4rem;
+  margin: 0 3vw 10rem 3vw;
   transition: 0.3s ease-in-out;
 }
 .item:hover .item-text{

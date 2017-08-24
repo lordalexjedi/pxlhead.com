@@ -172,7 +172,7 @@ export default {
 }
 .gallery {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   padding: 6rem 5rem;
 }

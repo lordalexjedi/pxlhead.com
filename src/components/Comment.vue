@@ -1,16 +1,11 @@
 <template lang='pug'>
   .comment(v-if='comment')
-    .comment-header
-      .comment-title COMMENTS
-        span.comment-counter (42)
-      a.comment-submit
-    .comment-item
-      .comment-img
-      .comment-body
-        h2.comment-author elliepooh
-          span.comment-date 23.12.2017
-        p.comment-text
-    a.comment-up
+    .comment-img
+    .comment-body
+      .comment-info
+        h2.comment-author {{ comment.by }}
+        span.comment-date {{ comment.time }}
+      p.comment-text {{ comment.text }}
 </template>
 
 <script>
@@ -24,7 +19,7 @@ export default {
   },
   computed: {
     comment () {
-      return this.$store.state.items[this.id]
+      return this.$store.state.comments[this.id]
     }
   },
   methods: {
@@ -36,14 +31,72 @@ export default {
 <style lang='scss'>
 @import '~style';
 
-.comment{
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: $color-white;
+.comment {
+  width: 100rem;
+  flex-basis: 16rem;
+  position: relative;
+  margin-bottom: 5rem;
 }
-
-
+.comment-img {
+  position: absolute;
+  top: calc(50% - 7rem / 2);
+  left: 0;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: $color-pink;
+  background-position: center;
+  background-size: cover;
+}
+.comment-body {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 75rem;
+  min-height: 10rem;
+  padding: 2rem 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #D7DEE8;
+  &::after {
+    display: block;
+    content: '';
+    top: calc(50% - 3rem / 2);
+    left: -6rem;
+    border: solid transparent;
+    height: 0;
+    width: 4rem;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-width: 2rem 4rem 2rem 0;
+    border-right-color: #D7DEE8;
+    margin-left: -10px;
+  }
+}
+.comment-info {
+  flex-basis: 5rem;
+  width: 100%;
+  position: relative;
+  color: darken($color-grey, 17%);
+}
+.comment-author {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.comment-date {
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  font-size: 1.3rem;
+  opacity: 0.8;
+}
+.comment-text {
+  font-size: 1.8rem;
+  color: darken($color-grey, 10%);
+}
 </style>

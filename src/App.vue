@@ -11,6 +11,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:600,700');
 @import url('https://fonts.googleapis.com/css?family=Roboto:400');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,700');
 
 * {
   margin: 0;
@@ -21,7 +22,7 @@ html {
 }
 body {
   font-family: 'Roboto', sans-serif;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .app-menu {

@@ -10,40 +10,8 @@
           a.article-view-btn COMMENT
       a.article-view-link
       a.article-view-esc
-      //- .article-view-nav
-      //-   router-link(v-if='page > 1'  :to='`/${type}/(page - 1)`') &lt; prev
-      //-   a.disabled(v-else) &lt; prev
-      //-   router-link(v-if='hasMore'  :to='`/${type}/(page + 1)`') more &gt;
-      //-   a.disabled(v-else) more &gt;
     .article-read
-      .text-block
-        p.first-letter
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        .text-codebox
-          pre
-            span 1
-            code Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        h3.text-subtitle
-          | Heading 1
-        p
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        h2.text-title
-          | Heading 2
-        p.text-attention
-          | Attention: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        p.text-summary
-          | Summary: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        p.text-bold
-          | Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        a.text-link Click here
+      .text-block(v-html='item.text')
       .article-read-social
         a.article-read-link.link--facebook
         a.article-read-link.link--twitter
@@ -70,18 +38,6 @@ export default {
   data: () => ({
     loading: true
   }),
-
-  computed: {
-    item () {
-      return this.$store.state.items[this.$route.params.id]
-    },
-    page () {
-      return Number(this.$store.state.route.params.page) || 1
-    },
-    hasMore () {
-      return this.page < this.maxPage
-    }
-  },
 
   asyncData ({ store, route: { params: { id }}}) {
     return store.dispatch('FETCH_ITEMS', { ids: [id] })

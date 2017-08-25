@@ -10,19 +10,21 @@
           @blur='searching = false')
     transition-group.gallery(name='item')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
+    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore')
     a.btn-back
 </template>
 
 <script>
 import { watchList } from '@/api'
+import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
 
-// TODO: add infinite scroll
 export default {
   name: 'item-list',
 
   components: {
-    Item
+    Item,
+    MugenScroll
   },
 
   props: {
@@ -31,30 +33,32 @@ export default {
 
   data () {
     return {
-      displayedPage: Number(this.$store.state.route.params.page) || 1,
       displayedItems: this.$store.getters.activeItems,
 
       search: '',
       searching: false,
+      loading: false
     }
   },
 
   computed: {
-    page () {
-      return Number(this.$store.state.route.params.page) || 1
+    slice () {
+      return this.$store.state.activeSlice
     },
-    maxPage () {
-      const { itemsPerPage, lists } = this.$store.state
-      return Math.ceil(lists[this.type].length / itemsPerPage)
+    maxSlice () {
+      const { itemsPerSlice, lists } = this.$store.state
+      return Math.ceil(lists[this.type].length / itemsPerSlice)
     },
     hasMore () {
-      return this.page < this.maxPage
+      return this.slice < this.maxSlice
     }
   },
 
   beforeMount () {
     if (this.$root._isMounted) {
-      this.loadItems(this.page)
+      this.$store.dispatch('FETCH_LIST_DATA', {
+        type: this.type
+      }).then(this.loadItems())
     }
     // watch the current list for realtime updates
     this.unwatchList = watchList(this.type, ids => {
@@ -69,26 +73,14 @@ export default {
     this.unwatchList()
   },
 
-  watch: {
-    page (to, from) {
-      this.loadItems(to, from)
-    }
-  },
-
   methods: {
-    loadItems (to = this.page, from = -1) {
+    loadItems () {
       this.$bar.start()
-      this.$store.dispatch('FETCH_LIST_DATA', {
-        type: this.type
-      }).then(() => {
-        if (this.page < 0 || this.page > this.maxPage) {
-          this.$router.replace(`/${this.type}/1`)
-          return
-        }
-        this.displayedPage = to
-        this.displayedItems = this.$store.getters.activeItems
-        this.$bar.finish()
-      })
+      this.loading = true
+      this.displayedItems = [...this.displayedItems, ...this.$store.getters.activeItems]
+      this.$store.commit('INCREMENT_ACTIVE_SLICE')
+      this.loading = false
+      this.$bar.finish()
     },
     sortItems (sort) {
       this.$store.commit('SET_ACTIVE_SORT', { sort })

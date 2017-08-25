@@ -11,7 +11,8 @@ export function createStore () {
     state: {
       activeType: null,
       activeSort: 'top',
-      itemsPerPage: 2,
+      activeSlice: 1,
+      itemsPerSlice: 4,
       items: {/* [id: number]: Item */},
       comments: {/* [id: number]: Comment */},
       lists: {

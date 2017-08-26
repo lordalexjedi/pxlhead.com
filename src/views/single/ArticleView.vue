@@ -52,12 +52,6 @@ export default {
     item () {
       return this.$store.state.items[this.$route.params.id]
     },
-    page () {
-      return Number(this.$store.state.route.params.page) || 1
-    },
-    hasMore () {
-      return this.page < this.maxPage
-    }
   },
 
   asyncData ({ store, route: { params: { id }}}) {
@@ -125,16 +119,17 @@ function fetchComments (store, item) {
   width: 50vw;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   z-index: 101;
 }
 .article-view-date {
-  flex-basis: 2rem;
+  flex-basis: 1.5rem;
   font-size: 1.5rem;
   font-weight: 700;
   color: $color-white;
 }
 .article-view-title {
+  margin: 2rem 0;
   overflow: hidden;
   font-size: 7rem;
   font-weight: 700;
@@ -148,6 +143,7 @@ function fetchComments (store, item) {
   color: $color-white;
 }
 .article-view-description {
+  margin: 2rem 0rem 2rem 4rem;
   overflow: hidden;
   font-size: 2rem;
   min-height: 2rem * 2 + 2.5rem / 2;
@@ -158,6 +154,7 @@ function fetchComments (store, item) {
   color: $color-white;
 }
 .article-view-action {
+  margin: 2rem 0;
   max-width: 35rem;
   display: flex;
   justify-content: space-between;
@@ -274,18 +271,18 @@ function fetchComments (store, item) {
   h2.text-title {
     font-size: 3rem;
     line-height: 3rem;
-    margin-bottom: 5rem;
+    margin-bottom: 7rem;
     text-transform: uppercase;
     position: relative;
     &::after {
       position: absolute;
       display: block;
       content: '';
-      top: 4rem;
+      top: 5rem;
       left: 0;
-      width: 10rem;
+      width: 104rem;
       height: 0.3rem;
-      background-color: $color-blue;
+      background-color: #D7DEE8;
     }
   }
   h3.text-subtitle {
@@ -349,7 +346,16 @@ function fetchComments (store, item) {
   margin-bottom: 3rem;
   background-color: #FFDCE5;
   padding: 2rem;
-
+}
+.text-select {
+  font-size: 2rem;
+  line-height: 3rem;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  position: relative;
+  color: $color-pink;
+  padding: 1rem;
+  background-color: #D7DEE8;
 }
 .text-summary {
   width: 100%;
@@ -365,41 +371,34 @@ function fetchComments (store, item) {
   margin-bottom: 3rem;
   cursor: pointer;
   position: relative;
-  text-decoration: underline;
-  color: darken($color-grey, 17%);
-  background-color: #D7DEE8;
+  color:  #42b983;
   &::before {
     display: block;
     opacity: 0;
     transition: 0.3s ease-in-out;
     content: '';
-    left: calc(50% - 4rem / 2);
-    top: -4rem;
-    border: solid transparent;
-    height: 4rem;
-    width: 0;
+    right: -4rem;
+    top: calc(50% - 3rem / 2);
+    height: 3rem;
+    width: 3rem;
     position: absolute;
-    pointer-events: none;
-    border-color: transparent;
-    border-width: 4rem 2rem 0rem 2rem;
-    border-top-color: #D7DEE8;
-    margin-bottom: -10px;
+    border-radius: 50%;
+    background-color: #42b983;
+    z-index: 100;
   }
   &::after {
-    position: absolute;
     display: block;
     opacity: 0;
     transition: 0.3s ease-in-out;
-    content: 'copy link';
-    text-align: center;
-    font-size: 1.2rem;
-    line-height: 4rem;
-    top: -5rem;
-    left: calc(50% - 8rem / 2);
-    width: 8rem;
-    height: 4rem;
-    border-radius: 5rem;
-    background-color: #D7DEE8;
+    content: '';
+    right: -3.5rem;
+    top: calc(50% - 2rem / 2);
+    height: 2rem;
+    width: 2rem;
+    position: absolute;
+    border-radius: 50%;
+    background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
+    z-index: 100;
   }
   &:hover {
     &::before, &::after {
@@ -484,8 +483,8 @@ function fetchComments (store, item) {
 .article-comments-up {
   position: fixed;
   display: block;
-  width: 5rem;
-  height: 5rem;
+  width: 7rem;
+  height: 7rem;
   bottom: 5rem;
   right: 5rem;
   cursor: pointer;
@@ -496,10 +495,10 @@ function fetchComments (store, item) {
     position: absolute;
     display: block;
     content: '';
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
+    top: calc(50% - 4rem / 2);
+    left: calc(50% - 4rem / 2);
+    width: 4rem;
+    height: 4rem;
     background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
   }
   &:hover {

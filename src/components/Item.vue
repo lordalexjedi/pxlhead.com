@@ -34,13 +34,22 @@ export default {
 <style lang='scss'>
 @import '~style';
 .item {
-  flex-basis: 20vw;
   height: 33rem;
   position: relative;
-  margin: 0 3vw 10rem 3vw;
+  margin: 0 2% 7% 2%;
   transition: 0.3s ease-in-out;
+  @include screen-style(fullHd) {
+    flex-basis: 20%;
+  };
+  @include screen-style(iMac) {
+    height: 38rem;
+    flex-basis: 29%;
+    .item-name {
+      margin-top: 9rem;
+    }
+  };
 }
-.item:hover .item-text{
+.item:hover .item-text {
   background-color: darken(#6E97C4, 10%);
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
   transition: 0.3s ease-in-out;
@@ -70,7 +79,7 @@ export default {
 .item-text {
   position: absolute;
   bottom: -3rem;
-  left: 5rem;
+  left: 10%;
   width: 80%;
   height: 70%;
   color: $color-white;
@@ -86,9 +95,10 @@ export default {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
-  margin-top: 9rem;
+  margin-top: 7rem;
   width: 80%;
-  max-height: 3.6rem;
+  max-height: 1.8rem * 2 + 1rem / 2;
+  overflow: hidden;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -96,17 +106,21 @@ export default {
   text-transform: uppercase;
 }
 .item-description {
+  overflow: hidden;
   text-align: center;
   font-size: 1.2rem;
   margin-top: 1rem;
   font-weight: 500;
   width: 80%;
-  height: 3rem;
+  max-height: 1.2rem * 2 + 1rem / 2;
   opacity: 0.8;
 }
 .item-info {
-  flex-basis: 0.5rem;
+  position: absolute;
+  height: 0.5rem;
   width: 80%;
+  bottom: 2rem;
+  left: 10%;
   padding: 1rem 0rem 0rem 0rem;
   display: flex;
   justify-content: space-between;

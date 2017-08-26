@@ -8,7 +8,7 @@
         input.search(type='search' name='search' placeholder='droids u r looking for...' v-model='search'
           :class='{ "search--active": searching }'
           @blur='searching = false')
-    transition-group.gallery(name='item')
+    transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
     a.btn-back
 </template>

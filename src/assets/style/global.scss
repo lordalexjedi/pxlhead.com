@@ -25,19 +25,19 @@ $FULLHD: 1920px;
     @media only screen and (max-width: $IPSE) { @content; }
   }
   @else if $media == iphone7 {
-    @media only screen and (min-width: $IP7 + 1) and (max-width: $IPAIR - 1) { @content; }
+    @media only screen and (min-width: $IP7 - 1) and (max-width: $IPAIR - 1) { @content; }
   }
   @else if $media == ipadAir {
-    @media only screen and (min-width: $IPAIR + 1) and (max-width: $IPPRO - 1) { @content; }
+    @media only screen and (min-width: $IPAIR - 1) and (max-width: $IPPRO - 1) { @content; }
   }
   @else if $media == ipadPro {
-    @media only screen and (min-width: $IPPRO + 1) and (max-width: $IMAC - 1) { @content; }
+    @media only screen and (min-width: $IPPRO - 1) and (max-width: $IMAC - 1) { @content; }
   }
   @else if $media == iMac {
-    @media only screen and (min-width: $IMAC + 1) and (max-width: $FULLHD - 1) { @content; }
+    @media only screen and (min-width: $IMAC - 1) and (max-width: $FULLHD - 1) { @content; }
   }
   @else if $media == fullHd {
-    @media only screen and (min-width: $FULLHD) { @content; }
+    @media only screen and (min-width: $FULLHD - 1) { @content; }
   }
 }
 

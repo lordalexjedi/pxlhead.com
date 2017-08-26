@@ -4,10 +4,8 @@ const logRequests = !!process.env.DEBUG_API
 
 const api = createAPI({
   config: {
-    apiKey: "AIzaSyBhrsQFpdW78i25ykELO_8HBzgulaqOpI8",
     databaseURL: "https://pxlheadcom.firebaseio.com",
-    projectId: "pxlheadcom",
-    storageBucket: "pxlheadcom.appspot.com",
+    storageBucket: "pxlheadcom.appspot.com"
   }
 })
 

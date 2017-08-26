@@ -53,18 +53,6 @@ export default {
     comment: false
   }),
 
-  computed: {
-    item () {
-      return this.$store.state.items[this.$route.params.id]
-    },
-    page () {
-      return Number(this.$store.state.route.params.page) || 1
-    },
-    hasMore () {
-      return this.page < this.maxPage
-    }
-  },
-
   asyncData ({ store, route: { params: { id }}}) {
     return store.dispatch('FETCH_ITEMS', { ids: [id] })
   },

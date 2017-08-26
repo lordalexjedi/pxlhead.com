@@ -1,23 +1,21 @@
 export default {
   activeIds (state) {
-    const { activeType, activeSort, itemsPerPage, items, lists } = state
+    const { activeType, activeSort, activeSlice, itemsPerSlice, items, lists } = state
 
     if (!activeType) {
       return []
     }
 
-    const page = Number(state.route.params.page) || 1
-    const start = (page - 1) * itemsPerPage
-    const end = page * itemsPerPage
+    const start = (activeSlice - 1) * itemsPerSlice
+    const end = activeSlice * itemsPerSlice
+    const ids = lists[activeType].slice(start, end)
 
     if (Object.keys(items).length) {
       const sortKey = activeSort === 'top' ? 'views' : 'time'
-      return lists[activeType].slice(start, end).sort((aId, bId) => {
-        return items[aId][sortKey] - items[bId][sortKey]
-      })
+      return ids.sort((aId, bId) => items[aId][sortKey] - items[bId][sortKey])
     }
 
-    return lists[activeType].slice(start, end)
+    return ids
   },
 
   activeItems (state, getters) {

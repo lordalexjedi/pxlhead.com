@@ -5,17 +5,18 @@
         .item-view-text
           h1.item-view-title {{ item.title }}
           p.item-view-description {{ item.description }}
+          .item-view-action
+            a.item-view-link.link--code VIEW
+            // link--music, link--art
+            a.item-view-comment
         span.item-view-watch 4242
-        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .item-view-tag
           a.tag-link(v-for='n in 3') #CSS
-        .item-view-social
-          a.social-link.link-twitter
-          a.social-link.link-facebook
-          a.social-link.link-dribbble
-        a.item-view-link.link--code
-        // link--music, link--art
-        a.item-view-comment
+        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+          .item-view-social
+            a.social-link.link-twitter
+            a.social-link.link-facebook
+            a.social-link.link-dribbble
     .item-view-nav
       router-link.item-view-arrow.arrow--prev
       router-link.item-view-arrow.arrow--next
@@ -36,6 +37,12 @@ export default {
   data: () => ({
     loading: true
   }),
+
+  computed: {
+    item() {
+      return this.$store.state.items[this.$route.params.id]
+    }
+  },
 
   asyncData ({ store, route: { params: { id }}}) {
     return store.dispatch('FETCH_ITEMS', { ids: [id] })
@@ -78,44 +85,50 @@ function fetchComments (store, item) {
 @import '~style';
 
 .item-view {
+  position: relative;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: $color-white;
+  background: #fff;
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: #f2f2f2;
+  }
 }
 .item-view-img {
-  position: absolute;
-  top: calc(45% - 60rem/ 2);
-  left: calc(75% - 45rem / 2);
-  width: 60rem;
-  height: 45rem;
+  flex-basis: 87rem;
+  height: 65rem;
   background: $color-pink;
   background-position: center;
   background-size: cover;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
+  // box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
 }
 .item-view-body {
   position: absolute;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  top: calc(55% - 60% / 2);  background: $color-pink;
+  justify-content: space-between;
+  top: 20%;
   background-position: center;
   background-size: cover;
-  left: calc(46% - 70% / 2);
-  width: 70%;
+  left: calc(50% - 75% / 2);
+  width: 75%;
   height: 60%;
-  background: $color-blue;
+  z-index: 100;
 }
 .item-view-text {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 84%;
-  height: 100%;
+  align-items: flex-end;
+  height: 90%;
   padding: 4rem;
 }
 .item-view-title {
@@ -124,8 +137,9 @@ function fetchComments (store, item) {
   font-weight: 700;
   max-width: 40rem;
   text-transform: uppercase;
+  text-align: right;
   font-family: 'Montserrat', sans-serif;
-  color: $color-white;
+  color: #4f4f4f;
 }
 .item-view-watch {
   position: absolute;
@@ -150,16 +164,26 @@ function fetchComments (store, item) {
   font-size: 1.8rem;
   margin-left: 5rem;
   max-width: 40rem;
+  text-align: justify;
   color: darken($color-grey, 20%);
 }
+.item-view-action {
+  flex-basis: 6rem;
+  width: 25rem;
+  display: flex;
+  justify-content: space-around;
+}
 .item-view-link {
-  position: absolute;
+  position: relative;
   display: block;
-  top: 92%;
-  left: 20%;
-  width: 7rem;
-  height: 7rem;
-  border-radius: 50%;
+  width: 15rem;
+  height: 6rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 6rem;
+  color: $color-white;
+  border-radius: 6rem;
   background: $color-pink;
   transition: 0.3s ease-in-out;
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
@@ -168,38 +192,36 @@ function fetchComments (store, item) {
     cursor: pointer;
     transition: 0.3s ease-in-out;
   }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 5rem;
-    height: 5rem;
-    top: calc(50% - 5rem / 2);
-    left: calc(50% - 5rem / 2);
-  }
+  // &::after {
+  //   position: absolute;
+  //   display: block;
+  //   content: '';
+  //   width: 5rem;
+  //   height: 5rem;
+  //   top: calc(50% - 5rem / 2);
+  //   left: calc(50% - 5rem / 2);
+  // }
 }
-.item-view-link.link--code {
-  &::after {
-    background: url('~@/assets/icons/code.svg') no-repeat center / 60%;
-  }
-}
-.item-view-link.link--music {
-  &::after {
-    background: url('~@/assets/icons/music.svg') no-repeat center / 60%;
-  }
-}
-.item-view-link.link--art {
-  &::after {
-    background: url('~@/assets/icons/photo.svg') no-repeat center / 60%;
-  }
-}
+// .item-view-link.link--code {
+//   &::after {
+//     background: url('~@/assets/icons/code.svg') no-repeat center / 60%;
+//   }
+// }
+// .item-view-link.link--music {
+//   &::after {
+//     background: url('~@/assets/icons/music.svg') no-repeat center / 60%;
+//   }
+// }
+// .item-view-link.link--art {
+//   &::after {
+//     background: url('~@/assets/icons/photo.svg') no-repeat center / 60%;
+//   }
+// }
 .item-view-comment {
-  position: absolute;
+  position: relative;
   display: block;
-  top: 92%;
-  left: 35%;
-  width: 7rem;
-  height: 7rem;
+  width: 6rem;
+  height: 6rem;
   border-radius: 50%;
   background: $color-pink;
   transition: 0.3s ease-in-out;
@@ -213,10 +235,10 @@ function fetchComments (store, item) {
     position: absolute;
     display: block;
     content: '';
-    width: 5rem;
-    height: 5rem;
-    top: calc(50% - 5rem / 2);
-    left: calc(50% - 5rem / 2);
+    width: 4rem;
+    height: 4rem;
+    top: calc(50% - 4rem / 2);
+    left: calc(50% - 4rem / 2);
     background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
   }
 }
@@ -249,22 +271,22 @@ function fetchComments (store, item) {
 .item-view-social {
   position: absolute;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
-  width: 25rem;
-  height: 6rem;
-  top: -12rem;
-  right: 10%;
+  width: 6rem;
+  height: 25rem;
+  top: calc(50% - 25rem / 2);
+  right: -3rem;
 }
 .social-link {
   position: relative;
   flex-basis: 5rem;
-  height: 5rem;
+  width: 5rem;
   top: calc(50% - 5rem / 2);
   left: calc(50% - 5rem / 2);
   border-radius: 50%;
   background: $color-pink;
   transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
   &:hover {
     background: darken($color-pink, 10%);
     cursor: pointer;

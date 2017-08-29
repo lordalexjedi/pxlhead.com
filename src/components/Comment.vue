@@ -58,7 +58,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background-color: #D7DEE8;
+  background-color: $color-lightblue;
   &::after {
     display: block;
     content: '';
@@ -71,7 +71,7 @@ export default {
     pointer-events: none;
     border-color: transparent;
     border-width: 2rem 4rem 2rem 0;
-    border-right-color: #D7DEE8;
+    border-right-color: $color-lightblue;
     margin-left: -10px;
   }
 }

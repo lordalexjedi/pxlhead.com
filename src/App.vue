@@ -38,12 +38,12 @@ body {
   left: 5rem;
   width: 5rem;
   height: 5rem;
-  background-color: transparentize($color-white, 0.8);
+  background-color: transparentize($color-blue, 0.2);
   border-radius: 50%;
   cursor: pointer;
   transition: transform ease-out 0.1s, background 0.2s;
   &:hover {
-    background-color: transparentize($color-white, 0.9);
+    background-color: $color-blue;
     transform: scale(0.9);
     transition: transform ease-out 0.1s, background 0.2s;
     &::after {
@@ -57,7 +57,7 @@ body {
     top: 0;
     left: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px transparentize($color-white, 0.9);
+    box-shadow: 0 0 0 2px transparentize($color-blue, 0.9);
     opacity: 0;
     transform: scale(0.7);
     width: 100%;
@@ -80,7 +80,7 @@ body {
   left: 12rem;
   font-size: 2rem;
   font-weight: 600;
-  color: $color-white;
+  color: $color-blue;
 }
 @keyframes sonar {
   0% {
@@ -89,12 +89,12 @@ body {
   40% {
     opacity: 0.5;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px #12233f,
+                0 0 10px 10px $color-blue,
                 0 0 0 10px rgba(255, 255, 255, 0.3);
   }
   100% {
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px #12233f,
+                0 0 10px 10px $color-blue,
                 0 0 0 10px rgba(255, 255, 255, 0.3);
     transform: scale(1.5);
     opacity: 0;

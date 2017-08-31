@@ -1,6 +1,8 @@
 <template lang='pug'>
   .item-view(v-if='item')
     template(v-if='item')
+      .search-box
+        input.search(type='search' name='search' placeholder='droids u r looking for...')
       .item-view-body
         .item-view-text
           h1.item-view-title {{ item.title }}
@@ -9,17 +11,18 @@
             a.item-view-link.link--code VIEW
             // link--music, link--art
             a.item-view-comment
-        span.item-view-watch 4242
+        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        .item-view-social
+          a.social-link.link-twitter
+          a.social-link.link-facebook
+          a.social-link.link-dribbble
         .item-view-tag
           a.tag-link(v-for='n in 3') #CSS
-        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-          .item-view-social
-            a.social-link.link-twitter
-            a.social-link.link-facebook
-            a.social-link.link-dribbble
+        span.item-view-watch 4242
     .item-view-nav
-      router-link.item-view-arrow.arrow--prev
-      router-link.item-view-arrow.arrow--next
+      a.item-view-arrow.arrow-prev PREV ITEM
+      h2 SCROLL
+      a.item-view-arrow.arrow-next NEXT ITEM
     .item-view-comments
       spinner(:show='loading')
       .comment-children(v-if='!loading')
@@ -90,7 +93,7 @@ function fetchComments (store, item) {
   left: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
   background: #fff;
   &::after {
     position: absolute;
@@ -98,14 +101,48 @@ function fetchComments (store, item) {
     content: '';
     top: 0;
     left: 0;
-    width: 70%;
+    width: 73%;
     height: 100%;
     background: #f2f2f2;
   }
 }
+.search-box {
+  position: absolute;
+  top: 3rem;
+  right: 15%;
+  cursor: pointer;
+  z-index: 100;
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(50% - 2.5rem / 2);
+    left: 1.3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: url('~@/assets/icons/search.svg') no-repeat center / 100%;
+  }
+}
+.search {
+  display: block;
+  appearance: none;
+  background-color: #E0E0E0;
+  color: $color-main;
+  padding: 0 2rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 40px;
+  border-style: none;
+  outline-style: none;
+  font-size: 1.6rem;
+  transition: all .5s;
+  @include screen-style(fullHd) {
+    width: 30rem;
+    padding: 0 5rem;
+  };
+}
 .item-view-img {
-  flex-basis: 87rem;
-  height: 65rem;
+  flex-basis: 80rem;
+  height: 60rem;
   background: $color-pink;
   background-position: center;
   background-size: cover;
@@ -126,16 +163,16 @@ function fetchComments (store, item) {
 .item-view-text {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: flex-end;
-  height: 90%;
-  padding: 4rem;
+  height: 95%;
+  // padding: 4rem;
 }
 .item-view-title {
   flex-basis: 40%;
-  font-size: 6rem;
+  font-size: 8rem;
   font-weight: 700;
-  max-width: 40rem;
+  max-width: 50rem;
   text-transform: uppercase;
   text-align: right;
   font-family: 'Montserrat', sans-serif;
@@ -144,34 +181,34 @@ function fetchComments (store, item) {
 .item-view-watch {
   position: absolute;
   display: block;
-  bottom: 5rem;
-  left: 10rem;
-  font-size: 1.5rem;
-  color: $color-white;
+  bottom: -9rem;
+  right: 70rem;
+  font-size: 1.7rem;
+  color: $color-grey;
   &::after {
     position: absolute;
     display: block;
     content: '';
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     top: 0;
-    left: -3rem;
-    background: url('~@/assets/icons/eye.svg') no-repeat center / 100%;
+    left: -4rem;
+    background: url('~@/assets/icons/eye-black.svg') no-repeat center / 100%;
   }
 }
 .item-view-description {
-  flex-basis: 50%;
-  font-size: 1.8rem;
+  flex-basis: 20%;
+  font-size: 2.5rem;
   margin-left: 5rem;
   max-width: 40rem;
   text-align: justify;
-  color: darken($color-grey, 20%);
+  color: darken($color-grey, 10%);
 }
 .item-view-action {
   flex-basis: 6rem;
   width: 25rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .item-view-link {
   position: relative;
@@ -242,29 +279,79 @@ function fetchComments (store, item) {
     background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
   }
 }
-.item-view-tag {
+.item-view-nav {
   position: absolute;
-  bottom: 4rem;
-  right: 10rem;
-  width: 36rem;
-  height: 4rem;
+  top: 20%;
+  right: 5rem;
+  width: 7rem;
+  height: 60%;
   display: flex;
+  color: transparentize($color-grey, 0.2);
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  h2 {
+    font-size: 2rem;
+    text-align: center;
+    align-self: center;
+  }
 }
-.tag-link {
-  flex-basis: 10rem;
-  height: 4rem;
-  color: $color-white;
-  background-color: darken($color-blue, 10%);
-  border-radius: 20px;
-  line-height: 4rem;
-  font-size: 1.3rem;
+.item-view-arrow {
+  position: relative;
+  width: 100%;
+  font-size: 2rem;
   text-align: center;
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: darken($color-blue, 20%);
+    color: $color-grey;
+  }
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    left: calc(50% - 4rem / 2);
+    width: 4rem;
+    height: 4rem;
+  }
+}
+.arrow-prev {
+  &::after {
+    top: -5rem;
+    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
+  }
+}
+.arrow-next {
+  &::after {
+    transform: rotate(180deg);
+    bottom: -5rem;
+    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
+  }
+}
+.item-view-tag {
+  position: absolute;
+  bottom: -10rem;
+  right: 5rem;
+  width: 44rem;
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.tag-link {
+  flex-basis: 12rem;
+  height: 5rem;
+  color: $color-white;
+  background-color: darken(#bdbdbd, 10%);
+  border-radius: 5rem;
+  line-height: 5rem;
+  font-size: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    background-color: darken(#bdbdbd, 20%);
     transition: 0.3s ease-in-out;
   }
 }
@@ -282,7 +369,6 @@ function fetchComments (store, item) {
   position: relative;
   flex-basis: 5rem;
   width: 5rem;
-  top: calc(50% - 5rem / 2);
   left: calc(50% - 5rem / 2);
   border-radius: 50%;
   background: $color-pink;
@@ -315,52 +401,6 @@ function fetchComments (store, item) {
 .link-dribbble {
   &::after {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
-  }
-}
-.item-view-arrow {
-  position: absolute;
-  display: block;
-  width: 10rem;
-  height: 10rem;
-  background-color: $color-pink;
-  opacity: 0.8;
-  cursor: pointer;
-  transform: rotate(45deg);
-  transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
-  &:hover {
-    opacity: 1;
-    transition: 0.3s ease-in-out;
-  }
-}
-.arrow--prev {
-  top: calc(50% - 10rem / 2);
-  left: -5rem;
-  &::after{
-    position: absolute;
-    display: block;
-    top: calc(30% - 5rem / 2);
-    left: calc(70% - 5rem / 2);
-    content: '';
-    width: 5rem;
-    height: 5rem;
-    transform: rotate(-135deg);
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 100%;
-  }
-}
-.arrow--next {
-  top: calc(50% - 10rem / 2);
-  right: -5rem;
-  &::after{
-    position: absolute;
-    display: block;
-    bottom: calc(30% - 5rem / 2);
-    right: calc(70% - 5rem / 2);
-    content: '';
-    width: 5rem;
-    height: 5rem;
-    transform: rotate(45deg);
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 100%;
   }
 }
 .nav-esc {

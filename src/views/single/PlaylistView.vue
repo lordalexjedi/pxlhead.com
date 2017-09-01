@@ -52,7 +52,7 @@ export default {
   }),
 
   computed: {
-    item() {
+    item () {
       return this.$store.state.items[this.$route.params.id]
     }
   },

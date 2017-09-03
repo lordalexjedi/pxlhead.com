@@ -4,12 +4,12 @@ const logRequests = !!process.env.DEBUG_API
 
 const api = createAPI({
   config: {
-    databaseURL: "https://pxlheadcom.firebaseio.com",
-    storageBucket: "pxlheadcom.appspot.com"
+    databaseURL: 'https://pxlheadcom.firebaseio.com',
+    storageBucket: 'pxlheadcom.appspot.com'
   }
 })
 
-function fetch (child) {
+function fetch(child, sortBy) {
   logRequests && console.log(`fetching ${child}...`)
   const cache = api.cachedItems
   if (cache && cache.has(child)) {
@@ -17,8 +17,16 @@ function fetch (child) {
     return Promise.resolve(cache.get(child))
   } else {
     return new Promise((resolve, reject) => {
-      api.child(child).once('value', snapshot => {
-        const val = snapshot.val()
+      api.ref(child).orderByChild(sortBy).once('value', snapshot => {
+        let val = []
+        if (child.includes('postIds')) {
+          snapshot.forEach(childSnap => {
+            val.push(childSnap.key)
+          })
+          val.reverse()
+        } else {
+          val = snapshot.val()
+        }
         // mark the timestamp when this item is cached
         if (val) val.__lastUpdated = Date.now()
         cache && cache.set(child, val)
@@ -29,36 +37,21 @@ function fetch (child) {
   }
 }
 
-export function fetchIdsByType (type) {
-  return api.cachedIds && api.cachedIds[type]
-    ? Promise.resolve(api.cachedIds[type])
-    : fetch(`postIds/${type}`)
+export function fetchIdsByType(type, sortBy) {
+  const cachedIds = api.cachedIds ? api.cachedIds[sortBy] : api.cachedIds
+  return cachedIds && cachedIds[type]
+    ? Promise.resolve(cachedIds[type])
+    : fetch(`postIds/${type}`, sortBy)
 }
 
-export function fetchItem (id) {
-  return fetch(`posts/${id}`)
+export function fetchItem(id) {
+  return fetch(`posts/${id}`, 'views')
 }
 
-export function fetchItems (ids) {
+export function fetchItems(ids) {
   return Promise.all(ids.map(id => fetchItem(id)))
 }
 
-export function fetchComments (ids) {
+export function fetchComments(ids) {
   return Promise.all(ids.map(id => fetch(`comments/${id}`)))
-}
-
-export function watchList (type, cb) {
-  let first = true
-  const ref = api.child(`postIds/${type}`)
-  const handler = snapshot => {
-    if (first) {
-      first = false
-    } else {
-      cb(snapshot.val())
-    }
-  }
-  ref.on('value', handler)
-  return () => {
-    ref.off('value', handler)
-  }
 }

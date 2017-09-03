@@ -218,7 +218,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.onResize)
     window.removeEventListener('wheel', this.onWheel)
-  },
+  }
 }
 </script>
 

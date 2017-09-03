@@ -2,20 +2,19 @@
   .view
     .toolbox
       .sorter
-        a.sort-item(@click='sortItems("top")') Top
-        a.sort-item(@click='sortItems("new")') New
+        a.sort-item(@click='sortItems("views")') Top
+        a.sort-item(@click='sortItems("time")') New
       .search-box(@click='searching = true')
         input.search(type='search' name='search' placeholder='droids u r looking for...' v-model='search'
           :class='{ "search--active": searching }'
           @blur='searching = false')
-    transition-group.gallery(name='item')
+    transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
     mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore')
     a.btn-back
 </template>
 
 <script>
-import { watchList } from '@/api'
 import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
 
@@ -31,7 +30,7 @@ export default {
     type: String
   },
 
-  data () {
+  data() {
     return {
       displayedItems: this.$store.getters.activeItems,
 
@@ -42,49 +41,46 @@ export default {
   },
 
   computed: {
-    slice () {
+    slice() {
       return this.$store.state.activeSlice
     },
-    maxSlice () {
+    maxSlice() {
       const { itemsPerSlice, lists } = this.$store.state
       return Math.ceil(lists[this.type].length / itemsPerSlice)
     },
-    hasMore () {
+    hasMore() {
       return this.slice < this.maxSlice
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     if (this.$root._isMounted) {
-      this.$store.dispatch('FETCH_LIST_DATA', {
-        type: this.type
-      }).then(this.loadItems())
+      this.sortItems('views')
     }
-    // watch the current list for realtime updates
-    this.unwatchList = watchList(this.type, ids => {
-      this.$store.commit('SET_LIST', { type: this.type, ids })
-      this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
-        this.displayedItems = this.$store.getters.activeItems
-      })
-    })
-  },
-
-  beforeDestroy () {
-    this.unwatchList()
   },
 
   methods: {
-    loadItems () {
+    loadItems() {
       this.$bar.start()
       this.loading = true
-      this.displayedItems = [...this.displayedItems, ...this.$store.getters.activeItems]
       this.$store.commit('INCREMENT_ACTIVE_SLICE')
+      this.$store.dispatch('FETCH_LIST_DATA', {
+        type: this.type
+      }).then(() => {
+        this.displayedItems = this.$store.getters.activeItems
+      })
       this.loading = false
       this.$bar.finish()
     },
-    sortItems (sort) {
+    sortItems(sort) {
+      this.$bar.start()
       this.$store.commit('SET_ACTIVE_SORT', { sort })
-      this.displayedItems = this.$store.getters.activeItems
+      this.$store.dispatch('FETCH_LIST_DATA', {
+        type: this.type
+      }).then(() => {
+        this.displayedItems = this.$store.getters.activeItems
+      })
+      this.$bar.finish()
     }
   }
 }

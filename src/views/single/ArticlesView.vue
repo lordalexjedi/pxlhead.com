@@ -1,21 +1,22 @@
 <template lang='pug'>
   .article-main(v-if='item')
     template(v-if='item')
-      .article-view(:class='{ "article-view--push": read}' v-bind:style='{ backgroundImage: `url(${item.imageURL})` }')
+      .article-view(v-bind:style='{ backgroundImage: `url(${item.imageURL})` }')
         .article-view-text
           span.article-view-date 11/12/2017
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
-            a.article-view-btn( @click='read=true' ) READ
+            a.article-view-btn READ
             a.article-view-btn COMMENT
+        a.article-view-link
         a.article-view-esc
-        .article-view-social
-          a.article-view-link.link--facebook
-          a.article-view-link.link--twitter
-          a.article-view-link.link--link
       .article-read
         .text-block(v-html='item.text')
+        .article-read-social
+          a.article-read-link.link--facebook
+          a.article-read-link.link--twitter
+          a.article-read-link.link--link
       .article-comments
         spinner(:show='loading')
         .article-comments-header
@@ -38,31 +39,25 @@ import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
 
 export default {
-  name: 'article-view',
+  name: 'articles-view',
   components: { Spinner, Comment },
 
   data: () => ({
     loading: true,
-
-    read: false,
     comment: false
   }),
 
   computed: {
-    item () {
+    item() {
       return this.$store.state.items[this.$route.params.id]
     },
   },
 
-  asyncData ({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
-  },
-
-  title () {
+  title() {
     return this.item.title
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchComments()
   },
 
@@ -71,7 +66,7 @@ export default {
   },
 
   methods: {
-    fetchComments () {
+    fetchComments() {
       if (this.item.commentIds) {
         this.loading = true
         fetchComments(this.$store, this.item).then(() => {
@@ -82,7 +77,7 @@ export default {
   }
 }
 
-function fetchComments (store, item) {
+function fetchComments(store, item) {
   if (item && item.commentIds) {
     return store.dispatch('FETCH_COMMENTS', {
       ids: item.commentIds
@@ -100,8 +95,6 @@ function fetchComments (store, item) {
   background: $color-white;
   background-size: cover;
   z-index: 100;
-  opacity: 1;
-  transition: all 1s cubic-bezier(0.7,0,0.3,1);
   &::after {
     position: absolute;
     content: '';
@@ -110,14 +103,8 @@ function fetchComments (store, item) {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 100;
     background-color: transparentize(#000, 0.8);
   }
-}
-.article-view--push {
-  opacity: 0;
-  transform: translateY(-100%) scale(0.9);
-  transition: all 1s cubic-bezier(0.7,0,0.3,1);
 }
 .article-view-text {
   position: absolute;
@@ -195,7 +182,7 @@ function fetchComments (store, item) {
   cursor: pointer;
   background-color: $color-blue;
   transition: 0.3s ease-in-out;
-  z-index: 101;
+  z-index: 100;
   &::before {
     position: absolute;
     content: '';
@@ -223,25 +210,18 @@ function fetchComments (store, item) {
     transition: 0.3s ease-in-out;
   }
 }
-.article-view-social {
-  position: absolute;
-  right: 5rem;
-  top: calc(50% - 18rem / 2);
-  width: 5rem;
-  height: 18rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
 .article-view-link {
-  position: relative;
+  position: absolute;
+  right: 15rem;
+  top: 3rem;
+  display: block;
   width: 5rem;
-  flex-basis: 5rem;
+  height: 5rem;
   border-radius: 50%;
   cursor: pointer;
   background-color: $color-blue;
   transition: 0.3s ease-in-out;
-  z-index: 101;
+  z-index: 100;
   &::after {
     position: absolute;
     content: '';
@@ -250,25 +230,11 @@ function fetchComments (store, item) {
     left: calc(50% - 2rem / 2);
     width: 2rem;
     height: 2rem;
+    background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
   }
   &:hover {
     background-color: darken($color-blue, 10%);
     transition: 0.3s ease-in-out;
-  }
-}
-.link--facebook {
-  &::after {
-    background: url('~@/assets/icons/facebook.svg') no-repeat center / 100%;
-  }
-}
-.link--twitter {
-  &::after {
-    background: url('~@/assets/icons/twitter.svg') no-repeat center / 100%;
-  }
-}
-.link--link {
-  &::after {
-    background: url('~@/assets/icons/link.svg') no-repeat center / 100%;
   }
 }
 .article-read {
@@ -309,7 +275,7 @@ function fetchComments (store, item) {
       content: '';
       top: 5rem;
       left: 0;
-      width: 100rem;
+      width: 104rem;
       height: 0.3rem;
       background-color: #D7DEE8;
     }
@@ -327,7 +293,7 @@ function fetchComments (store, item) {
   line-height: 2rem;
   padding: 1.5rem 0;
   margin-bottom: 3rem;
-  background-color: $color-lightblue;
+  background-color: #EAEFF6;
   justify-content: flex-start;
   &::after {
     position: absolute;
@@ -369,34 +335,12 @@ function fetchComments (store, item) {
   }
 }
 .text-attention {
-  position: relative;
-  width: calc(100% - 8rem);
+  width: 100%;
   font-size: 2rem;
   line-height: 3rem;
   margin-bottom: 3rem;
-  background-color: $color-lightblue;
-  border: 2px solid lighten($color-pink,10%);
-  padding: 2rem 4rem;
-  &::before {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: -1.5rem;
-    width: 3rem;
-    height: 3rem;
-    background: $color-white;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: -1.5rem;
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/warn.svg') no-repeat center / 120%;
-  }
+  background-color: #FFDCE5;
+  padding: 2rem;
 }
 .text-select {
   font-size: 2rem;
@@ -409,34 +353,12 @@ function fetchComments (store, item) {
   background-color: #D7DEE8;
 }
 .text-summary {
-  position: relative;
-  width: calc(100% - 8rem);
+  width: 100%;
   font-size: 2rem;
   line-height: 3rem;
   margin-bottom: 3rem;
-  background-color: $color-lightblue;
-  border: 2px solid #42b983;
-  padding: 2rem 4rem;
-  &::before {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: -1.5rem;
-    width: 3rem;
-    height: 3rem;
-    background: $color-white;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: -1.5rem;
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/sum.svg') no-repeat center / 120%;
-  }
+  background-color: #C9FDD5;
+  padding: 2rem;
 }
 .text-link {
   font-size: 2rem;
@@ -513,10 +435,10 @@ function fetchComments (store, item) {
   cursor: pointer;
   line-height: 4rem;
   background-color: $color-pink;
-  transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
+  transition: 0.3s ease-in-out;
   &:hover {
     background-color: darken($color-pink, 10%);
-    transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
+    transition: 0.3s ease-in-out;
   }
   &::before {
     position: absolute;
@@ -541,7 +463,7 @@ function fetchComments (store, item) {
 }
 .comment-submit--active {
   transform: rotate(45deg);
-  transition: 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.35);
+  transition: 0.3s ease-in-out;
 }
 .article-comments-list {
   position: relative;
@@ -556,8 +478,8 @@ function fetchComments (store, item) {
 .article-comments-up {
   position: fixed;
   display: block;
-  width: 6rem;
-  height: 6rem;
+  width: 7rem;
+  height: 7rem;
   bottom: 5rem;
   right: 5rem;
   cursor: pointer;
@@ -568,10 +490,10 @@ function fetchComments (store, item) {
     position: absolute;
     display: block;
     content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
+    top: calc(50% - 4rem / 2);
+    left: calc(50% - 4rem / 2);
+    width: 4rem;
+    height: 4rem;
     background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
   }
   &:hover {
@@ -581,19 +503,17 @@ function fetchComments (store, item) {
 }
 .article-comments-form {
   position: relative;
-  height: 0rem;
+  height: 15rem;
   display: flex;
+  display: none;
   justify-content: space-around;
   align-items: center;
-  padding: 0;
-  margin-bottom: 0;
+  padding: 4rem 0;
+  margin-bottom: 4rem;
   width: 100rem;
   top: 0;
   left: calc(50% - 100rem / 2);
-  transform: translateY(-5rem);
-  opacity: 0;
-  background-color: $color-lightblue;
-  transition: 0.5s ease-in-out;
+  background-color: #EAEFF6;
   &::after {
     display: block;
     content: '';
@@ -606,7 +526,7 @@ function fetchComments (store, item) {
     pointer-events: none;
     border-color: transparent;
     border-width: 0rem 2rem 4rem 2rem;
-    border-bottom-color: $color-lightblue;
+    border-bottom-color: #EAEFF6;
     margin-bottom: -10px;
   }
   .article-comments-img {
@@ -623,22 +543,21 @@ function fetchComments (store, item) {
     border: none;
   }
   .article-comments-name {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
+    font-size: 1.5rem;
     padding: 1rem;
     flex-basis: 2rem;
+    background-color: #D7DEE8;
     width: 60%;
     appearance: none;
-    outline-color: $color-blue;
     border: 0.2rem solid lighten($color-blue, 10%);
   }
   .article-comments-message {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
+    font-size: 1.5rem;
     padding: 1rem;
     flex-basis: 40%;
+    background-color: #D7DEE8;
+    width: 100%;
     appearance: none;
-    outline-color: $color-blue;
     border: 0.2rem solid lighten($color-blue, 10%);
   }
   .article-comments-send {
@@ -667,21 +586,8 @@ function fetchComments (store, item) {
       background: url('~@/assets/icons/send.svg') no-repeat center / 120%;
     }
   }
-  & * {
-    opacity: 0;
-    transition: 0.5s ease-in-out;
-  }
 }
 .article-comments-form--active {
-  padding: 4rem 0;
-  margin-bottom: 4rem;
-  height: 15rem;
-  transform: translateY(0rem);
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-  & * {
-    opacity: 1;
-    transition: 0.5s ease-in-out;
-  }
+  display: flex;
 }
 </style>

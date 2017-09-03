@@ -44,7 +44,7 @@ import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
 
 export default {
-  name: 'playlist-view',
+  name: 'music-view',
   components: { Spinner, Comment },
 
   data: () => ({
@@ -52,20 +52,16 @@ export default {
   }),
 
   computed: {
-    item () {
+    item() {
       return this.$store.state.items[this.$route.params.id]
     }
   },
 
-  asyncData ({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
-  },
-
-  title () {
+  title() {
     return this.item.title
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchComments()
   },
 
@@ -74,7 +70,7 @@ export default {
   },
 
   methods: {
-    fetchComments () {
+    fetchComments() {
       if (this.item.commentIds) {
         this.loading = true
         fetchComments(this.$store, this.item).then(() => {
@@ -85,7 +81,7 @@ export default {
   }
 }
 
-function fetchComments (store, item) {
+function fetchComments(store, item) {
   if (item && item.commentIds) {
     return store.dispatch('FETCH_COMMENTS', {
       ids: item.commentIds

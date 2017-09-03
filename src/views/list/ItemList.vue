@@ -117,6 +117,10 @@ export default {
   cursor: pointer;
   transition: 0.3s ease-in-out;
   background-color: $color-blue;
+  @include screen-style(fullHd) {
+    height: 5rem;
+    width: 10rem;
+  };
   &:hover {
     background-color: darken($color-blue, 10%);
   }
@@ -131,11 +135,11 @@ export default {
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 5rem;
-    height: 5rem;
-    background: url('~@/assets/icons/search.svg') no-repeat center / 60%;
+    top: calc(50% - 2.5rem / 2);
+    left: 1.3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: url('~@/assets/icons/search.svg') no-repeat center / 100%;
   }
 }
 .search {
@@ -150,6 +154,10 @@ export default {
   outline-style: none;
   font-size: 1.6rem;
   transition: all .5s;
+  @include screen-style(fullHd) {
+    width: 30rem;
+    padding: 0 5rem;
+  };
 }
 .search--active {
   width: 30rem;

@@ -5,10 +5,7 @@ Vue.use(Router)
 
 // route-level code splitting
 const createListView = id => () => import('../views/list/CreateListView').then(m => m.default(id))
-const ItemView = () => import('../views/single/ItemView.vue')
-
-const ArticleView = () => import('../views/single/ArticleView.vue')
-const PlaylistView = () => import('../views/single/PlaylistView.vue')
+const createSingleView = id => () => import('../views/single/CreateSingleView').then(m => m.default(id))
 
 const Intro = () => import('../views/Intro.vue')
 
@@ -23,9 +20,12 @@ export function createRouter () {
       { path: '/experiments', component: createListView('experiments') },
       { path: '/music', component: createListView('music') },
       { path: '/art', component: createListView('art') },
-      { path: '/item/:id', component: ItemView },
-      { path: '/article/:id', component: ArticleView },
-      { path: '/playlist/:id', component: PlaylistView },
+
+      { path: '/articles/:id', component: createSingleView('articles') },
+      { path: '/projects/:id', component: createSingleView('projects') },
+      { path: '/music/:id', component: createSingleView('music') },
+      { path: '/art/:id', component: createSingleView('art') },
+
       { path: '/', redirect: '/articles' }
     ]
   })

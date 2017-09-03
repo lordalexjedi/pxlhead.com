@@ -39,7 +39,7 @@ import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
 
 export default {
-  name: 'article-view',
+  name: 'articles-view',
   components: { Spinner, Comment },
 
   data: () => ({
@@ -52,10 +52,6 @@ export default {
     item () {
       return this.$store.state.items[this.$route.params.id]
     },
-  },
-
-  asyncData ({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
   },
 
   title () {

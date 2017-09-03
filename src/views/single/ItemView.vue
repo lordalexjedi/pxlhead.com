@@ -43,10 +43,6 @@ export default {
     }
   },
 
-  asyncData ({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
-  },
-
   title () {
     return this.item.title
   },

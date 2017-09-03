@@ -10,7 +10,7 @@ export function createStore () {
   return new Vuex.Store({
     state: {
       activeType: null,
-      activeSort: 'top',
+      activeSort: 'views',
       activeSlice: 1,
       itemsPerSlice: 4,
       items: {/* [id: number]: Item */},

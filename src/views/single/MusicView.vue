@@ -26,16 +26,16 @@ export default {
   }),
 
   computed: {
-    item () {
+    item() {
       return this.$store.state.items[this.$route.params.id]
     }
   },
 
-  title () {
+  title() {
     return this.item.title
   },
 
-  beforeMount () {
+  beforeMount() {
     this.fetchComments()
   },
 
@@ -44,7 +44,7 @@ export default {
   },
 
   methods: {
-    fetchComments () {
+    fetchComments() {
       if (this.item.commentIds) {
         this.loading = true
         fetchComments(this.$store, this.item).then(() => {
@@ -55,7 +55,7 @@ export default {
   }
 }
 
-function fetchComments (store, item) {
+function fetchComments(store, item) {
   if (item && item.commentIds) {
     return store.dispatch('FETCH_COMMENTS', {
       ids: item.commentIds

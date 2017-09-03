@@ -9,7 +9,7 @@ const api = createAPI({
   }
 })
 
-function fetch (child, sortBy) {
+function fetch(child, sortBy) {
   logRequests && console.log(`fetching ${child}...`)
   const cache = api.cachedItems
   if (cache && cache.has(child)) {
@@ -37,21 +37,21 @@ function fetch (child, sortBy) {
   }
 }
 
-export function fetchIdsByType (type, sortBy) {
+export function fetchIdsByType(type, sortBy) {
   const cachedIds = api.cachedIds ? api.cachedIds[sortBy] : api.cachedIds
   return cachedIds && cachedIds[type]
     ? Promise.resolve(cachedIds[type])
     : fetch(`postIds/${type}`, sortBy)
 }
 
-export function fetchItem (id) {
+export function fetchItem(id) {
   return fetch(`posts/${id}`, 'views')
 }
 
-export function fetchItems (ids) {
+export function fetchItems(ids) {
   return Promise.all(ids.map(id => fetchItem(id)))
 }
 
-export function fetchComments (ids) {
+export function fetchComments(ids) {
   return Promise.all(ids.map(id => fetch(`comments/${id}`)))
 }

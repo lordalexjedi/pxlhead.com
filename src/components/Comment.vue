@@ -12,13 +12,13 @@
 export default {
   name: 'comment',
   props: ['id'],
-  data () {
+  data() {
     return {
       open: true
     }
   },
   computed: {
-    comment () {
+    comment() {
       return this.$store.state.comments[this.id]
     }
   },

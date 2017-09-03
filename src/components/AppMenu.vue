@@ -65,7 +65,6 @@ export default {
   },
 
   methods: {
-    // setting the scene
     init() {
       this.camera = new PerspectiveCamera(75, this.width / this.height, 0.1, 1000)
       this.camera.position.z = 300

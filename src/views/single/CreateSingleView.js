@@ -2,7 +2,7 @@ import ItemView from './ItemView.vue'
 import ArticlesView from './ArticlesView.vue'
 import MusicView from './MusicView.vue'
 
-function getComponent (type) {
+function getComponent(type) {
   if (type === 'articles') {
     return ArticlesView
   } else if (type === 'music') {
@@ -11,15 +11,15 @@ function getComponent (type) {
   return ItemView
 }
 
-export default function createListView (type) {
+export default function createListView(type) {
   return {
     name: `${type}-view`,
 
-    asyncData ({ store, route: { params: { id }}}) {
+    asyncData({ store, route: { params: { id }}}) {
       return store.dispatch('FETCH_ITEMS', { ids: [id] })
     },
 
-    render (h) {
+    render(h) {
       return h(getComponent(type))
     }
   }

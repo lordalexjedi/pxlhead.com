@@ -17,7 +17,7 @@ const app = express()
 
 const template = fs.readFileSync(resolve('./src/index.template.html'), 'utf-8')
 
-function createRenderer (bundle, options) {
+function createRenderer(bundle, options) {
   return createBundleRenderer(bundle, Object.assign(options, {
     template,
     cache: LRU({
@@ -63,7 +63,7 @@ const microCache = LRU({
 
 const isCacheable = req => useMicroCache
 
-function render (req, res) {
+function render(req, res) {
   const s = Date.now()
 
   res.setHeader("Content-Type", "text/html")

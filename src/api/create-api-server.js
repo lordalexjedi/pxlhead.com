@@ -1,7 +1,7 @@
 import Firebase from 'firebase'
 import LRU from 'lru-cache'
 
-export function createAPI ({ config }) {
+export function createAPI({ config }) {
   let api
   if (process.__API__) {
     api = process.__API__

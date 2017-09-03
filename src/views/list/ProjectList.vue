@@ -30,7 +30,7 @@ export default {
     type: String
   },
 
-  data () {
+  data() {
     return {
       displayedItems: this.$store.getters.activeItems,
 
@@ -41,26 +41,26 @@ export default {
   },
 
   computed: {
-    slice () {
+    slice() {
       return this.$store.state.activeSlice
     },
-    maxSlice () {
+    maxSlice() {
       const { itemsPerSlice, lists } = this.$store.state
       return Math.ceil(lists[this.type].length / itemsPerSlice)
     },
-    hasMore () {
+    hasMore() {
       return this.slice < this.maxSlice
     }
   },
 
-  beforeMount () {
+  beforeMount() {
     if (this.$root._isMounted) {
       this.sortItems('views')
     }
   },
 
   methods: {
-    loadItems () {
+    loadItems() {
       this.$bar.start()
       this.loading = true
       this.$store.commit('INCREMENT_ACTIVE_SLICE')
@@ -72,7 +72,7 @@ export default {
       this.loading = false
       this.$bar.finish()
     },
-    sortItems (sort) {
+    sortItems(sort) {
       this.$bar.start()
       this.$store.commit('SET_ACTIVE_SORT', { sort })
       this.$store.dispatch('FETCH_LIST_DATA', {

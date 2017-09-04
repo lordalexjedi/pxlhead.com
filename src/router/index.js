@@ -23,6 +23,7 @@ export function createRouter () {
 
       { path: '/articles/:id', component: createSingleView('articles') },
       { path: '/projects/:id', component: createSingleView('projects') },
+      { path: '/experiments/:id', component: createSingleView('experiments') },
       { path: '/music/:id', component: createSingleView('music') },
       { path: '/art/:id', component: createSingleView('art') },
 

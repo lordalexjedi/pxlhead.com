@@ -3,25 +3,31 @@
     template(v-if='item')
       .search-box
         input.search(type='search' name='search' placeholder='droids u r looking for...')
+      a.btn-esc
       .item-view-body
         .item-view-text
           h1.item-view-title {{ item.title }}
           p.item-view-description {{ item.description }}
           .item-view-action
-            a.item-view-link.link--code PLAY
+            a.item-view-link.link--code(@click='playlist = !playlist') PLAY
             // link--music, link--art
             a.item-view-comment
         .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-        a.item-view-playlist-btn
-          .playlist-body
-            li.playlist-list
-              .playlist-player(v-for='n in 5')
-                a.player-play
-                .player-info
-                  .player-content
-                    h2.player-name Soundtrack name
-                    span.player-date 29/12/2017
-                  .player-control
+        a.item-view-playlist-volume
+          .volume-toggle
+            .volume-toggler(v-for='n in 6')
+        a.item-view-playlist-btn(@click='playlist = !playlist')
+          transition(name='fade')
+            .playlist-body(v-show='playlist')
+              li.playlist-list
+                .playlist-player(v-for='n in 5')
+                  a.player-play
+                  .player-info
+                    .player-content
+                      h2.player-name Soundtrack name
+                      span.player-date 29/12/2017
+                    .player-control
+                      input.player-timeline(type='range')
         .item-view-social
           a.social-link.link-twitter
           a.social-link.link-facebook
@@ -48,7 +54,8 @@ export default {
   components: { Spinner, Comment },
 
   data: () => ({
-    loading: true
+    loading: true,
+    playlist: false
   }),
 
   computed: {
@@ -115,7 +122,7 @@ function fetchComments(store, item) {
 .search-box {
   position: absolute;
   top: 3rem;
-  right: 15%;
+  right: 17%;
   cursor: pointer;
   z-index: 100;
   &::before {
@@ -174,12 +181,65 @@ function fetchComments(store, item) {
     position: absolute;
     display: block;
     content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
+    top: calc(55% - 3rem / 2);
+    left: calc(55% - 3rem / 2);
     width: 3rem;
     height: 3rem;
     background: url('~@/assets/icons/playlist.svg') no-repeat center / 100%;
   }
+}
+.item-view-playlist-volume {
+  position: absolute;
+  display: block;
+  top: 3rem;
+  left: 55%;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  background-color: $color-pink;
+  z-index: 101;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    width: 13rem;
+    background-color: darken($color-pink, 10%);
+    transition: 0.3s ease-in-out;
+  }
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    top: calc(50% - 3rem / 2);
+    left: 0.6rem;
+    width: 3rem;
+    height: 3rem;
+    background: url('~@/assets/icons/volume.svg') no-repeat center / 100%;
+  }
+}
+.volume-toggle {
+  position: absolute;
+  display: flex;
+  opacity: 0;
+  top: calc(50% - 2rem / 2);
+  left: 4rem;
+  width: 8rem;
+  height: 2rem;
+  justify-content: space-around;
+  align-items: center;
+  transition: 0.3s ease-in-out;
+}
+.volume-toggler {
+  flex-basis: 0.7rem;
+  height: 100%;
+  opacity: 1;
+  background-color: $color-white;
+  &:hover ~ .volume-toggler {
+    opacity: 0.8;
+  }
+}
+.item-view-playlist-volume:hover .volume-toggle {
+  opacity: 1;
+  transition: 0.3s ease-in-out;
 }
 .playlist-body {
   position: absolute;
@@ -189,6 +249,7 @@ function fetchComments(store, item) {
   width: 50rem;
   height: 46rem;
   cursor: auto;
+  color: $color-grey;
   background-color: $color-white;
   &::before {
     display: block;
@@ -204,6 +265,10 @@ function fetchComments(store, item) {
     border-width: 0rem 1rem 2rem 1rem;
     border-bottom-color: $color-white;
     margin-bottom: -10px;
+  }
+  h2 {
+    text-transform: uppercase;
+    color: darken($color-grey, 10%);
   }
 }
 .playlist-list {
@@ -250,6 +315,48 @@ function fetchComments(store, item) {
     background: url('~@/assets/icons/play.svg') no-repeat center / 100%;
   }
 }
+.player-play--active {
+  &::after {
+    background: url('~@/assets/icons/pause.svg') no-repeat center / 100%;
+  }
+}
+.player-content {
+  flex-basis: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.player-control {
+  flex-basis: 2rem;
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+.player-timeline {
+  width: 100%;
+  height: 0.3rem;
+  outline: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  background-color: lighten($color-grey, 20%);
+  -webkit-appearance: none;
+  &::-webkit-slider-thumb{
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: $color-pink;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  &::-moz-range-thumb{
+    appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: $color-pink;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
 .item-view-body {
   position: absolute;
   display: flex;
@@ -271,13 +378,10 @@ function fetchComments(store, item) {
   // padding: 4rem;
 }
 .item-view-title {
-  flex-basis: 40%;
-  font-size: 8rem;
-  font-weight: 700;
+  @extend %heading;
   max-width: 50rem;
-  text-transform: uppercase;
+  flex-basis: 50%;
   text-align: right;
-  font-family: 'Montserrat', sans-serif;
   color: #4f4f4f;
 }
 .item-view-watch {
@@ -299,11 +403,10 @@ function fetchComments(store, item) {
   }
 }
 .item-view-description {
+  @extend %paragraph;
   flex-basis: 20%;
-  font-size: 2.5rem;
   margin-left: 5rem;
-  max-width: 40rem;
-  text-align: justify;
+  max-height: 2rem * 6 + 2.5rem / 2;
   color: darken($color-grey, 10%);
 }
 .item-view-action {
@@ -454,7 +557,7 @@ function fetchComments(store, item) {
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: darken(#bdbdbd, 20%);
+    background-color: darken($color-blue, 10%);
     transition: 0.3s ease-in-out;
   }
 }
@@ -544,5 +647,12 @@ function fetchComments(store, item) {
     transform: rotate(-45deg);
     background: $color-white;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 </style>

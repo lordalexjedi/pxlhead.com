@@ -3,6 +3,7 @@
     template(v-if='item')
       .search-box
         input.search(type='search' name='search' placeholder='droids u r looking for...')
+      a.item-view-esc
       .item-view-body
         .item-view-text
           h1.item-view-title {{ item.title }}
@@ -105,7 +106,7 @@ function fetchComments(store, item) {
 .search-box {
   position: absolute;
   top: 3rem;
-  right: 15%;
+  right: 18%;
   cursor: pointer;
   z-index: 100;
   &::before {
@@ -135,6 +136,47 @@ function fetchComments(store, item) {
     width: 30rem;
     padding: 0 5rem;
   };
+  @include screen-style(iMac) {
+    width: 30rem;
+    padding: 0 5rem;
+  };
+}
+.item-view-esc {
+  position: absolute;
+  display: block;
+  top: 3rem;
+  right: 13%;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #E0E0E0;
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    transform: rotate(45deg);
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+  }
+  &::after {
+    position: absolute;
+    content: '';
+    display: block;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    transform: rotate(-45deg);
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+  }
+  &:hover {
+    background-color: darken($color-blue, 10%);
+    transition: 0.3s ease-in-out;
+  }
 }
 .item-view-img {
   flex-basis: 80rem;
@@ -347,7 +389,7 @@ function fetchComments(store, item) {
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: darken(#bdbdbd, 20%);
+    background-color: darken($color-blue, 10%);
     transition: 0.3s ease-in-out;
   }
 }

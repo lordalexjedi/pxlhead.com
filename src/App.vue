@@ -1,7 +1,8 @@
 <template lang='pug'>
   #app
     app-menu
-    router-view
+    transition(name='menu-transtion')
+      router-view
 </template>
 
 <script>
@@ -31,4 +32,21 @@ body {
   font-family: 'Roboto', sans-serif;
   // overflow: hidden;
 }
+
+.menu-transtion-enter-active {
+  animation: moveFromBottom .6s ease both;
+}
+.menu-transtion-leave-active {
+  animation: moveToBottom .6s ease both;
+}
+
+@keyframes moveToBottom {
+	from { }
+	to {transform: translateY(-100%); }
+}
+
+@keyframes moveFromBottom {
+	from {transform: translateY(-100%); }
+}
+
 </style>

@@ -3,8 +3,10 @@
     a.app-menu-btn(@click='open = !open')
     span.app-menu-title PXLHEAD
 
-    .app-menu-modal(v-show='open' @click='changePage')
-    h2.app-menu-link {{ activeLink }}
+    transition(name='menu-transtion')
+      .app-menu-modal(v-show='open' @click='changePage')
+        h2.app-menu-link {{ activeLink }}
+        a.app-menu-esc(@click='open = !open')
 </template>
 
 <script>
@@ -305,12 +307,12 @@ export default {
   left: 5rem;
   width: 5rem;
   height: 5rem;
-  background-color: transparentize($color-white, 0.8);
+  background-color: transparentize($color-blue, 0.2);
   border-radius: 50%;
   cursor: pointer;
   transition: transform ease-out 0.1s, background 0.2s;
   &:hover {
-    background-color: transparentize($color-white, 0.9);
+    background-color: transparentize($color-blue, 0.1);
     transform: scale(0.9);
     transition: transform ease-out 0.1s, background 0.2s;
     &::after {
@@ -324,7 +326,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px transparentize($color-white, 0.9);
+    box-shadow: 0 0 0 2px transparentize($color-blue, 0.1);
     opacity: 0;
     transform: scale(0.7);
     width: 100%;
@@ -347,17 +349,62 @@ export default {
   left: 12rem;
   font-size: 2rem;
   font-weight: 600;
-  color: $color-white;
+  color: $color-blue;
+}
+.app-menu-modal {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.app-menu-esc {
+  position: absolute;
+  display: block;
+  top: 3rem;
+  right: 5rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparentize(#E0E0E0, 0.8);
+  transition: 0.3s ease-in-out;
+  &::before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    transform: rotate(45deg);
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+  }
+  &::after {
+    position: absolute;
+    content: '';
+    display: block;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    transform: rotate(-45deg);
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+  }
+  &:hover {
+    background-color: darken($color-blue, 10%);
+    transition: 0.3s ease-in-out;
+  }
 }
 .app-menu-link {
   display: block;
   position: absolute;
-  top: 10rem;
-  right: 12rem;
-  font-size: 2rem;
+  bottom: 10rem;
+  left: calc(50% - 4rem / 2);
+  font-size: 3rem;
+  text-transform: uppercase;
   font-weight: 600;
   color: $color-white;
 }
+
 @keyframes sonar {
   0% {
     opacity: 0.3;
@@ -365,12 +412,12 @@ export default {
   40% {
     opacity: 0.5;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px #12233f,
+                0 0 10px 10px $color-blue,
                 0 0 0 10px rgba(255, 255, 255, 0.3);
   }
   100% {
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px #12233f,
+                0 0 10px 10px $color-blue,
                 0 0 0 10px rgba(255, 255, 255, 0.3);
     transform: scale(1.5);
     opacity: 0;

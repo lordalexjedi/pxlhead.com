@@ -132,29 +132,17 @@ function fetchComments(store, item) {
   color: $color-white;
 }
 .article-view-title {
+  @extend %heading;
   margin: 2rem 0;
-  overflow: hidden;
-  font-size: 7rem;
-  font-weight: 700;
-  line-height: 9rem;
-  max-width: 80rem;
-  min-width: 40rem;
-  max-height: 7rem * 3 + 9rem / 2;
-  min-height: 7rem * 2 + 9rem / 2;
-  text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  color: $color-white;
 }
 .article-view-description {
+  @extend %paragraph;
   margin: 2rem 0rem 2rem 4rem;
   overflow: hidden;
   font-size: 2rem;
   min-height: 2rem * 2 + 2.5rem / 2;
   max-height: 2rem * 3 + 2.5rem / 2;
-  line-height: 2.5rem;
   max-width: 60rem;
-  opacity: 0.9;
-  color: $color-white;
 }
 .article-view-action {
   margin: 2rem 0;

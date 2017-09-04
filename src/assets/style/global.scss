@@ -43,3 +43,107 @@ $FULLHD: 1920px;
 }
 
 // @include screen-style(iphoneSE) { width: 100% ;}
+
+// common styles
+
+%heading {
+  overflow: hidden;
+  min-width: 40rem;
+  min-height: 7rem * 2 + 9rem / 2;
+  max-width: 80rem;
+  max-height: 7rem * 3 + 9rem / 2;
+  color: $color-white;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 7rem;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 9rem;
+}
+
+%paragraph {
+  overflow: hidden;
+  min-height: 2.5rem * 2 + 2.5rem / 2;
+  max-width: 40rem;
+  max-height: 2.5rem * 3 + 2.5rem / 2;
+  color: $color-white;
+  font-size: 2.5rem;
+  line-height: 2.5rem;
+  opacity: 0.9;
+  text-align: justify;
+  font-family: 'Roboto', sans-serif;
+}
+
+%btn-text {
+
+}
+
+%btn-icon {
+  position: absolute;
+  display: block;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: $color-pink;
+  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    background-color: darken($color-pink, 10%);
+    transition: 0.3s ease-in-out;
+  }
+  &::after {
+    position: absolute;
+    top: calc(50% - 3rem / 2);
+    left: calc(50% - 3rem / 2);
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    content: '';
+  }
+}
+
+%btn-esc {
+  position: absolute;
+  top: 3rem;
+  right: 13%;
+  display: block;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background-color: #E0E0E0;
+  cursor: pointer;
+  &::before {
+    position: absolute;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    display: block;
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+    content: '';
+    transform: rotate(45deg);
+  }
+  &::after {
+    position: absolute;
+    top: calc(50% - 2rem / 2);
+    left: calc(50% - 0.3rem / 2);
+    display: block;
+    width: 0.3rem;
+    height: 2rem;
+    background-color: $color-white;
+    content: '';
+    transform: rotate(-45deg);
+  }
+  &:hover {
+    background-color: darken($color-blue, 10%);
+    transition: 0.3s ease-in-out;
+  }
+}
+
+%view {
+
+}
+
+%img {
+
+}

@@ -44,6 +44,23 @@ export function fetchIdsByType(type, sortBy) {
     : fetch(`postIds/${type}`, sortBy)
 }
 
+export function fetchSearchedIds(type, tags) {
+  return new Promise((resolve, reject) => {
+    const ids = []
+    let tagsChecked = 0
+    tags.forEach(tag => {
+      api.ref(`postIds/${type}`).orderByChild(`tags/${tag}`).equalTo(true)
+        .once('value', snapshot => {
+          snapshot.forEach(childSnap => {
+            ids.push(childSnap.key)
+          })
+          tagsChecked++
+          if (tagsChecked === tags.length) resolve(ids)
+        }, reject)
+    })
+  })
+}
+
 export function fetchItem(id) {
   return fetch(`posts/${id}`, 'views')
 }

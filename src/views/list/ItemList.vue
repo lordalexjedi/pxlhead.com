@@ -4,13 +4,15 @@
       .sorter
         a.sort-item(@click='sortItems("views")') Top
         a.sort-item(@click='sortItems("time")') New
-      .search-box(@click='searching = true')
-        input.search(type='search' placeholder='droids u r looking for...' v-model='search'
-          :class='{ "search--active": searching }'
-          @blur='searching = false')
+      form.search-box(@click='searching = true' @submit.prevent='findItems')
+        input.search(type='search' placeholder='Droids you\'re looking for...'
+          v-model.lazy='searchedTags'  :class='{ "search--active": searching }'
+          @blur='clearSearch' @keyup.esc='clearSearch'
+          pattern='[a-zA-Z0-9 ]+' maxlength='50' required
+          title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
-    mugen-scroll(:handler='loadItems'  :should-handle='hasMore && !loading')
+    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore')
     a.btn-back(@click='scrollTop')
 </template>
 
@@ -36,7 +38,7 @@ export default {
     return {
       displayedItems: this.$store.getters.activeItems,
 
-      search: '',
+      searchedTags: '',
       searching: false,
       loading: false
     }
@@ -66,9 +68,7 @@ export default {
       this.$bar.start()
       this.loading = true
       this.$store.commit('INCREMENT_ACTIVE_SLICE')
-      this.$store.dispatch('FETCH_LIST_DATA', {
-        type: this.type
-      }).then(() => {
+      this.$store.dispatch('ENSURE_ACTIVE_ITEMS').then(() => {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.loading = false
@@ -79,6 +79,21 @@ export default {
       this.$store.commit('SET_ACTIVE_SORT', { sort })
       this.$store.dispatch('FETCH_LIST_DATA', {
         type: this.type
+      }).then(() => {
+        this.displayedItems = this.$store.getters.activeItems
+      })
+      this.$bar.finish()
+    },
+    clearSearch() {
+      this.searching = false
+      this.searchedTags = ''
+    },
+    findItems() {
+      const tags = this.searchedTags.split(' ')
+      this.$bar.start()
+      this.$store.dispatch('FETCH_SEARCHED_LIST', {
+        type: this.type,
+        tags
       }).then(() => {
         this.displayedItems = this.$store.getters.activeItems
       })
@@ -166,7 +181,7 @@ export default {
   };
 }
 .search--active {
-  width: 30rem;
+  width: 32rem;
   padding: 0 5rem;
   cursor: text;
 }

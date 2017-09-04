@@ -12,7 +12,7 @@ export function createStore() {
       activeType: null,
       activeSort: 'views',
       activeSlice: 1,
-      itemsPerSlice: 4,
+      itemsPerSlice: 5,
       items: {/* [id: number]: Item */},
       comments: {/* [id: number]: Comment */},
       lists: {

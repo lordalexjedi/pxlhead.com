@@ -9,22 +9,23 @@
           :class='{ "search--active": searching }'
           @blur='searching = false')
     transition-group.gallery(name='item' tag='div')
-      item(v-for='item in displayedItems'  :key='item.id'  :item='item')
-    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore')
-    a.btn-back
+      .item(v-for='item in displayedItems'  :key='item.id')
+        .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        .item-text
+          h3.item-name {{ item.title }}
+          p.item-description {{ item.description }}
+          .item-info
+            span.item-views {{ item.views }}
+            span.item-comment 21
+    a.btn-back(@click='scrollTop')
 </template>
 
 <script>
-import MugenScroll from 'vue-mugen-scroll'
-import Item from '@/components/Item.vue'
+import { TweenLite } from 'gsap'
+import ScrollToPlugin from 'gsap/ScrollToPlugin'
 
 export default {
   name: 'project-list',
-
-  components: {
-    Item,
-    MugenScroll
-  },
 
   props: {
     type: String
@@ -81,6 +82,9 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.$bar.finish()
+    },
+    scrollTop() {
+      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }

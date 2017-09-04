@@ -5,16 +5,18 @@
         a.sort-item(@click='sortItems("views")') Top
         a.sort-item(@click='sortItems("time")') New
       .search-box(@click='searching = true')
-        input.search(type='search' name='search' placeholder='droids u r looking for...' v-model='search'
+        input.search(type='search' placeholder='droids u r looking for...' v-model='search'
           :class='{ "search--active": searching }'
           @blur='searching = false')
     transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
     mugen-scroll(:handler='loadItems'  :should-handle='hasMore && !loading')
-    a.btn-back
+    a.btn-back(@click='scrollTop')
 </template>
 
 <script>
+import { TweenLite } from 'gsap'
+import ScrollToPlugin from 'gsap/ScrollToPlugin'
 import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
 
@@ -81,6 +83,9 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.$bar.finish()
+    },
+    scrollTop() {
+      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }
@@ -154,6 +159,7 @@ export default {
   outline-style: none;
   font-size: 1.6rem;
   transition: all .5s;
+  cursor: pointer;
   @include screen-style(fullHd) {
     width: 30rem;
     padding: 0 5rem;
@@ -162,6 +168,7 @@ export default {
 .search--active {
   width: 30rem;
   padding: 0 5rem;
+  cursor: text;
 }
 .search--active ::placeholder {
   display: block;

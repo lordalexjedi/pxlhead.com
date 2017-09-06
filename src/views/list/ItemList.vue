@@ -12,7 +12,8 @@
           title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
-    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore')
+    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore'
+      :threshold='0.5') {{ loadingText }}
     a.btn-back(@click='scrollTop')
 </template>
 
@@ -54,6 +55,9 @@ export default {
     },
     hasMore() {
       return this.slice < this.maxSlice
+    },
+    loadingText() {
+      return this.hasMore ? 'searching for cookies' : 'no more cookies left'
     }
   },
 

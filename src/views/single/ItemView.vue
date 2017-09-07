@@ -3,13 +3,13 @@
     template(v-if='item')
       .search-box
         input.search(type='search' name='search' placeholder='droids u r looking for...')
+      a.item-view-esc
       .item-view-body
         .item-view-text
           h1.item-view-title {{ item.title }}
           p.item-view-description {{ item.description }}
           .item-view-action
             a.item-view-link.link--code VIEW
-            // link--music, link--art
             a.item-view-comment
         .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .item-view-social
@@ -89,7 +89,6 @@ function fetchComments(store, item) {
   left: 0;
   width: 100vw;
   height: 100vh;
-  // overflow: hidden;
   background: #fff;
   &::after {
     position: absolute;
@@ -105,7 +104,7 @@ function fetchComments(store, item) {
 .search-box {
   position: absolute;
   top: 3rem;
-  right: 15%;
+  right: 18%;
   cursor: pointer;
   z-index: 100;
   &::before {
@@ -135,14 +134,22 @@ function fetchComments(store, item) {
     width: 30rem;
     padding: 0 5rem;
   };
+  @include screen-style(iMac) {
+    width: 30rem;
+    padding: 0 5rem;
+  };
+  &:focus {
+    background-color: $color-blue;
+    color: $color-white;
+  }
+}
+.item-view-esc {
+  @extend %btn-esc;
 }
 .item-view-img {
   flex-basis: 80rem;
   height: 60rem;
-  background: $color-pink;
-  background-position: center;
-  background-size: cover;
-  // box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
+  @extend %img;
 }
 .item-view-body {
   position: absolute;
@@ -162,16 +169,12 @@ function fetchComments(store, item) {
   justify-content: space-between;
   align-items: flex-end;
   height: 95%;
-  // padding: 4rem;
 }
 .item-view-title {
-  flex-basis: 40%;
-  font-size: 8rem;
-  font-weight: 700;
+  @extend %heading;
   max-width: 50rem;
-  text-transform: uppercase;
+  flex-basis: 50%;
   text-align: right;
-  font-family: 'Montserrat', sans-serif;
   color: #4f4f4f;
 }
 .item-view-watch {
@@ -193,11 +196,10 @@ function fetchComments(store, item) {
   }
 }
 .item-view-description {
+  @extend %paragraph;
   flex-basis: 20%;
-  font-size: 2.5rem;
   margin-left: 5rem;
-  max-width: 40rem;
-  text-align: justify;
+  max-height: 2rem * 6 + 2.5rem / 2;
   color: darken($color-grey, 10%);
 }
 .item-view-action {
@@ -207,71 +209,15 @@ function fetchComments(store, item) {
   justify-content: space-between;
 }
 .item-view-link {
-  position: relative;
-  display: block;
-  width: 15rem;
-  height: 6rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  line-height: 6rem;
-  color: $color-white;
-  border-radius: 6rem;
-  background: $color-pink;
-  transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
-  &:hover {
-    background: darken($color-pink, 10%);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
-  // &::after {
-  //   position: absolute;
-  //   display: block;
-  //   content: '';
-  //   width: 5rem;
-  //   height: 5rem;
-  //   top: calc(50% - 5rem / 2);
-  //   left: calc(50% - 5rem / 2);
-  // }
+  @extend %btn-text;
 }
-// .item-view-link.link--code {
-//   &::after {
-//     background: url('~@/assets/icons/code.svg') no-repeat center / 60%;
-//   }
-// }
-// .item-view-link.link--music {
-//   &::after {
-//     background: url('~@/assets/icons/music.svg') no-repeat center / 60%;
-//   }
-// }
-// .item-view-link.link--art {
-//   &::after {
-//     background: url('~@/assets/icons/photo.svg') no-repeat center / 60%;
-//   }
-// }
 .item-view-comment {
+  @extend %btn-icon;
   position: relative;
-  display: block;
   width: 6rem;
   height: 6rem;
-  border-radius: 50%;
-  background: $color-pink;
-  transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
-  &:hover {
-    background: darken($color-pink, 10%);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 4rem;
-    height: 4rem;
-    top: calc(50% - 4rem / 2);
-    left: calc(50% - 4rem / 2);
+    @include center-pos(4rem);
     background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
   }
 }
@@ -336,19 +282,13 @@ function fetchComments(store, item) {
 
 }
 .tag-link {
+  @extend %btn-text;
   flex-basis: 12rem;
   height: 5rem;
-  color: $color-white;
-  background-color: darken(#bdbdbd, 10%);
-  border-radius: 5rem;
+  background-color: $color-blue;
   line-height: 5rem;
-  font-size: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
   &:hover {
-    background-color: darken(#bdbdbd, 20%);
-    transition: 0.3s ease-in-out;
+    background-color: darken($color-blue, 10%);
   }
 }
 .item-view-social {
@@ -362,26 +302,11 @@ function fetchComments(store, item) {
   right: -3rem;
 }
 .social-link {
+  @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
-  width: 5rem;
-  left: calc(50% - 5rem / 2);
-  border-radius: 50%;
-  background: $color-pink;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    background: darken($color-pink, 10%);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
+    @include center-pos(2rem);
   }
 }
 .link-twitter {
@@ -397,45 +322,6 @@ function fetchComments(store, item) {
 .link-dribbble {
   &::after {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
-  }
-}
-.nav-esc {
-  position: absolute;
-  display: block;
-  top: 4rem;
-  right: 4rem;
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-  background: $color-grey;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    opacity: 0.7;
-    transition: 0.3s ease-in-out;
-  }
-  &::before {
-    position: absolute;
-    content: '';
-    display: block;
-    top: 25%;
-    left: calc(50% - 5px / 2);
-    width: 5px;
-    height: 50%;
-    transform: rotate(45deg);
-    background: $color-white;
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: 25%;
-    left: calc(50% - 5px / 2);
-    width: 5px;
-    height: 50%;
-    transform: rotate(-45deg);
-    background: $color-white;
   }
 }
 </style>

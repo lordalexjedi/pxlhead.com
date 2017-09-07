@@ -9,6 +9,10 @@ export default {
     state.activeSlice++
   },
 
+  RESET_ACTIVE_SLICE (state) {
+    state.activeSlice = 1
+  },
+
   SET_ACTIVE_SORT: (state, { sort }) => {
     state.activeSort = sort
     state.activeSlice = 1

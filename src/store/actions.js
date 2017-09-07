@@ -1,6 +1,7 @@
 import {
   fetchItems,
   fetchIdsByType,
+  fetchSearchedIds,
   fetchComments
 } from '../api'
 
@@ -9,6 +10,13 @@ export default {
   FETCH_LIST_DATA: ({ commit, dispatch, state }, { type }) => {
     commit('SET_ACTIVE_TYPE', { type })
     return fetchIdsByType(type, state.activeSort)
+      .then(ids => commit('SET_LIST', { type, ids }))
+      .then(() => dispatch('ENSURE_ACTIVE_ITEMS'))
+  },
+
+  FETCH_SEARCHED_LIST: ({ commit, dispatch, state }, { type, tags }) => {
+    commit('RESET_ACTIVE_SLICE')
+    return fetchSearchedIds(type, tags)
       .then(ids => commit('SET_LIST', { type, ids }))
       .then(() => dispatch('ENSURE_ACTIVE_ITEMS'))
   },

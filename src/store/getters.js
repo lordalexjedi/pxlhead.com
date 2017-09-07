@@ -1,5 +1,5 @@
 export default {
-  activeIds (state) {
+  activeIds(state) {
     const { activeType, activeSlice, itemsPerSlice, lists } = state
 
     if (!activeType) {
@@ -10,7 +10,7 @@ export default {
     return lists[activeType].slice(0, end)
   },
 
-  activeItems (state, getters) {
-    return getters.activeIds.map(id => state.items[id])
+  activeItems(state, getters) {
+    return getters.activeIds.map(id => state.items[id]).filter(_ => _)
   }
 }

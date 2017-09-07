@@ -10,6 +10,10 @@ $color-green: #4BD6C6;
 
 $color-orange: #F79B22;
 
+// style vars
+
+$shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
+
 // screen vars
 
 $IPSE: 320px;
@@ -44,6 +48,13 @@ $FULLHD: 1920px;
 
 // @include screen-style(iphoneSE) { width: 100% ;}
 
+@mixin center-pos($size) {
+  width: $size;
+  height: $size;
+  top: calc(50% - #{$size} / 2);
+  left: calc(50% - #{$size} / 2);
+}
+
 // common styles
 
 %heading {
@@ -74,7 +85,29 @@ $FULLHD: 1920px;
 }
 
 %btn-text {
-
+  position: relative;
+  display: block;
+  width: 15rem;
+  height: 6rem;
+  border-radius: 6rem;
+  background: $color-pink;
+  color: $color-white;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 6rem;
+  box-shadow: $shadow;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: darken($color-pink, 10%);
+    transition: 0.3s ease-in-out;
+  }
+  &:focus {
+    box-shadow: 2px 2px 30px rgba(0, 0, 0, 0.25);
+    transition: 0.3s ease-in-out;
+  }
 }
 
 %btn-icon {
@@ -84,20 +117,17 @@ $FULLHD: 1920px;
   height: 5rem;
   border-radius: 50%;
   background-color: $color-pink;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: 0.3s ease-in-out;
+  box-shadow: $shadow;
   &:hover {
     background-color: darken($color-pink, 10%);
     transition: 0.3s ease-in-out;
   }
   &::after {
+    @include center-pos(3rem)
     position: absolute;
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
     display: block;
-    width: 3rem;
-    height: 3rem;
     content: '';
   }
 }
@@ -140,10 +170,34 @@ $FULLHD: 1920px;
   }
 }
 
-%view {
-
+%img {
+  background: $color-pink;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 
-%img {
+// transition
 
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
+}
+
+.push-enter-active, .push-leave-active {
+  transition: all 1s cubic-bezier(0.7,0,0.3,1);
+}
+.push-enter, .push-leave-to {
+  opacity: 0;
+  transform: translateY(-100%) scale(0.9);
+}
+
+.item-enter-active, .push-leave-active {
+  transition: all 0.5s cubic-bezier(0.7,0,0.3,1);
+}
+.item-enter, .push-leave-to {
+  opacity: 0;
+  transform: translateX(-10%);
 }

@@ -52,15 +52,12 @@ export default {
   }
 }
 .item-img {
+  @extend %img;
   position: absolute;
   top: 0;
   left: 0;
   width: 80%;
   height: 70%;
-  background-color: $color-pink;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   cursor: pointer;
   z-index: 10;
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);

@@ -7,7 +7,7 @@
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
-            a.article-view-btn( @click='read=true' ) READ
+            a.article-view-btn(@click='read=true') READ
             a.article-view-btn COMMENT
         a.article-view-esc
         .article-view-social
@@ -21,16 +21,17 @@
         .article-comments-header
           .article-comments-title COMMENTS
             span.article-comments-counter (42)
-          a.article-comments-submit(:class='{"comment-submit--active": comment}' @click='comment=!comment')
-        form.article-comments-form(:class='{ "article-comments-form--active": comment}')
-          .article-comments-img
-          .article-comments-input
-            input.article-comments-name(placeholder='ex. Marty McFly')
-            textarea.article-comments-message(placeholder='Dont panic')
-          a.article-comments-send
+          a.article-comments-submit(@click='comment=!comment')
+        transition(name='fade')
+          form.article-comments-form(v-show='comment')
+            .article-comments-img
+            .article-comments-input
+              input.article-comments-name(placeholder='ex. Marty McFly')
+              textarea.article-comments-message(placeholder='Dont panic')
+            a.article-comments-send
         .article-comments-list(v-if='!loading')
           comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-        a.article-comments-up
+        a.article-comments-up(@click='read=false')
 </template>
 
 <script>
@@ -151,60 +152,13 @@ function fetchComments(store, item) {
   justify-content: space-between;
 }
 .article-view-btn {
-  flex-basis: 15rem;
-  height: 5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  line-height: 5rem;
-  color: $color-white;
-  border-radius: 5rem;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
+  @extend %btn-text;
 }
 .article-view-esc {
-  position: absolute;
+  @extend %btn-esc;
   right: 5rem;
-  top: 3rem;
-  display: block;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: $color-blue;
-  transition: 0.3s ease-in-out;
   z-index: 101;
-  &::before {
-    position: absolute;
-    content: '';
-    display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    transform: rotate(45deg);
-    width: 0.3rem;
-    height: 2rem;
-    background-color: $color-white;
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    transform: rotate(-45deg);
-    width: 0.3rem;
-    height: 2rem;
-    background-color: $color-white;
-  }
-  &:hover {
-    background-color: darken($color-blue, 10%);
-    transition: 0.3s ease-in-out;
-  }
+  background-color: transparentize(#000, 0.9);
 }
 .article-view-social {
   position: absolute;
@@ -217,26 +171,12 @@ function fetchComments(store, item) {
   justify-content: space-between;
 }
 .article-view-link {
+  @extend %btn-icon;
   position: relative;
-  width: 5rem;
   flex-basis: 5rem;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: $color-blue;
-  transition: 0.3s ease-in-out;
   z-index: 101;
   &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
-  }
-  &:hover {
-    background-color: darken($color-blue, 10%);
-    transition: 0.3s ease-in-out;
+    @include center-pos(2rem);
   }
 }
 .link--facebook {
@@ -564,17 +504,15 @@ function fetchComments(store, item) {
 }
 .article-comments-form {
   position: relative;
-  height: 0rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 0;
-  margin-bottom: 0;
+  padding: 4rem 0;
+  margin-bottom: 4rem;
+  height: 15rem;
   width: 100rem;
   top: 0;
   left: calc(50% - 100rem / 2);
-  transform: translateY(-5rem);
-  opacity: 0;
   background-color: $color-lightblue;
   transition: 0.5s ease-in-out;
   &::after {
@@ -649,22 +587,6 @@ function fetchComments(store, item) {
       height: 2rem;
       background: url('~@/assets/icons/send.svg') no-repeat center / 120%;
     }
-  }
-  & * {
-    opacity: 0;
-    transition: 0.5s ease-in-out;
-  }
-}
-.article-comments-form--active {
-  padding: 4rem 0;
-  margin-bottom: 4rem;
-  height: 15rem;
-  transform: translateY(0rem);
-  opacity: 1;
-  transition: 0.5s ease-in-out;
-  & * {
-    opacity: 1;
-    transition: 0.5s ease-in-out;
   }
 }
 </style>

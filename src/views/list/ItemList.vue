@@ -109,18 +109,12 @@ export default {
   display: flex;
 }
 .sort-item {
+  @extend %btn-text;
   width: 8rem;
   height: 4rem;
-  border-radius: 40px;
   margin-right: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  text-transform: uppercase;
   color: $color-white;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
+  line-height: 5rem;
   background-color: $color-blue;
   @include screen-style(fullHd) {
     height: 5rem;

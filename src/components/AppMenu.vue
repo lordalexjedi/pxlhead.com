@@ -3,7 +3,7 @@
     a.app-menu-btn(@click='open = !open')
     span.app-menu-title PXLHEAD
 
-    transition(name='menu-transtion')
+    transition(name='push')
       .app-menu-modal(v-show='open' @click='changePage')
         h2.app-menu-link {{ activeLink }}
         a.app-menu-esc(@click='open = !open')

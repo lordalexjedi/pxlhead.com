@@ -1,22 +1,21 @@
 <template lang='pug'>
-  .item-view(v-if='item')
+  .music-view(v-if='item')
     template(v-if='item')
       .search-box
         input.search(type='search' name='search' placeholder='droids u r looking for...')
-      a.btn-esc
-      .item-view-body
-        .item-view-text
-          h1.item-view-title {{ item.title }}
-          p.item-view-description {{ item.description }}
-          .item-view-action
-            a.item-view-link.link--code(@click='playlist = !playlist') PLAY
-            // link--music, link--art
-            a.item-view-comment
-        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-        a.item-view-playlist-volume
+      a.music-view-esc
+      .music-view-body
+        .music-view-text
+          h1.music-view-title {{ item.title }}
+          p.music-view-description {{ item.description }}
+          .music-view-action
+            a.music-view-link.link--code(@click='playlist = !playlist') PLAY
+            a.music-view-comment
+        .music-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        a.music-view-playlist-volume
           .volume-toggle
             .volume-toggler(v-for='n in 6')
-        a.item-view-playlist-btn(@click='playlist = !playlist')
+        a.music-view-playlist-btn(@click='playlist = !playlist')
           transition(name='fade')
             .playlist-body(v-show='playlist')
               li.playlist-list
@@ -28,18 +27,18 @@
                       span.player-date 29/12/2017
                     .player-control
                       input.player-timeline(type='range')
-        .item-view-social
+        .music-view-social
           a.social-link.link-twitter
           a.social-link.link-facebook
           a.social-link.link-dribbble
-        .item-view-tag
+        .music-view-tag
           a.tag-link(v-for='n in 3') #CSS
-        span.item-view-watch 4242
-    .item-view-nav
-      a.item-view-arrow.arrow-prev PREV ITEM
+        span.music-view-watch 4242
+    .music-view-nav
+      a.music-view-arrow.arrow-prev PREV ITEM
       h2 SCROLL
-      a.item-view-arrow.arrow-next NEXT ITEM
-    .item-view-comments
+      a.music-view-arrow.arrow-next NEXT ITEM
+    .music-view-comments
       //- spinner(:show='loading')
       .comment-children(v-if='!loading')
         comment(v-for='id in item.commentIds'  :key='id'  :id='id')
@@ -100,13 +99,12 @@ function fetchComments(store, item) {
 <style lang='scss'>
 @import '~style';
 
-.item-view {
+.music-view {
   position: relative;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  // overflow: hidden;
   background: #fff;
   &::after {
     position: absolute;
@@ -152,80 +150,57 @@ function fetchComments(store, item) {
     width: 30rem;
     padding: 0 5rem;
   };
+  @include screen-style(iMac) {
+    width: 30rem;
+    padding: 0 5rem;
+  };
+  &:focus {
+    background-color: $color-blue;
+    color: $color-white;
+  }
 }
-.item-view-img {
+.music-view-img {
+  @extend %img;
   flex-basis: 80rem;
   height: 60rem;
-  background: $color-pink;
-  background-position: center;
-  background-size: cover;
-  // box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
 }
-.item-view-playlist-btn {
-  position: absolute;
-  display: block;
+.music-view-playlist-btn {
+  @extend %btn-icon;
   top: 3rem;
   left: 50%;
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
-  background-color: $color-pink;
-  z-index: 101;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(55% - 3rem / 2);
-    left: calc(55% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
     background: url('~@/assets/icons/playlist.svg') no-repeat center / 100%;
   }
 }
-.item-view-playlist-volume {
-  position: absolute;
-  display: block;
+.music-view-playlist-volume {
+  @extend %btn-icon;
   top: 3rem;
   left: 55%;
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
-  background-color: $color-pink;
-  z-index: 101;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
   &:hover {
-    width: 13rem;
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
+    width: 15rem;
   }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: 0.6rem;
-    width: 3rem;
-    height: 3rem;
     background: url('~@/assets/icons/volume.svg') no-repeat center / 100%;
   }
 }
 .volume-toggle {
   position: absolute;
   display: flex;
-  opacity: 0;
+  opacity: 1;
   top: calc(50% - 2rem / 2);
   left: 4rem;
-  width: 8rem;
+  width: 0rem;
   height: 2rem;
   justify-content: space-around;
   align-items: center;
+  background-color: $color-pink;
+  border-radius: 1rem;
   transition: 0.3s ease-in-out;
 }
 .volume-toggler {
@@ -237,8 +212,8 @@ function fetchComments(store, item) {
     opacity: 0.8;
   }
 }
-.item-view-playlist-volume:hover .volume-toggle {
-  opacity: 1;
+.music-view-playlist-volume:hover .volume-toggle {
+  width: 8rem;
   transition: 0.3s ease-in-out;
 }
 .playlist-body {
@@ -293,25 +268,12 @@ function fetchComments(store, item) {
   justify-content: center;
 }
 .player-play {
+  @extend %btn-icon;
   position: relative;
   flex-basis: 4rem;
   height: 4rem;
-  display: block;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: $color-pink;
-  &:hover {
-    background: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
+    @include center-pos(2rem);
     background: url('~@/assets/icons/play.svg') no-repeat center / 100%;
   }
 }
@@ -357,7 +319,7 @@ function fetchComments(store, item) {
     cursor: pointer;
   }
 }
-.item-view-body {
+.music-view-body {
   position: absolute;
   display: flex;
   justify-content: space-between;
@@ -369,7 +331,7 @@ function fetchComments(store, item) {
   height: 60%;
   z-index: 100;
 }
-.item-view-text {
+.music-view-text {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -377,14 +339,14 @@ function fetchComments(store, item) {
   height: 95%;
   // padding: 4rem;
 }
-.item-view-title {
+.music-view-title {
   @extend %heading;
   max-width: 50rem;
   flex-basis: 50%;
   text-align: right;
   color: #4f4f4f;
 }
-.item-view-watch {
+.music-view-watch {
   position: absolute;
   display: block;
   bottom: -9rem;
@@ -402,89 +364,34 @@ function fetchComments(store, item) {
     background: url('~@/assets/icons/eye-black.svg') no-repeat center / 100%;
   }
 }
-.item-view-description {
+.music-view-description {
   @extend %paragraph;
   flex-basis: 20%;
   margin-left: 5rem;
   max-height: 2rem * 6 + 2.5rem / 2;
   color: darken($color-grey, 10%);
 }
-.item-view-action {
+.music-view-action {
   flex-basis: 6rem;
   width: 25rem;
   display: flex;
   justify-content: space-between;
 }
-.item-view-link {
-  position: relative;
-  display: block;
-  width: 15rem;
-  height: 6rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  line-height: 6rem;
-  color: $color-white;
-  border-radius: 6rem;
-  background: $color-pink;
-  transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
-  &:hover {
-    background: darken($color-pink, 10%);
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-  }
-  // &::after {
-  //   position: absolute;
-  //   display: block;
-  //   content: '';
-  //   width: 5rem;
-  //   height: 5rem;
-  //   top: calc(50% - 5rem / 2);
-  //   left: calc(50% - 5rem / 2);
-  // }
+.music-view-link {
+  @extend %btn-text;
 }
-// .item-view-link.link--code {
-//   &::after {
-//     background: url('~@/assets/icons/code.svg') no-repeat center / 60%;
-//   }
-// }
-// .item-view-link.link--music {
-//   &::after {
-//     background: url('~@/assets/icons/music.svg') no-repeat center / 60%;
-//   }
-// }
-// .item-view-link.link--art {
-//   &::after {
-//     background: url('~@/assets/icons/photo.svg') no-repeat center / 60%;
-//   }
-// }
-.item-view-comment {
+
+.music-view-comment {
+  @extend %btn-icon;
   position: relative;
-  display: block;
   width: 6rem;
   height: 6rem;
-  border-radius: 50%;
-  background: $color-pink;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
-  &:hover {
-    background: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 4rem;
-    height: 4rem;
-    top: calc(50% - 4rem / 2);
-    left: calc(50% - 4rem / 2);
+    @include center-pos(4rem);
     background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
   }
 }
-.item-view-nav {
+.music-view-nav {
   position: absolute;
   top: 20%;
   right: 5rem;
@@ -501,7 +408,7 @@ function fetchComments(store, item) {
     align-self: center;
   }
 }
-.item-view-arrow {
+.music-view-arrow {
   position: relative;
   width: 100%;
   font-size: 2rem;
@@ -534,7 +441,7 @@ function fetchComments(store, item) {
     background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
   }
 }
-.item-view-tag {
+.music-view-tag {
   position: absolute;
   bottom: -10rem;
   right: 5rem;
@@ -543,25 +450,18 @@ function fetchComments(store, item) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
 .tag-link {
+  @extend %btn-text;
   flex-basis: 12rem;
   height: 5rem;
-  color: $color-white;
-  background-color: darken(#bdbdbd, 10%);
-  border-radius: 5rem;
+  background-color: $color-blue;
   line-height: 5rem;
-  font-size: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
   &:hover {
     background-color: darken($color-blue, 10%);
-    transition: 0.3s ease-in-out;
   }
 }
-.item-view-social {
+.music-view-social {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -572,26 +472,11 @@ function fetchComments(store, item) {
   right: -3rem;
 }
 .social-link {
+  @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
-  width: 5rem;
-  left: calc(50% - 5rem / 2);
-  border-radius: 50%;
-  background: $color-pink;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    background: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
   &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 2rem / 2);
-    width: 2rem;
-    height: 2rem;
+    @include center-pos(2rem);
   }
 }
 .link-twitter {
@@ -609,50 +494,7 @@ function fetchComments(store, item) {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
   }
 }
-.nav-esc {
-  position: absolute;
-  display: block;
-  top: 4rem;
-  right: 4rem;
-  width: 8rem;
-  height: 8rem;
-  border-radius: 50%;
-  background: $color-grey;
-  cursor: pointer;
-  opacity: 0.5;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    opacity: 0.7;
-    transition: 0.3s ease-in-out;
-  }
-  &::before {
-    position: absolute;
-    content: '';
-    display: block;
-    top: 25%;
-    left: calc(50% - 5px / 2);
-    width: 5px;
-    height: 50%;
-    transform: rotate(45deg);
-    background: $color-white;
-  }
-  &::after {
-    position: absolute;
-    content: '';
-    display: block;
-    top: 25%;
-    left: calc(50% - 5px / 2);
-    width: 5px;
-    height: 50%;
-    transform: rotate(-45deg);
-    background: $color-white;
-  }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
-}
-.fade-enter, .fade-leave-to {
-  opacity: 0
+.music-view-esc {
+  @extend %btn-esc;
 }
 </style>

@@ -7,7 +7,7 @@
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
-            a.article-view-btn(@click='read=true') READ
+            a.article-view-btn(@click='scrollRead') READ
             a.article-view-btn COMMENT
         a.article-view-esc
         .article-view-social
@@ -31,7 +31,7 @@
             a.article-comments-send
         .article-comments-list(v-if='!loading')
           comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-        a.article-comments-up(@click='read=false')
+        a.article-comments-up(@click='scrollTop')
 </template>
 
 <script>
@@ -74,6 +74,14 @@ export default {
           this.loading = false
         })
       }
+    },
+    scrollRead() {
+      this.read = true,
+      TweenLite.to(window, 0.5, { scrollTo: 1000 })
+    },
+    scrollTop() {
+      this.read = false,
+      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }

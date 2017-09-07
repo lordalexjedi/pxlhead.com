@@ -16,7 +16,7 @@ $shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
 
 // screen vars
 
-$IPSE: 320px;
+$IPSE: 330px;
 $IP7: 375px;
 $IPAIR: 768px;
 $IPPRO: 1024px;
@@ -27,7 +27,7 @@ $FULLHD: 1920px;
 
 @mixin screen-style($media) {
   @if $media == iphoneSE {
-    @media only screen and (max-width: $IPSE) { @content; }
+    @media only screen and (max-width: $IPSE + 1) { @content; }
   }
   @else if $media == iphone7 {
     @media only screen and (min-width: $IP7 - 1) and (max-width: $IPAIR - 1) { @content; }

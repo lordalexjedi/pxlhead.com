@@ -117,30 +117,66 @@ export default {
   background-color: $color-white;
 }
 .toolbox {
+  position: relative;
   background-color: $color-main;
   padding: 3rem 5rem;
   box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  @include screen-style(iphone7) {
+    padding: 3rem 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    padding: 3rem 2rem;
+  };
 }
 .sorter {
   display: flex;
+  @include screen-style(iphone7) {
+    position: absolute;
+    width: 100%;
+    justify-content: center;
+    left: 0;
+    bottom: -5rem;
+    background-color: #fff;
+  };
+  @include screen-style(iphoneSE) {
+    position: absolute;
+    width: 100%;
+    justify-content: center;
+    left: 0;
+    bottom: -5rem;
+    background-color: #fff;
+  };
 }
 .sort-item {
   @extend %btn-text;
-  width: 8rem;
-  height: 4rem;
+  width: 10rem;
+  height: 5rem;
   margin-right: 2rem;
   color: $color-white;
   line-height: 5rem;
   background-color: $color-blue;
-  @include screen-style(fullHd) {
-    height: 5rem;
-    width: 10rem;
+  @include screen-style(iphone7) {
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    margin-right: 0;
+    color: $color-blue;
   };
   &:hover {
-    background-color: darken($color-blue, 10%);
+    background-color: $color-white;
+  }
+  @include screen-style(iphoneSE) {
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    margin-right: 0;
+    color: $color-blue;
+  };
+  &:hover {
+    background-color: $color-white;
   }
 }
 .sort-item--on {
@@ -179,9 +215,15 @@ export default {
   };
 }
 .search--active {
-  width: 32rem;
+  width: 30rem;
   padding: 0 5rem;
   cursor: text;
+  @include screen-style(iphone7) {
+    width: 27rem;
+  };
+  @include screen-style(iphoneSE) {
+    width: 22rem;
+  };
 }
 .search--active ::placeholder {
   display: block;
@@ -191,6 +233,12 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 6rem 5rem;
+  @include screen-style(iphone7) {
+    padding: 8rem 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    padding: 8rem 2rem;
+  };
 }
 .btn-back {
   position: fixed;
@@ -203,6 +251,23 @@ export default {
   background-color: $color-pink;
   transition: 0.3s ease-in-out;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 100;
+  @include screen-style(ipadPro) {
+    right: 3rem;
+  };
+  @include screen-style(ipadAir) {
+    right: 2rem;
+  };
+  @include screen-style(iphone7) {
+    right: 2rem;
+    width: 5rem;
+    height: 5rem;
+  };
+  @include screen-style(iphoneSE) {
+    right: 2rem;
+    width: 4.5rem;
+    height: 4.5rem;
+  };
   &:after {
     position: absolute;
     display: block;

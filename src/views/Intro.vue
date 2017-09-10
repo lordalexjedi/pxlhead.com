@@ -60,20 +60,20 @@ export default {
         name: 'team',
         title: 'Our team',
         description: 'Some description',
-        camera: { xP: 6, yP: 70, zP: 82, xR: -0.15, yR: -0.6, zR: -0.1 },
-        planet: { xR: 1, yR: 1.7, zR: 1 },
+        camera: { xP: 0, yP: 60, zP: 50, xR: 0.1, yR: -1 },
+        planet: { xR: 1.9, yR: 0.6, zR: -3.4 },
       }, {
         name: 'projects',
         title: 'Our projects',
         description: 'Some description',
-        camera: { xP: 34, yP: 55, zP: 62, xR: -0.06, yR: 0.15, zR: 0.1 },
-        planet: { xR: -1, yR: 0.7, zR: -1 },
+        camera: { xP: 40, yP: 60, zP: 80, xR: 0, yR: 0 },
+        planet: { xR: -2, yR: -0.9, zR: 0 },
       }, {
         name: 'contacts',
         title: 'Contacts',
         description: 'Some description',
-        camera: { xP: 11.4, yP: 60, zP: 55.5, xR: -0.25, yR: -0.16, zR: 0 },
-        planet: { xR: 1, yR: 0.2, zR: -1.2 },
+        camera: { xP: 30, yP: 73, zP: 40, xR: -0.3, yR: 0 },
+        planet: { xR: 0.73, yR: 0.4, zR: 1 },
       }],
 
       distance: 0,
@@ -120,14 +120,14 @@ export default {
 
         this.planet.castShadow = true
         this.planet.receiveShadow = true
-        this.planet.position.set(50, -30, 0)
+        this.planet.position.set(50, -10, 0)
         this.scene.add(this.planet)
       })
 
       // draw stars
       const stars = new Geometry()
       const material = new PointsMaterial({
-        color: 0xFFFFFF,
+        color: 0x98B5D6,
         size: 0.5
       })
 
@@ -141,15 +141,21 @@ export default {
       this.scene.add(this.starSystem)
 
       // add lights
-      const light = new DirectionalLight(0xDBF4F9, 1.8)
-      light.position.set(-80, 80, 100)
-      light.castShadow = true
-      this.scene.add(light)
+      const light1 = new DirectionalLight(0xffffff, 1.3)
+      light1.position.set(-10, 20, 40)
+      light1.castShadow = true
+      this.scene.add(light1)
+
+      const light2 = new DirectionalLight(0xffffff, 0.6)
+      light2.position.set(30, -40, 50)
+      light2.castShadow = true
+      this.scene.add(light2)
     },
     animate() {
       requestAnimationFrame(this.animate)
 
       this.starSystem.rotation.y += 0.0005
+      // this.planet.rotation.y += 0.0002
 
       this.renderer.render(this.scene, this.camera)
     },
@@ -226,7 +232,7 @@ export default {
 @import '~style';
 
 .intro {
-  background: $color-main;
+  background: #14003C;
   overflow: hidden;
   position: relative;
 }

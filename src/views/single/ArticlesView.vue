@@ -173,7 +173,7 @@ function fetchComments(store, item) {
   right: 5rem;
   top: calc(50% - 18rem / 2);
   width: 5rem;
-  height: 18rem;
+  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

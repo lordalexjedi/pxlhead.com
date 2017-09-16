@@ -124,24 +124,59 @@ $FULLHD: 1920px;
     background-color: darken($color-pink, 10%);
     transition: 0.3s ease-in-out;
   }
+  &::before {
+    content: '';
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	margin: -35px 0 0 -35px;
+  	width: 70px;
+  	height: 70px;
+  	border-radius: 50%;
+  	opacity: 0;
+  	pointer-events: none;
+    background: transparentize($color-pink, 0.9);
+  }
   &::after {
     @include center-pos(3rem)
     position: absolute;
     display: block;
     content: '';
   }
+  &:active {
+    &::before {
+      animation: anim-click 0.5s forwards;
+    }
+  }
 }
 
 %btn-esc {
   position: absolute;
   top: 3rem;
-  right: 13%;
+  right: 25rem;
   display: block;
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
   background-color: #E0E0E0;
   cursor: pointer;
+  @include screen-style(iMac) {
+    right: 18rem;
+  };
+  @include screen-style(ipadPro) {
+    right: 13rem;
+  };
+  @include screen-style(ipadAir) {
+    right: 10rem;
+  };
+  @include screen-style(iphone7) {
+    right: 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    width: 4rem;
+    height: 4rem;
+    right: 2rem;
+  };
   &::before {
     position: absolute;
     top: calc(50% - 2rem / 2);
@@ -177,6 +212,76 @@ $FULLHD: 1920px;
   background-size: cover;
 }
 
+%search {
+  position: absolute;
+  top: 3rem;
+  right: 35rem;
+  cursor: pointer;
+  z-index: 100;
+  @include screen-style(iMac) {
+    right: 25rem;
+  };
+  @include screen-style(ipadPro) {
+    right: 20rem;
+  };
+  @include screen-style(ipadAir) {
+    right: 17rem;
+  };
+  @include screen-style(iphone7) {
+    right: 8rem;
+  };
+  @include screen-style(iphoneSE) {
+    right: 8rem;
+  };
+  &::before {
+    content: '';
+    position: absolute;
+    top: calc(50% - 2.5rem / 2);
+    left: 1.3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: url('~@/assets/icons/search.svg') no-repeat center / 100%;
+  }
+  @include screen-style(iphoneSE) {
+    &::before {
+      top: calc(50% - 2rem / 2);
+      left: 1rem;
+      width: 2rem;
+      height: 2rem;
+    }
+  };
+  input {
+    display: block;
+    appearance: none;
+    background-color: #E0E0E0;
+    color: $color-main;
+    padding: 0 2rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 40px;
+    border-style: none;
+    outline-style: none;
+    font-size: 1.6rem;
+    transition: all .5s;
+    @include screen-style(fullHd) {
+      width: 30rem;
+      padding: 0 2rem 0 5rem;
+    };
+    @include screen-style(iMac) {
+      width: 30rem;
+      padding: 0 2rem 0 5rem;
+    };
+    @include screen-style(iphoneSE) {
+      width: 4rem;
+      height: 4rem;
+    };
+    &:focus {
+      background-color: $color-blue;
+      color: $color-white;
+    }
+  }
+}
+
 // transition
 
 .fade-enter-active, .fade-leave-active {
@@ -200,4 +305,19 @@ $FULLHD: 1920px;
 .item-enter, .push-leave-to {
   opacity: 0;
   transform: translateX(-10%);
+}
+
+//keyframes
+
+@keyframes anim-click {
+	0% {
+		transform: scale3d(0.3, 0.3, 1);
+	}
+	25%, 50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: scale3d(1.2, 1.2, 1);
+	}
 }

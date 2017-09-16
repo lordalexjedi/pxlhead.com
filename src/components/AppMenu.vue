@@ -311,11 +311,19 @@ export default {
   border-radius: 50%;
   cursor: pointer;
   transition: transform ease-out 0.1s, background 0.2s;
+  @include screen-style(ipadPro) {
+    left: 13rem;
+  };
+  @include screen-style(ipadAir) {
+    left: 10rem;
+  };
   @include screen-style(iphone7) {
     left: 2rem;
   };
   @include screen-style(iphoneSE) {
     left: 2rem;
+    width: 4rem;
+    height: 4rem;
   };
   &:hover {
     background-color: transparentize($color-blue, 0.1);
@@ -356,6 +364,12 @@ export default {
   font-size: 2rem;
   font-weight: 600;
   color: $color-blue;
+  @include screen-style(ipadPro) {
+    left: 20rem;
+  };
+  @include screen-style(ipadAir) {
+    left: 17rem;
+  };
   @include screen-style(iphone7) {
     display: none;
   };

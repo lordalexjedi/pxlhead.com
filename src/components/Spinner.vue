@@ -17,23 +17,23 @@ export default {
 
 .loader {
   position: absolute;
-  top: calc(50% - 11rem / 2);
-  left: calc(50% - 13rem / 2);
-  width: 13rem;
-  height: 11rem;
+  top: calc(50% - 4rem / 2);
+  left: calc(50% - 4rem / 2);
+  width: 4rem;
+  height: 4rem;
   z-index: 1000;
 }
 .block {
   position: absolute;
-  width: 2rem;
-  height: 2rem;
+  width: 0.5rem;
+  height: 0.5rem;
   background-color: $color-pink;
   transition: 0.3s ease-in-out;
 }
 @for $i from 0 through 23 {
   .block-#{$i} {
-    left: 2.1rem * round(($i / 5 + 0.5));
-    top: 2.1rem * ($i % 5);
+    left: 0.6rem * round(($i / 5 + 0.5));
+    top: 0.6rem * ($i % 5);
   }
 }
 
@@ -64,7 +64,7 @@ export default {
 @keyframes move {
   0% {
     opacity: 1;
-    transform: translateY(-2.2rem)
+    transform: translateY(-1rem)
   }
   100% {
     opacity: 1;

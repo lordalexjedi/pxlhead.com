@@ -38,6 +38,37 @@ export default {
       margin-top: 9rem;
     }
   };
+  @include screen-style(ipadPro) {
+    height: 38rem;
+    flex-basis: 45%;
+    margin-bottom: 10%;
+    .item-name {
+      margin-top: 9rem;
+    }
+  };
+  @include screen-style(ipadAir) {
+    height: 30rem;
+    flex-basis: 45%;
+    margin-bottom: 10%;
+    .item-name {
+      margin-top: 7rem;
+    }
+  };
+  @include screen-style(iphone7) {
+    flex-basis: 100%;
+    margin-bottom: 18%;
+    .item-name {
+      margin-top: 7rem;
+    }
+  };
+  @include screen-style(iphoneSE) {
+    height: 30rem;
+    flex-basis: 100%;
+    margin-bottom: 22%;
+    .item-name {
+      margin-top: 7rem;
+    }
+  };
 }
 .item:hover .item-text {
   background-color: darken(#6E97C4, 10%);
@@ -62,6 +93,12 @@ export default {
   z-index: 10;
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
   transition: 0.3s ease-in-out;
+  @include screen-style(iphone7) {
+    width: 90%;
+  }
+  @include screen-style(iphoneSE) {
+    width: 90%;
+  }
 }
 .item-text {
   position: absolute;
@@ -77,6 +114,12 @@ export default {
   text-align: center;
   background-color: #6E97C4;
   transition: 0.3s ease-in-out;
+  @include screen-style(iphone7) {
+    width: 90%;
+  }
+  @include screen-style(iphoneSE) {
+    width: 90%;
+  }
 }
 .item-name {
   font-family: 'Montserrat', sans-serif;

@@ -1,10 +1,5 @@
-<template>
-  <div class="progress" :style="{
-    'width': percent+'%',
-    'height': height,
-    'background-color': canSuccess? color : failedColor,
-    'opacity': show ? 1 : 0
-  }"></div>
+<template lang='pug'>
+  .progress(:style='{ width: percent+"%", height: height, backgroundColor: canSuccess ? color : failedColor, opacity: show ? 1 : 0 }')
 </template>
 
 <script>
@@ -87,14 +82,14 @@ export default {
 <style scoped>
 .progress {
   position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 2px;
   width: 0%;
   transition: width 0.2s, opacity 0.4s;
   opacity: 1;
-  background-color: #efc14e;
+  background-color: #FC3164;
   z-index: 999999;
 }
 </style>

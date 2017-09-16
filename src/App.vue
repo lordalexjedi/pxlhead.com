@@ -26,27 +26,25 @@ export default {
   padding: 0;
 }
 html {
-  font-size: 62.5%;
+  font-size: calc(1.77vh / 1.7);
+  @include screen-style(fullHd) { font-size: calc(1.77vh / 1.7) ;}
+  @include screen-style(iMac) { font-size: calc(1.6vh / 1.7 );}
+  @include screen-style(ipadPro) { font-size: calc(1.74vh / 1.7) ;}
+  @include screen-style(ipadAir) { font-size: calc(0.75vh / 1.7) ;}
+  @include screen-style(iphone7) { font-size: calc(0.56vh / 1.7) ;}
+  @include screen-style(iphoneSE) { font-size: calc(0.56vh / 1.7) ;}
 }
 body {
   font-family: 'Roboto', sans-serif;
   // overflow: hidden;
 }
 
-.menu-transtion-enter-active {
-  animation: moveFromBottom .6s ease both;
-}
-.menu-transtion-leave-active {
-  animation: moveToBottom .6s ease both;
-}
 
-@keyframes moveToBottom {
-	from { }
-	to {transform: translateY(-100%); }
+.menu-transtion-enter-active, .menu-transtion-leave-active {
+  transition: opacity .5s
 }
-
-@keyframes moveFromBottom {
-	from {transform: translateY(-100%); }
+.menu-transtion-enter, .menu-transtion-leave-active {
+  opacity: 0
 }
 
 </style>

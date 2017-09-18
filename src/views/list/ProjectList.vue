@@ -17,9 +17,7 @@
           a.tag-link(v-for='n in 3') #CSS
         span.project-view-watch 4242
       .project-view-nav
-        a.project-view-arrow.arrow-prev PREV ITEM
-        h2 SCROLL
-          a.project-view-arrow.arrow-next NEXT ITEM
+        a.project-view-arrow(v-for='item in displayedItems')
 </template>
 
 <script>
@@ -116,46 +114,18 @@ export default {
   }
 }
 .search-box {
-  position: absolute;
-  top: 3rem;
-  right: 18%;
-  cursor: pointer;
-  z-index: 100;
-  &::before {
-    content: '';
-    position: absolute;
-    top: calc(50% - 2.5rem / 2);
-    left: 1.3rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: url('~@/assets/icons/search.svg') no-repeat center / 100%;
-  }
+  @extend %search;
 }
-.search {
-  display: block;
-  appearance: none;
-  background-color: #E0E0E0;
-  color: $color-main;
-  padding: 0 2rem;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 40px;
-  border-style: none;
-  outline-style: none;
-  font-size: 1.6rem;
-  transition: all .5s;
-  @include screen-style(fullHd) {
-    width: 30rem;
-    padding: 0 5rem;
+.search--active {
+  width: 30rem;
+  padding: 0 5rem;
+  cursor: text;
+  @include screen-style(iphone7) {
+    width: 27rem;
   };
-  @include screen-style(iMac) {
-    width: 30rem;
-    padding: 0 5rem;
+  @include screen-style(iphoneSE) {
+    width: 22rem;
   };
-  &:focus {
-    background-color: $color-blue;
-    color: $color-white;
-  }
 }
 .project-view-img {
   position: absolute;
@@ -189,7 +159,7 @@ export default {
 .project-view-title {
   @extend %heading;
   max-width: 50rem;
-  flex-basis: 50%;
+  flex-basis: 30%;
   text-align: left;
   color: #4f4f4f;
   max-width: 80rem;
@@ -215,7 +185,7 @@ export default {
 .project-view-description {
   @extend %paragraph;
   position: relative;
-    overflow: visible;
+  overflow: visible;
   width: 80%;
   max-width: 50rem;
   flex-basis: 20%;
@@ -233,10 +203,10 @@ export default {
 }
 .project-view-nav {
   position: absolute;
-  top: 20%;
+  top: calc(50% - 20% / 2);
   right: 5rem;
   width: 7rem;
-  height: 60%;
+  height: 20%;
   display: flex;
   color: transparentize($color-grey, 0.2);
   flex-direction: column;
@@ -249,36 +219,19 @@ export default {
   }
 }
 .project-view-arrow {
-  position: relative;
-  width: 100%;
-  font-size: 2rem;
-  text-align: center;
-  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: #f2f2f2;
   transition: 0.3s ease-in-out;
+  cursor: pointer;
   &:hover {
-    color: $color-grey;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    left: calc(50% - 4rem / 2);
-    width: 4rem;
-    height: 4rem;
+    background-color: darken(#f2f2f2, 20%);
+    transition: 0.3s ease-in-out;
   }
 }
-.arrow-prev {
-  &::after {
-    top: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
-}
-.arrow-next {
-  &::after {
-    transform: rotate(180deg);
-    bottom: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
+.arrow-active {
+  background-color: $color-blue;
 }
 .project-view-tag {
   position: absolute;

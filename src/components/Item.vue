@@ -24,7 +24,7 @@ export default {
 <style lang='scss'>
 @import '~style';
 .item {
-  height: 33rem;
+  height: 36rem;
   position: relative;
   margin: 0 2% 7% 2%;
   transition: 0.3s ease-in-out;
@@ -125,7 +125,7 @@ export default {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
-  margin-top: 7rem;
+  margin-top: 8rem;
   width: 80%;
   max-height: 1.8rem * 2 + 1rem / 2;
   overflow: hidden;
@@ -142,7 +142,7 @@ export default {
   margin-top: 1rem;
   font-weight: 500;
   width: 80%;
-  max-height: 1.2rem * 2 + 1rem / 2;
+  max-height: 1.2rem * 3 + 0.7rem / 2;
   opacity: 0.8;
 }
 .item-info {

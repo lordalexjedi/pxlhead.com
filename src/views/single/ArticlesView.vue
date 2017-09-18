@@ -9,32 +9,37 @@
           .article-view-action
             a.article-view-btn(@click='scrollRead') READ
             a.article-view-btn COMMENT
+      .article-view-navbar
         a.article-view-esc
         .article-view-social
           a.article-view-link.link--facebook
           a.article-view-link.link--twitter
           a.article-view-link.link--link
+        a.article-view-comment
       .article-read
-        .text-block(v-html='item.text')
+        .text-wrapper
+          .text-block(v-html='item.text')
       .article-comments
         spinner(:show='loading')
-        .article-comments-header
-          .article-comments-title COMMENTS
-            span.article-comments-counter (42)
-          a.article-comments-submit(@click='comment=!comment')
-        transition(name='fade')
-          form.article-comments-form(v-show='comment')
-            .article-comments-img
-            .article-comments-input
-              input.article-comments-name(placeholder='ex. Marty McFly')
-              textarea.article-comments-message(placeholder='Dont panic')
-            a.article-comments-send
-        .article-comments-list(v-if='!loading')
-          comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-        a.article-comments-up(@click='scrollTop')
+        .text-wrapper
+          .article-comments-header
+            .article-comments-title COMMENTS
+              span.article-comments-counter (42)
+            a.article-comments-submit(@click='comment=!comment')
+          transition(name='fade')
+            form.article-comments-form(v-show='comment')
+              .article-comments-img
+              .article-comments-input
+                input.article-comments-name(placeholder='ex. Marty McFly')
+                textarea.article-comments-message(placeholder='Dont panic')
+              a.article-comments-send
+          .article-comments-list(v-if='!loading')
+            comment(v-for='id in item.commentIds'  :key='id'  :id='id')
+          a.article-comments-up(@click='scrollTop')
 </template>
 
 <script>
+import { TweenLite } from 'gsap'
 import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
 
@@ -101,7 +106,7 @@ function fetchComments(store, item) {
 .article-view {
   height: 100vh;
   position: relative;
-  background: $color-white;
+  background: $color-blue;
   background-size: cover;
   z-index: 100;
   opacity: 1;
@@ -133,6 +138,15 @@ function fetchComments(store, item) {
   flex-direction: column;
   justify-content: flex-start;
   z-index: 101;
+  @include screen-style(iphone7) {
+    left: 10%;
+  };
+  @media (orientation: portrait) {
+    width: 70vw;
+    top: 20vh;
+    height: 70vh;
+    left: 5rem;
+  }
 }
 .article-view-date {
   flex-basis: 1.5rem;
@@ -143,6 +157,16 @@ function fetchComments(store, item) {
 .article-view-title {
   @extend %heading;
   margin: 2rem 0;
+  @include screen-style(iphone7) {
+    font-size: 6rem;
+    line-height: 8rem;
+    max-height: 6rem * 5 + 8rem / 2;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 6rem;
+    line-height: 8rem;
+    max-height: 6rem * 5 + 8rem / 2;
+  };
 }
 .article-view-description {
   @extend %paragraph;
@@ -150,23 +174,113 @@ function fetchComments(store, item) {
   overflow: hidden;
   font-size: 2rem;
   min-height: 2rem * 2 + 2.5rem / 2;
-  max-height: 2rem * 3 + 2.5rem / 2;
+  max-height: 2rem * 5 + 2.5rem / 2;
   max-width: 60rem;
+  @media (orientation: portrait) {
+    margin: 2rem 0;
+  }
 }
 .article-view-action {
   margin: 2rem 0;
   max-width: 35rem;
   display: flex;
   justify-content: space-between;
+  @include screen-style(ipadPro) {
+    max-width: 28rem;
+  };
+  @include screen-style(ipadAir) {
+    max-width: 28rem;
+  };
+  @include screen-style(iphone7) {
+    max-width: 28rem;
+  };
+  @include screen-style(iphoneSE) {
+    max-width: 28rem;
+  };
 }
 .article-view-btn {
   @extend %btn-text;
+  @include screen-style(ipadPro) {
+    width: 12rem;
+    height: 5rem;
+    border-radius: 5rem;
+    font-size: 1.4rem;
+    line-height: 5rem;
+  };
+  @include screen-style(ipadAir) {
+    width: 12rem;
+    height: 5rem;
+    border-radius: 5rem;
+    font-size: 1.4rem;
+    line-height: 5rem;
+  };
+  @include screen-style(iphone7) {
+    width: 12rem;
+    height: 5rem;
+    border-radius: 5rem;
+    font-size: 1.4rem;
+    line-height: 5rem;
+  };
+  @include screen-style(iphoneSE) {
+    width: 12rem;
+    height: 5rem;
+    border-radius: 5rem;
+    font-size: 1.4rem;
+    line-height: 5rem;
+  };
+}
+.article-view-btn:nth-of-type(2){
+  @media (orientation: portrait) {
+    display: none;
+  }
+}
+.article-view-comment {
+  display: none;
+  @media (orientation: portrait) {
+    position: absolute;
+    display: block;
+    top: calc(50% - 6rem / 2);
+    left: 5rem;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 101;
+    background-color: transparentize(#000, 0.9);
+    &:hover {
+      background-color: darken($color-blue, 10%);
+      transition: 0.3s ease-in-out;
+    }
+    &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      @include center-pos(4rem);
+      background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
+    }
+  }
+}
+.article-view-navbar {
+  @media (orientation: portrait) {
+    position: fixed;
+    width: 100%;
+    height: 12%;
+    left: 0;
+    bottom: 0;
+    z-index: 101;
+    background-color: $color-blue;
+  }
 }
 .article-view-esc {
   @extend %btn-esc;
   right: 5rem;
   z-index: 101;
   background-color: transparentize(#000, 0.9);
+  @media (orientation: portrait) {
+    top: calc(50% - 6rem / 2);
+    width: 6rem;
+    height: 6rem;
+  }
 }
 .article-view-social {
   position: absolute;
@@ -177,12 +291,26 @@ function fetchComments(store, item) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media (orientation: portrait) {
+    top: calc(50% - 5rem / 2);
+    left: calc(50% - 20rem / 2);
+    width: 20rem;
+    height: 5rem;
+    flex-direction: row;
+  }
 }
 .article-view-link {
   @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
   z-index: 101;
+  @media (orientation: portrait) {
+    background-color: transparent;
+    box-shadow: none;
+    &:hover {
+      background-color: transparentize(#000, 0.9);
+    }
+  }
   &::after {
     @include center-pos(2rem);
   }
@@ -206,11 +334,27 @@ function fetchComments(store, item) {
   position: relative;
   background-color: $color-white;
 }
+.text-wrapper {
+  margin: 0 24%;
+  @include screen-style(iMac) {
+    margin: 0 20%;
+  };
+  @include screen-style(ipadPro) {
+    margin: 0 10%;
+  };
+  @include screen-style(ipadAir) {
+    margin: 0 10%;
+  };
+  @include screen-style(iphone7) {
+    margin: 0 8%;
+  };
+  @include screen-style(iphoneSE) {
+    margin: 0 8%;
+  };
+}
 .text-block {
   position: relative;
-  left: calc(50% - 100rem / 2);
-  min-height: 100vh; //???
-  width: 100rem;
+  min-height: 100vh;
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
   padding: 5rem 0;
@@ -240,7 +384,7 @@ function fetchComments(store, item) {
       content: '';
       top: 5rem;
       left: 0;
-      width: 100rem;
+      width: 100%;
       height: 0.3rem;
       background-color: #D7DEE8;
     }
@@ -255,11 +399,11 @@ function fetchComments(store, item) {
   position: relative;
   width: 100%;
   font-size: 2rem;
-  line-height: 2rem;
-  padding: 1.5rem 0;
+  line-height: 3rem;
   margin-bottom: 3rem;
   background-color: $color-lightblue;
   justify-content: flex-start;
+  text-align: justify;
   &::after {
     position: absolute;
     display: block;
@@ -269,34 +413,29 @@ function fetchComments(store, item) {
     right: 3rem;
     width: 3rem;
     height: 3rem;
-    background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
+    background: url('~@/assets/icons/link-black.svg') no-repeat center / 120%;
+  }
+  pre {
+    overflow: auto;
+    height: 100%;
   }
   span {
     position: absolute;
     display: block;
+    // overflow: hidden;
+    white-space: normal;
     top: 0;
     left: 0;
     width: 3rem;
     height: 100%;
-    padding: 0 1rem;
-    &::before {
-      position: absolute;
-      display: block;
-      content: '';
-      top: 0;
-      left: 0;
-      width: 3rem;
-      height: 100%;
-      padding: 0 1rem;
-      background-color: #D7DEE8;
-    }
+    padding: 0 1%;
+    background-color: #D7DEE8;
   }
   code {
-    position: absolute;
-    top: 0;
-    left: 6rem;
+    position: relative;
     height: 100%;
-    width: calc(100% - 6rem);
+    width: 80%;
+    padding: 0 3rem;
   }
 }
 .text-attention {
@@ -422,9 +561,6 @@ function fetchComments(store, item) {
   justify-content: space-between;
   align-items: center;
   padding: 4rem 0;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
 }
 .article-comments-title {
   font-size: 2.5rem;
@@ -435,7 +571,6 @@ function fetchComments(store, item) {
   position: relative;
   flex-basis: 5rem;
   height: 5rem;
-  margin-right: 4rem;
   border-radius: 50%;
   font-size: 1.3rem;
   font-weight: bold;
@@ -443,6 +578,7 @@ function fetchComments(store, item) {
   text-align: center;
   cursor: pointer;
   line-height: 4rem;
+  margin-right: 2rem;
   background-color: $color-pink;
   transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
   &:hover {
@@ -495,6 +631,24 @@ function fetchComments(store, item) {
   background-color: $color-pink;
   transition: 0.3s ease-in-out;
   border-radius: 50%;
+  @include screen-style(ipadPro) {background-color: #D7DEE8;
+    width: 5rem;
+    height: 5rem;
+    bottom: 4rem;
+    right: 2rem;
+  };
+  @include screen-style(ipadAir) {
+    width: 5rem;
+    height: 5rem;
+    bottom: 4rem;
+    right: 2rem;
+  };
+  @include screen-style(iphone7) {
+    display: none;
+  };
+  @include screen-style(iphoneSE) {
+    display: none;
+  };
   &::after {
     position: absolute;
     display: block;
@@ -518,16 +672,15 @@ function fetchComments(store, item) {
   padding: 4rem 0;
   margin-bottom: 4rem;
   height: 15rem;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
+  width: 100%;
   background-color: $color-lightblue;
   transition: 0.5s ease-in-out;
+
   &::after {
     display: block;
     content: '';
     top: -7rem;
-    right: 4.5rem;
+    right: 2.5rem;
     border: solid transparent;
     height: 4rem;
     width: 0rem;

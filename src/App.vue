@@ -1,7 +1,7 @@
 <template lang='pug'>
   #app
     app-menu
-    transition(name='menu-transtion')
+    transition(name='menu-transtion' mode='out-in')
       router-view
 </template>
 
@@ -26,13 +26,7 @@ export default {
   padding: 0;
 }
 html {
-  font-size: calc(1.77vh / 1.7);
-  @include screen-style(fullHd) { font-size: calc(1.77vh / 1.7) ;}
-  @include screen-style(iMac) { font-size: calc(1.6vh / 1.7 );}
-  @include screen-style(ipadPro) { font-size: calc(1.74vh / 1.7) ;}
-  @include screen-style(ipadAir) { font-size: calc(0.75vh / 1.7) ;}
-  @include screen-style(iphone7) { font-size: calc(0.56vh / 1.7) ;}
-  @include screen-style(iphoneSE) { font-size: calc(0.56vh / 1.7) ;}
+  font-size: 1vh ;
 }
 body {
   font-family: 'Roboto', sans-serif;

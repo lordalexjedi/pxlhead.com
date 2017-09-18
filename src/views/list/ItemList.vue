@@ -166,7 +166,7 @@ export default {
     color: $color-blue;
   };
   &:hover {
-    background-color: $color-white;
+    background-color: darken($color-blue, 10%);
   }
   @include screen-style(iphoneSE) {
     background-color: transparent;
@@ -176,7 +176,7 @@ export default {
     color: $color-blue;
   };
   &:hover {
-    background-color: $color-white;
+    background-color: darken($color-blue, 10%);
   }
 }
 .sort-item--on {
@@ -214,6 +214,9 @@ export default {
     padding: 0 5rem;
   };
 }
+.search::placeholder {
+  opacity: 0;
+}
 .search--active {
   width: 30rem;
   padding: 0 5rem;
@@ -225,8 +228,8 @@ export default {
     width: 22rem;
   };
 }
-.search--active ::placeholder {
-  display: block;
+.search--active::placeholder {
+  opacity: 1;
 }
 .gallery {
   display: flex;

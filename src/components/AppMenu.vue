@@ -307,16 +307,10 @@ export default {
   left: 5rem;
   width: 5rem;
   height: 5rem;
-  background-color: transparentize($color-blue, 0.2);
+  background-color: transparentize(#000, 0.9);
   border-radius: 50%;
   cursor: pointer;
   transition: transform ease-out 0.1s, background 0.2s;
-  @include screen-style(ipadPro) {
-    left: 13rem;
-  };
-  @include screen-style(ipadAir) {
-    left: 10rem;
-  };
   @include screen-style(iphone7) {
     left: 2rem;
   };
@@ -326,7 +320,7 @@ export default {
     height: 4rem;
   };
   &:hover {
-    background-color: transparentize($color-blue, 0.1);
+    background-color: transparentize(#000, 0.8);
     transform: scale(0.9);
     transition: transform ease-out 0.1s, background 0.2s;
     &::after {
@@ -340,7 +334,7 @@ export default {
     top: 0;
     left: 0;
     z-index: 1;
-    box-shadow: 0 0 0 2px transparentize($color-blue, 0.1);
+    box-shadow: 0 0 0 2px transparentize(#000, 0.9);
     opacity: 0;
     transform: scale(0.7);
     width: 100%;
@@ -363,13 +357,8 @@ export default {
   left: 12rem;
   font-size: 2rem;
   font-weight: 600;
-  color: $color-blue;
-  @include screen-style(ipadPro) {
-    left: 20rem;
-  };
-  @include screen-style(ipadAir) {
-    left: 17rem;
-  };
+  letter-spacing: 5px;
+  color: $color-white;
   @include screen-style(iphone7) {
     display: none;
   };
@@ -438,12 +427,12 @@ export default {
   40% {
     opacity: 0.5;
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px $color-blue,
+                0 0 10px 10px transparentize(#000, 0.6),
                 0 0 0 10px rgba(255, 255, 255, 0.3);
   }
   100% {
     box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1),
-                0 0 10px 10px $color-blue,
+                0 0 10px 10px transparentize(#000, 0.6),
                 0 0 0 10px rgba(255, 255, 255, 0.3);
     transform: scale(1.5);
     opacity: 0;

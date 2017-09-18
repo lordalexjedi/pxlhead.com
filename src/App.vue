@@ -1,7 +1,7 @@
 <template lang='pug'>
   #app
     app-menu
-    transition(name='menu-transtion')
+    transition(name='menu-transtion' mode='out-in')
       router-view
 </template>
 

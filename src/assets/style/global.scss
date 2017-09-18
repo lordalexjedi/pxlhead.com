@@ -46,6 +46,7 @@ $FULLHD: 1920px;
   }
 }
 
+
 // @include screen-style(iphoneSE) { width: 100% ;}
 
 @mixin center-pos($size) {
@@ -276,7 +277,7 @@ $FULLHD: 1920px;
       height: 4rem;
     };
     &:focus {
-      background-color: $color-blue;
+      background-color: darken(#E0E0E0, 20%);
       color: $color-white;
     }
   }

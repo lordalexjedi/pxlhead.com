@@ -1,47 +1,61 @@
 <template lang='pug'>
-  .music-view(v-if='item')
+  .item-main(v-if='item')
     template(v-if='item')
-      .search-box
-        input.search(type='search' name='search' placeholder='droids u r looking for...')
-      a.music-view-esc
-      .music-view-body
-        .music-view-text
-          h1.music-view-title {{ item.title }}
-          p.music-view-description {{ item.description }}
-          .music-view-action
-            a.music-view-link.link--code(@click='playlist = !playlist') PLAY
-            a.music-view-comment
-        .music-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-        a.music-view-playlist-volume
-          .volume-toggle
-            .volume-toggler(v-for='n in 6')
-        a.music-view-playlist-btn(@click='playlist = !playlist')
-          transition(name='fade')
-            .playlist-body(v-show='playlist')
-              li.playlist-list
-                .playlist-player(v-for='n in 5')
-                  a.player-play
-                  .player-info
-                    .player-content
-                      h2.player-name Soundtrack name
-                      span.player-date 29/12/2017
-                    .player-control
-                      input.player-timeline(type='range')
-        .music-view-social
-          a.social-link.link-twitter
-          a.social-link.link-facebook
-          a.social-link.link-dribbble
-        .music-view-tag
-          a.tag-link(v-for='n in 3') #CSS
-        span.music-view-watch 4242
-    .music-view-nav
-      a.music-view-arrow.arrow-prev PREV ITEM
-      h2 SCROLL
-      a.music-view-arrow.arrow-next NEXT ITEM
-    .music-view-comments
-      //- spinner(:show='loading')
-      .comment-children(v-if='!loading')
-        comment(v-for='id in item.commentIds'  :key='id'  :id='id')
+      .item-view
+        .search-box(@click='searching = true')
+          input.search(type='search' name='search' placeholder='droids u r looking for...' v-bind:class='{ "search--active": searching }')
+        a.item-view-esc
+        .item-view-body
+          .item-view-text
+            h1.item-view-title {{ item.title }}
+            p.item-view-description {{ item.description }}
+            .item-view-action
+              a.item-view-link.link--code VIEW
+              a.item-view-comment(@click='commentDown')
+          .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+          a.music-view-playlist-volume(@click='volume = !volume')
+            transition(name='fade')
+              .volume-toggle(v-show='volume')
+                .volume-toggler(v-for='n in 6')
+          a.music-view-playlist-btn(@click='playlist = !playlist')
+            transition(name='fade')
+              .playlist-body(v-show='playlist')
+                li.playlist-list
+                  .playlist-player(v-for='n in 5')
+                    a.player-play
+                    .player-info
+                      .player-content
+                        h2.player-name Soundtrack name
+                        span.player-date 29/12/2017
+                      .player-control
+                        input.player-timeline(type='range')
+          .item-view-social
+            a.social-link.link-twitter
+            a.social-link.link-facebook
+            a.social-link.link-dribbble
+          .item-view-tag
+            a.tag-link(v-for='n in 3') #CSS
+          span.item-view-watch 4242
+        .item-view-nav
+          a.item-view-arrow.arrow-prev PREV ITEM
+          h2 SCROLL
+          a.item-view-arrow.arrow-next NEXT ITEM
+      .item-comments(v-show='commentClick')
+        //- spinner(:show='loading')
+        .item-comments-header
+          .item-comments-title COMMENTS
+            span.item-comments-counter (42)
+          a.item-comments-submit(@click='comment=!comment')
+        transition(name='fade')
+          form.item-comments-form(v-show='comment')
+            .item-comments-img
+            .item-comments-input
+              input.item-comments-name(placeholder='ex. Marty McFly')
+              textarea.item-comments-message(placeholder='Dont panic')
+            a.item-comments-send
+        .item-comments-list(v-if='!loading')
+          comment(v-for='id in item.commentIds'  :key='id'  :id='id')
+        a.item-comments-up(@click='scrollTop')
 </template>
 
 <script>
@@ -53,8 +67,12 @@ export default {
   components: { Spinner, Comment },
 
   data: () => ({
+    searching: false,
+    commentClick: false,
+    comment: false,
     loading: true,
-    playlist: false
+    playlist: false,
+    volume: false
   }),
 
   computed: {
@@ -83,6 +101,14 @@ export default {
           this.loading = false
         })
       }
+    },
+    commentDown() {
+      this.commentClick = true,
+      TweenLite.to(window, 0.5, { scrollTo: 1000 })
+    },
+    scrollTop() {
+      this.commentClick = false,
+      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }
@@ -98,72 +124,8 @@ function fetchComments(store, item) {
 
 <style lang='scss'>
 @import '~style';
+@import '../../assets/style/view.scss';
 
-.music-view {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #fff;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 73%;
-    height: 100%;
-    background: #f2f2f2;
-  }
-}
-.search-box {
-  position: absolute;
-  top: 3rem;
-  right: 17%;
-  cursor: pointer;
-  z-index: 100;
-  &::before {
-    content: '';
-    position: absolute;
-    top: calc(50% - 2.5rem / 2);
-    left: 1.3rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: url('~@/assets/icons/search.svg') no-repeat center / 100%;
-  }
-}
-.search {
-  display: block;
-  appearance: none;
-  background-color: #E0E0E0;
-  color: $color-main;
-  padding: 0 2rem;
-  width: 5rem;
-  height: 5rem;
-  border-radius: 40px;
-  border-style: none;
-  outline-style: none;
-  font-size: 1.6rem;
-  transition: all .5s;
-  @include screen-style(fullHd) {
-    width: 30rem;
-    padding: 0 5rem;
-  };
-  @include screen-style(iMac) {
-    width: 30rem;
-    padding: 0 5rem;
-  };
-  &:focus {
-    background-color: $color-blue;
-    color: $color-white;
-  }
-}
-.music-view-img {
-  @extend %img;
-  flex-basis: 80rem;
-  height: 60rem;
-}
 .music-view-playlist-btn {
   @extend %btn-icon;
   top: 3rem;
@@ -182,9 +144,6 @@ function fetchComments(store, item) {
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
-  &:hover {
-    width: 15rem;
-  }
   &::after {
     background: url('~@/assets/icons/volume.svg') no-repeat center / 100%;
   }
@@ -192,11 +151,11 @@ function fetchComments(store, item) {
 .volume-toggle {
   position: absolute;
   display: flex;
-  opacity: 1;
-  top: calc(50% - 2rem / 2);
-  left: 4rem;
-  width: 0rem;
+  top: calc(50% - 4rem / 2);
+  left: 5rem;
+  width: 6rem;
   height: 2rem;
+  padding: 1rem;
   justify-content: space-around;
   align-items: center;
   background-color: $color-pink;
@@ -211,10 +170,6 @@ function fetchComments(store, item) {
   &:hover ~ .volume-toggler {
     opacity: 0.8;
   }
-}
-.music-view-playlist-volume:hover .volume-toggle {
-  width: 8rem;
-  transition: 0.3s ease-in-out;
 }
 .playlist-body {
   position: absolute;
@@ -318,183 +273,5 @@ function fetchComments(store, item) {
     border-radius: 50%;
     cursor: pointer;
   }
-}
-.music-view-body {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  top: 20%;
-  background-position: center;
-  background-size: cover;
-  left: calc(50% - 75% / 2);
-  width: 75%;
-  height: 60%;
-  z-index: 100;
-}
-.music-view-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  height: 95%;
-  // padding: 4rem;
-}
-.music-view-title {
-  @extend %heading;
-  max-width: 50rem;
-  flex-basis: 50%;
-  text-align: right;
-  color: #4f4f4f;
-}
-.music-view-watch {
-  position: absolute;
-  display: block;
-  bottom: -9rem;
-  right: 70rem;
-  font-size: 1.7rem;
-  color: $color-grey;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 2rem;
-    height: 2rem;
-    top: 0;
-    left: -4rem;
-    background: url('~@/assets/icons/eye-black.svg') no-repeat center / 100%;
-  }
-}
-.music-view-description {
-  @extend %paragraph;
-  flex-basis: 20%;
-  margin-left: 5rem;
-  max-height: 2rem * 6 + 2.5rem / 2;
-  color: darken($color-grey, 10%);
-}
-.music-view-action {
-  flex-basis: 6rem;
-  width: 25rem;
-  display: flex;
-  justify-content: space-between;
-}
-.music-view-link {
-  @extend %btn-text;
-}
-
-.music-view-comment {
-  @extend %btn-icon;
-  position: relative;
-  width: 6rem;
-  height: 6rem;
-  &::after {
-    @include center-pos(4rem);
-    background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
-  }
-}
-.music-view-nav {
-  position: absolute;
-  top: 20%;
-  right: 5rem;
-  width: 7rem;
-  height: 60%;
-  display: flex;
-  color: transparentize($color-grey, 0.2);
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  h2 {
-    font-size: 2rem;
-    text-align: center;
-    align-self: center;
-  }
-}
-.music-view-arrow {
-  position: relative;
-  width: 100%;
-  font-size: 2rem;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    color: $color-grey;
-    transition: 0.3s ease-in-out;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    left: calc(50% - 4rem / 2);
-    width: 4rem;
-    height: 4rem;
-  }
-}
-.arrow-prev {
-  &::after {
-    top: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
-}
-.arrow-next {
-  &::after {
-    transform: rotate(180deg);
-    bottom: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
-}
-.music-view-tag {
-  position: absolute;
-  bottom: -10rem;
-  right: 5rem;
-  width: 44rem;
-  height: 4rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.tag-link {
-  @extend %btn-text;
-  flex-basis: 12rem;
-  height: 5rem;
-  background-color: $color-blue;
-  line-height: 5rem;
-  &:hover {
-    background-color: darken($color-blue, 10%);
-  }
-}
-.music-view-social {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 6rem;
-  height: 25rem;
-  top: calc(50% - 25rem / 2);
-  right: -3rem;
-}
-.social-link {
-  @extend %btn-icon;
-  position: relative;
-  flex-basis: 5rem;
-  &::after {
-    @include center-pos(2rem);
-  }
-}
-.link-twitter {
-  &::after {
-    background: url('~@/assets/icons/twitter.svg') no-repeat center / 100%;
-  }
-}
-.link-facebook {
-  &::after {
-    background: url('~@/assets/icons/facebook.svg') no-repeat center / 100%;
-  }
-}
-.link-dribbble {
-  &::after {
-    background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
-  }
-}
-.music-view-esc {
-  @extend %btn-esc;
 }
 </style>

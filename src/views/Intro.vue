@@ -70,6 +70,10 @@ export default {
     }
   },
 
+  title() {
+    return 'Intro'
+  },
+
   beforeMount() {
     this.scene = new Scene()
     this.draw()
@@ -123,7 +127,7 @@ export default {
         this.moons.add(planet2)
 
         const planet3 = drawPlanet({ color: 0x3A2CAC, size: 10 })
-        planet3.position.set(100, 0, 120)
+        planet3.position.set(100, 0, 150)
         this.moons.add(planet3)
       })
 
@@ -147,7 +151,6 @@ export default {
       if (this.planet) {
         this.planet.rotation.y += 0.0002
         this.moons.rotation.y += 0.0005
-        this.moons.rotation.x += 0.0003
         this.space.rotation.y += 0.0005
       }
 

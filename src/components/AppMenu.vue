@@ -7,9 +7,9 @@
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
-        router-link.app-menu-link(v-show='topView' v-for='label in labels'
-          :style='{ top: label.top, left: label.left }'
-          :to='label.name'  :key='label.name') {{ label.name }}
+        router-link.app-menu-link(v-show='topView' v-for='link in linksData'
+          :style='{ top: link.top, left: link.left }'
+          :to='link.name'  :key='link.name') {{ link.name }}
 </template>
 
 <script>
@@ -35,7 +35,13 @@ export default {
       topView: false,
       showPointer: false,
       activeLink: '',
-      labels: []
+      linksData: [
+        { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002, radius: 50 },
+        { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001, radius: 80 },
+        { name: 'articles', color: 0x1DC3B0, size: 11, speed: 0.0008, radius: 110 },
+        { name: 'projects', color: 0x3CA1E7, size: 14, speed: 0.0006, radius: 140 },
+        { name: 'experiments', color: 0x5137EF, size: 15, speed: 0.0004, radius: 170 }
+      ]
     }
   },
 
@@ -90,14 +96,7 @@ export default {
       this.orbitSystem.add(mainPlanet)
       this.planets.push(mainPlanet)
 
-      this.planetsData = [
-        { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002, radius: 50 },
-        { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001, radius: 80 },
-        { name: 'articles', color: 0x1DC3B0, size: 11, speed: 0.0008, radius: 110 },
-        { name: 'projects', color: 0x3CA1E7, size: 14, speed: 0.0006, radius: 140 },
-        { name: 'experiments', color: 0x5137EF, size: 15, speed: 0.0004, radius: 170 }
-      ]
-      this.planetsData.forEach(data => {
+      this.linksData.forEach(data => {
         const planet = drawPlanet(data)
         planet.name = data.name
 
@@ -112,11 +111,6 @@ export default {
         planet.name = data.name
         orbit.add(planet)
         this.planets.push(planet)
-
-        this.labels.push({
-          name: data.name,
-          radius: data.radius
-        })
       })
 
       // draw lights
@@ -169,7 +163,6 @@ export default {
     changePage() {
       if (this.activeLink) {
         this.$router.push(`/${this.activeLink}`)
-        this.open = false
       }
     },
     animate() {
@@ -190,9 +183,9 @@ export default {
       this.width = window.innerWidth
       this.height = window.innerHeight
 
-      this.labels.forEach(label => {
-        label.top = this.height / 2 - 38 + label.radius * 1.8 + 'px'
-        label.left = this.width / 2 - 50 + 'px'
+      this.linksData.forEach(link => {
+        link.top = this.height / 2 - 38 + link.radius * 1.8 + 'px'
+        link.left = this.width / 2 - 50 + 'px'
       })
     },
     onResize() {
@@ -200,6 +193,12 @@ export default {
       this.camera.aspect = this.width / this.height
       this.camera.updateProjectionMatrix()
       this.renderer.setSize(this.width, this.height)
+    }
+  },
+
+  watch: {
+    '$route' () {
+      this.open = false
     }
   },
 

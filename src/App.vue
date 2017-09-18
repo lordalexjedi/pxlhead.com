@@ -26,11 +26,20 @@ export default {
   padding: 0;
 }
 html {
-  font-size: 1vh ;
+  overflow: hidden;
+  height: 100%;
+  font-size: calc(1.77vh / 1.7);
+  @include screen-style(fullHd) { font-size: calc(1.77vh / 1.7) ;}
+  @include screen-style(iMac) { font-size: calc(1.6vh / 1.7 );}
+  @include screen-style(ipadPro) { font-size: calc(1.74vh / 1.7) ;}
+  @include screen-style(ipadAir) { font-size: calc(0.75vh / 1.7) ;}
+  @include screen-style(iphone7) { font-size: calc(0.56vh / 1.7) ;}
+  @include screen-style(iphoneSE) { font-size: calc(0.56vh / 1.7) ;}
 }
 body {
+  height: 100%;
+  overflow: auto;
   font-family: 'Roboto', sans-serif;
-  // overflow: hidden;
 }
 
 

@@ -166,7 +166,7 @@ export default {
     color: $color-blue;
   };
   &:hover {
-    background-color: darken($color-blue, 10%);
+    background-color: $color-white;
   }
   @include screen-style(iphoneSE) {
     background-color: transparent;

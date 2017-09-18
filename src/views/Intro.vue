@@ -14,6 +14,7 @@
 
 <script>
 import { TweenLite, Power1 } from 'gsap'
+import { drawSpace, drawPlanet } from '@/util/space'
 
 import {
   Scene,
@@ -22,11 +23,8 @@ import {
   PCFSoftShadowMap,
   DirectionalLight,
   JSONLoader,
-  Mesh,
-  Geometry,
-  PointsMaterial,
-  Vector3,
-  Points
+  Group,
+  Mesh
 } from 'three'
 
 export default {
@@ -34,16 +32,6 @@ export default {
 
   data() {
     return {
-      scene: null,
-      camera: null,
-      renderer: null,
-
-      planet: null,
-      starSystem: null,
-
-      width: 0,
-      height: 0,
-
       frameIdx: 0,
       framesData: [{
         name: 'intro',
@@ -82,6 +70,10 @@ export default {
     }
   },
 
+  title() {
+    return 'Intro'
+  },
+
   beforeMount() {
     this.scene = new Scene()
     this.draw()
@@ -112,57 +104,61 @@ export default {
       window.addEventListener('wheel', this.onWheel)
     },
     draw() {
-      // draw planet
-      const loader = new JSONLoader()
-
-      loader.load('/public/models/planet.json', (geometry, materials) => {
+      const jsonLoader = new JSONLoader()
+      jsonLoader.load('/public/assets/planet.json', (geometry, materials) => {
+        // draw main planet
         this.planet = new Mesh(geometry, materials)
-
         this.planet.castShadow = true
         this.planet.receiveShadow = true
         this.planet.position.set(50, -10, 0)
         this.scene.add(this.planet)
+
+        // draw side planets
+        this.moons = new Group()
+        this.moons.position.set(50, -10, 0)
+        this.scene.add(this.moons)
+
+        const planet1 = drawPlanet({ color: 0x00F2B6, size: 13 })
+        planet1.position.set(-200, 0, -50)
+        this.moons.add(planet1)
+
+        const planet2 = drawPlanet({ color: 0xEC2242, size: 18 })
+        planet2.position.set(200, 0, -150)
+        this.moons.add(planet2)
+
+        const planet3 = drawPlanet({ color: 0x3A2CAC, size: 10 })
+        planet3.position.set(100, 0, 150)
+        this.moons.add(planet3)
       })
 
-      // draw stars
-      const stars = new Geometry()
-      const material = new PointsMaterial({
-        color: 0x98B5D6,
-        size: 0.5
-      })
+      this.space = drawSpace()
+      this.scene.add(this.space)
 
-      const randPos = () => (Math.random() - 0.5) * 300;
-      for (let i = 0; i < 300; i++) {
-        const star = new Vector3(randPos(), randPos(), randPos())
-        stars.vertices.push(star)
-      }
-
-      this.starSystem = new Points(stars, material)
-      this.scene.add(this.starSystem)
-
-      // add lights
+      // draw lights
       const light1 = new DirectionalLight(0xffffff, 1.3)
-      light1.position.set(-10, 20, 40)
+      light1.position.set(-180, 50, 50)
       light1.castShadow = true
       this.scene.add(light1)
 
       const light2 = new DirectionalLight(0xffffff, 0.6)
-      light2.position.set(30, -40, 50)
+      light2.position.set(70, 50, 50)
       light2.castShadow = true
       this.scene.add(light2)
     },
     animate() {
       requestAnimationFrame(this.animate)
 
-      this.starSystem.rotation.y += 0.0005
-      // this.planet.rotation.y += 0.0002
+      if (this.planet) {
+        this.planet.rotation.y += 0.0002
+        this.moons.rotation.y += 0.0005
+        this.space.rotation.y += 0.0005
+      }
 
       this.renderer.render(this.scene, this.camera)
     },
     setSize() {
       this.width = window.innerWidth
-      // TODO: fix scrollbar bug
-      this.height = window.innerHeight - 2
+      this.height = window.innerHeight
     },
     onResize() {
       this.setSize()
@@ -171,7 +167,7 @@ export default {
       this.renderer.setSize(this.width, this.height)
     },
     // actions
-    onWheel() {
+    onWheel(event) {
       if (event.deltaY > 0 && !this.delay) {
         this.distance += this.speed
         if (Math.floor(this.distance) > this.frameIdx) {
@@ -241,7 +237,7 @@ export default {
   font-size: 8rem;
   font-weight: 700;
   letter-spacing: 3px;
-  color: #43A4F1;
+  color: #00D6A0;
 }
 .intro-subtitle {
   color: $color-white;

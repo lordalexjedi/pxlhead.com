@@ -7,8 +7,9 @@
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
-        h2.app-menu-lable(v-show='topView' v-for='label in labels'
-          :style='{ top: label.top, left: label.left }') {{ label.name }}
+        router-link.app-menu-link(v-show='topView' v-for='label in labels'
+          :style='{ top: label.top, left: label.left }'
+          :to='label.name'  :key='label.name') {{ label.name }}
 </template>
 
 <script>
@@ -53,7 +54,7 @@ export default {
   methods: {
     init() {
       this.camera = new PerspectiveCamera(75, this.width / this.height, 0.1, 1000)
-      this.camera.position.set(0, -20, 300)
+      this.camera.position.z = 300
 
       this.renderer = new WebGLRenderer({ alpha: true, antialias: true })
       this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -73,18 +74,20 @@ export default {
     draw() {
       // draw stars
       this.starSystem = drawSpace()
+      this.starSystem.rotation.x = -1.2
       this.scene.add(this.starSystem)
 
       // draw planets with page links
       this.orbitSystem = new Group()
       this.orbitSystem.rotation.x = -1.2
+      this.orbitSystem.position.y = 20
       this.scene.add(this.orbitSystem)
 
       this.planets = []
 
       const mainPlanet = drawPlanet({ color: 0xD8DF72, size: 28 })
       mainPlanet.name = 'intro'
-      this.scene.add(mainPlanet)
+      this.orbitSystem.add(mainPlanet)
       this.planets.push(mainPlanet)
 
       this.planetsData = [
@@ -137,8 +140,10 @@ export default {
 
       if (metOrbits.length > 0) {
         const orbit = metOrbits[0].object
-        TweenLite.to(orbit.material, 1.5, { opacity: 0.8 })
-        TweenLite.to(orbit.material, 1.5, { opacity: 0.2, delay: 1.5 })
+        if (orbit.speed) {
+          TweenLite.to(orbit.material, 1.5, { opacity: 0.8 })
+          TweenLite.to(orbit.material, 1.5, { opacity: 0.2, delay: 1.5 })
+        }
       }
 
       if (metPlanets.length > 0) {
@@ -153,9 +158,11 @@ export default {
     onWheel(event) {
       if (event.deltaY < 0) {
         TweenLite.to(this.orbitSystem.rotation, 2, { x: -1.2 })
+        TweenLite.to(this.starSystem.rotation, 2, { x: -1.2 })
         this.topView = false
       } else {
         TweenLite.to(this.orbitSystem.rotation, 2, { x: 0 })
+        TweenLite.to(this.starSystem.rotation, 2, { x: 0 })
         this.topView = true
       }
     },
@@ -169,9 +176,11 @@ export default {
       requestAnimationFrame(this.animate)
 
       if (this.open && this.starSystem) {
-        // this.starSystem.rotation.z -= 0.0004
+        this.starSystem.rotation.x -= 0.0004
         this.orbitSystem.children.forEach(orbit => {
-          orbit.rotation.z += orbit.speed
+          if (orbit.speed) {
+            orbit.rotation.z += orbit.speed
+          }
         })
 
         this.renderer.render(this.scene, this.camera)
@@ -330,16 +339,18 @@ export default {
     transition: 0.3s ease-in-out;
   }
 }
-.app-menu-lable {
+.app-menu-link {
   display: block;
   position: absolute;
   font-size: 16px;
   width: 100px;
   text-transform: uppercase;
+  text-decoration: none;
   text-align: center;
   color: $color-white;
   transition: all 0.3s;
   opacity: 0.8;
+  cursor: pointer;
 }
 .pointer {
   cursor: pointer;

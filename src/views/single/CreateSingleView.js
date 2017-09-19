@@ -1,15 +1,5 @@
 import ItemView from './ItemView.vue'
-import ArticlesView from './ArticlesView.vue'
-import MusicView from './MusicView.vue'
-
-function getComponent(type) {
-  if (type === 'articles') {
-    return ArticlesView
-  } else if (type === 'music') {
-    return MusicView
-  }
-  return ItemView
-}
+import ArticleView from './ArticleView.vue'
 
 export default function createListView(type) {
   return {
@@ -20,7 +10,9 @@ export default function createListView(type) {
     },
 
     render(h) {
-      return h(getComponent(type))
+      return type === 'articles'
+      ? h(ArticleView)
+      : h(ItemView)
     }
   }
 }

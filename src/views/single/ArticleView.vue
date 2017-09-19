@@ -45,7 +45,7 @@ import Comment from '@/components/Comment.vue'
 import BtnTop from '@/components/BtnTop.vue'
 
 export default {
-  name: 'articles-view',
+  name: 'article-view',
   components: {
     Spinner,
     Comment,

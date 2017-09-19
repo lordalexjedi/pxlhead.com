@@ -27,7 +27,7 @@ export function createRouter () {
       { path: '/music/:id', component: createSingleView('music') },
       { path: '/art/:id', component: createSingleView('art') },
 
-      { path: '/', redirect: '/articles' }
+      { path: '/', redirect: '/intro' }
     ]
   })
 }

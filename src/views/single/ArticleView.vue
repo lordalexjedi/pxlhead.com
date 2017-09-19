@@ -1,14 +1,14 @@
 <template lang='pug'>
   .article-main(v-if='item')
     template(v-if='item')
-      .article-view(:class='{ "article-view--push": read}' v-bind:style='{ backgroundImage: `url(${item.imageURL})` }')
+      .article-view(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .article-view-text
           span.article-view-date 11/12/2017
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
-            a.article-view-btn(@click='scrollRead') READ
-            a.article-view-btn COMMENT
+            a.article-view-btn(@click='scrollToText') READ
+            a.article-view-btn(@click='scrollToComments') COMMENT
       .article-view-navbar
         a.article-view-esc
         .article-view-social
@@ -19,83 +19,47 @@
       .article-read
         .text-wrapper
           .text-block(v-html='item.text')
-      .article-comments
-        spinner(:show='loading')
-        .text-wrapper
-          .article-comments-header
-            .article-comments-title COMMENTS
-              span.article-comments-counter (42)
-            a.article-comments-submit(@click='comment=!comment')
-          transition(name='fade')
-            form.article-comments-form(v-show='comment')
-              .article-comments-img
-              .article-comments-input
-                input.article-comments-name(placeholder='ex. Marty McFly')
-                textarea.article-comments-message(placeholder='Dont panic')
-              a.article-comments-send
-          .article-comments-list(v-if='!loading')
-            comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-          a.article-comments-up(@click='scrollTop')
+      comments(:item='item' v-show='showComments' ref='comments')
+      btn-top
 </template>
 
 <script>
-import { TweenLite } from 'gsap'
-import Spinner from '@/components/Spinner.vue'
-import Comment from '@/components/Comment.vue'
+import Comments from '@/components/Comments.vue'
+import BtnTop from '@/components/BtnTop.vue'
 
 export default {
-  name: 'articles-view',
-  components: { Spinner, Comment },
+  name: 'article-view',
+  components: {
+    Comments,
+    BtnTop
+  },
 
   data: () => ({
     loading: true,
-    read: false,
-    comment: false
+    showComments: false
   }),
 
   computed: {
     item() {
       return this.$store.state.items[this.$route.params.id]
-    },
+    }
   },
 
   title() {
     return this.item.title
   },
 
-  beforeMount() {
-    this.fetchComments()
-  },
-
-  watch: {
-    item: 'fetchComments'
-  },
-
   methods: {
-    fetchComments() {
-      if (this.item.commentIds) {
-        this.loading = true
-        fetchComments(this.$store, this.item).then(() => {
-          this.loading = false
-        })
-      }
+    scrollToText() {
+      const readEl = this.$el.querySelector('.article-read')
+      TweenLite.to(window, 1, { scrollTo: readEl })
     },
-    scrollRead() {
-      this.read = true,
-      TweenLite.to(window, 0.5, { scrollTo: 1000 })
-    },
-    scrollTop() {
-      this.read = false,
-      TweenLite.to(window, 0.5, { scrollTo: 0 })
-    }
-  }
-}
+    scrollToComments() {
+      this.showComments = true
 
-function fetchComments(store, item) {
-  if (item && item.commentIds) {
-    return store.dispatch('FETCH_COMMENTS', {
-      ids: item.commentIds
-    })
+      const commentEl = this.$refs.comments.$el
+      TweenLite.to(window, 0.5, { scrollTo: commentEl })
+    }
   }
 }
 </script>
@@ -122,11 +86,6 @@ function fetchComments(store, item) {
     z-index: 100;
     background-color: transparentize(#000, 0.8);
   }
-}
-.article-view--push {
-  opacity: 0;
-  transform: translateY(-100%) scale(0.9);
-  transition: all 1s cubic-bezier(0.7,0,0.3,1);
 }
 .article-view-text {
   position: absolute;
@@ -547,206 +506,6 @@ function fetchComments(store, item) {
     &::before, &::after {
       opacity: 1;
       transition: 0.3s ease-in-out;
-    }
-  }
-}
-.article-comments {
-  position: relative;
-  background-color: #F8FCFF;
-}
-.article-comments-header {
-  position: relative;
-  height: 5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4rem 0;
-}
-.article-comments-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: darken($color-grey, 17%);
-}
-.article-comments-submit {
-  position: relative;
-  flex-basis: 5rem;
-  height: 5rem;
-  border-radius: 50%;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: $color-white;
-  text-align: center;
-  cursor: pointer;
-  line-height: 4rem;
-  margin-right: 2rem;
-  background-color: $color-pink;
-  transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-  }
-  &::before {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 0.3rem / 2);
-    left: calc(50% - 2.5rem / 2);
-    width: 2.5rem;
-    height: 0.3rem;
-    background-color: $color-white;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 2.5rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    width: 0.3rem;
-    height: 2.5rem;
-    background-color: $color-white;
-  }
-}
-.comment-submit--active {
-  transform: rotate(45deg);
-  transition: 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-}
-.article-comments-list {
-  position: relative;
-  display: flex;
-  width: 100rem;
-  top: 0rem;
-  padding: 3rem 0;
-  left: calc(50% - 100rem / 2);
-  flex-direction: column;
-  justify-content: space-between;
-}
-.article-comments-up {
-  position: fixed;
-  display: block;
-  width: 6rem;
-  height: 6rem;
-  bottom: 5rem;
-  right: 5rem;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  border-radius: 50%;
-  @include screen-style(ipadPro) {background-color: #D7DEE8;
-    width: 5rem;
-    height: 5rem;
-    bottom: 4rem;
-    right: 2rem;
-  };
-  @include screen-style(ipadAir) {
-    width: 5rem;
-    height: 5rem;
-    bottom: 4rem;
-    right: 2rem;
-  };
-  @include screen-style(iphone7) {
-    display: none;
-  };
-  @include screen-style(iphoneSE) {
-    display: none;
-  };
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
-  }
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
-}
-.article-comments-form {
-  position: relative;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 4rem 0;
-  margin-bottom: 4rem;
-  height: 15rem;
-  width: 100%;
-  background-color: $color-lightblue;
-  transition: 0.5s ease-in-out;
-
-  &::after {
-    display: block;
-    content: '';
-    top: -7rem;
-    right: 2.5rem;
-    border: solid transparent;
-    height: 4rem;
-    width: 0rem;
-    position: absolute;
-    pointer-events: none;
-    border-color: transparent;
-    border-width: 0rem 2rem 4rem 2rem;
-    border-bottom-color: $color-lightblue;
-    margin-bottom: -10px;
-  }
-  .article-comments-img {
-    width: 10rem;
-    height: 10rem;
-    background-color: $color-pink;
-  }
-  .article-comments-input {
-    flex-basis: 70%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: none;
-  }
-  .article-comments-name {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
-    padding: 1rem;
-    flex-basis: 2rem;
-    width: 60%;
-    appearance: none;
-    outline-color: $color-blue;
-    border: 0.2rem solid lighten($color-blue, 10%);
-  }
-  .article-comments-message {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
-    padding: 1rem;
-    flex-basis: 40%;
-    appearance: none;
-    outline-color: $color-blue;
-    border: 0.2rem solid lighten($color-blue, 10%);
-  }
-  .article-comments-send {
-    position: absolute;
-    display: block;
-    bottom: -2.5rem;
-    right: 12rem;
-    width: 12rem;
-    height: 5rem;
-    cursor: pointer;
-    border-radius: 5rem;
-    background-color: $color-blue;
-    transition: 0.3s ease-in-out;
-    &:hover {
-      background-color: darken($color-blue, 10%);
-      transition: 0.3s ease-in-out;
-    }
-    &::after {
-      position: absolute;
-      display: block;
-      content: '';
-      top: calc(50% - 2rem / 2);
-      left: calc(50% - 2rem / 2);
-      width: 2rem;
-      height: 2rem;
-      background: url('~@/assets/icons/send.svg') no-repeat center / 120%;
     }
   }
 }

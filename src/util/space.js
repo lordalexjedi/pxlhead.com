@@ -8,7 +8,6 @@ import {
   TextureLoader,
   TetrahedronGeometry,
   MeshStandardMaterial,
-  FlatShading,
   Mesh,
   CircleBufferGeometry,
   LineBasicMaterial,
@@ -60,7 +59,7 @@ export function drawPlanet({ color, size }) {
   const geometry = new TetrahedronGeometry(size, 2)
   const material = new MeshStandardMaterial({
     color,
-    shading: FlatShading,
+    flatShading: true,
     roughness: 0.8
   })
 

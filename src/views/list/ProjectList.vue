@@ -1,8 +1,6 @@
 <template lang='pug'>
   transition-group.project(name='item' tag='div')
     .project-view(v-for='item in displayedItems'  :key='item.id')
-      .search-box
-        input.search(type='search' name='search' placeholder='droids u r looking for...')
       .project-view-body
         .project-view-text
           h1.project-view-title {{ item.title }}
@@ -31,9 +29,6 @@ export default {
   data() {
     return {
       displayedItems: this.$store.getters.activeItems,
-
-      search: '',
-      searching: false,
       loading: false
     }
   },
@@ -106,20 +101,6 @@ export default {
     height: 100%;
     background: #f2f2f2;
   }
-}
-.search-box {
-  @extend %search;
-}
-.search--active {
-  width: 30rem;
-  padding: 0 5rem;
-  cursor: text;
-  @include screen-style(iphone7) {
-    width: 27rem;
-  };
-  @include screen-style(iphoneSE) {
-    width: 22rem;
-  };
 }
 .project-view-img {
   position: absolute;

@@ -2,8 +2,6 @@
   .item-main(v-if='item')
     template(v-if='item')
       .item-view
-        .search-box(@click='searching = true')
-          input.search(type='search' name='search' placeholder='droids u r looking for...' v-bind:class='{ "search--active": searching }')
         a.item-view-esc
         .item-view-body
           .item-view-text
@@ -56,7 +54,6 @@ export default {
   },
 
   data: () => ({
-    searching: false,
     loading: true,
     showComments: false,
     showCommentForm: false

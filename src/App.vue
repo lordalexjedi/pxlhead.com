@@ -26,8 +26,6 @@ export default {
   padding: 0;
 }
 html {
-  overflow: hidden;
-  height: 100%;
   font-size: calc(1.77vh / 1.7);
   @include screen-style(fullHd) { font-size: calc(1.77vh / 1.7) ;}
   @include screen-style(iMac) { font-size: calc(1.6vh / 1.7 );}
@@ -40,6 +38,10 @@ body {
   height: 100%;
   overflow: auto;
   font-family: 'Roboto', sans-serif;
+}
+.hide-scrollbar {
+  overflow: hidden;
+  height: 100%;
 }
 
 

@@ -199,6 +199,13 @@ export default {
   watch: {
     '$route' () {
       this.open = false
+    },
+    open() {
+      if (this.open) {
+        document.documentElement.classList.add('hide-scrollbar')
+      } else {
+        document.documentElement.classList.remove('hide-scrollbar')
+      }
     }
   },
 

@@ -100,6 +100,7 @@ export default {
 
       this.$el.appendChild(this.renderer.domElement)
 
+      document.documentElement.classList.add('hide-scrollbar')
       window.addEventListener('resize', this.onResize)
       window.addEventListener('wheel', this.onWheel)
     },

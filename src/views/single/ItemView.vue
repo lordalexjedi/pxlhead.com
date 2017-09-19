@@ -23,53 +23,32 @@
           a.item-view-arrow.arrow-prev PREV ITEM
           h2 SCROLL
           a.item-view-arrow.arrow-next NEXT ITEM
-      .item-comments(v-show='showComments')
-        //- spinner(:show='loading')
-        .item-comments-header
-          .item-comments-title COMMENTS
-            span.item-comments-counter {{ commentsCount }}
-          a.item-comments-submit(@click='showCommentForm = !showCommentForm')
-        transition(name='fade')
-          form.item-comments-form(v-show='showCommentForm')
-            .item-comments-img
-            .item-comments-input
-              input.item-comments-name(placeholder='ex. Marty McFly')
-              textarea.item-comments-message(placeholder='Dont panic')
-            a.item-comments-send
-        .item-comments-list(v-if='!loading')
-          comment(v-for='id in item.commentIds'  :key='id'  :id='id')
+      comments(:item='item' v-show='showComments' ref='comments')
       btn-top
 </template>
 
 <script>
-import Spinner from '@/components/Spinner.vue'
-import Comment from '@/components/Comment.vue'
+import Comments from '@/components/Comments.vue'
 import BtnTop from '@/components/BtnTop.vue'
 import Playlist from '@/components/Playlist.vue'
 
 export default {
   name: 'item-view',
   components: {
-    Spinner,
-    Comment,
+    Comments,
     BtnTop,
     Playlist
   },
 
-  data: () => ({
-    loading: true,
-    showComments: false,
-    showCommentForm: false
-  }),
+  data() {
+    return {
+      showComments: false
+    }
+  },
 
   computed: {
     item() {
       return this.$store.state.items[this.$route.params.id]
-    },
-    commentsCount() {
-      return this.item.commentIds
-      ? this.item.commentIds.length
-      : 0
     }
   },
 
@@ -77,35 +56,13 @@ export default {
     return this.item.title
   },
 
-  beforeMount() {
-    this.fetchComments()
-  },
-
-  watch: {
-    item: 'fetchComments'
-  },
-
   methods: {
-    fetchComments() {
-      if (this.item.commentIds) {
-        this.loading = true
-        fetchComments(this.$store, this.item).then(() => {
-          this.loading = false
-        })
-      }
-    },
     scrollToComments() {
       this.showComments = true
-      TweenLite.to(window, 0.5, { scrollTo: 1000 })
-    }
-  }
-}
 
-function fetchComments(store, item) {
-  if (item && item.commentIds) {
-    return store.dispatch('FETCH_COMMENTS', {
-      ids: item.commentIds
-    })
+      const commentEl = this.$refs.comments.$el
+      TweenLite.to(window, 0.5, { scrollTo: commentEl })
+    }
   }
 }
 </script>
@@ -527,193 +484,6 @@ function fetchComments(store, item) {
 .link-dribbble {
   &::after {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
-  }
-}
-.item-comments {
-  position: relative;
-  background-color: #F8FCFF;
-  min-height: 100vh;
-}
-.item-comments-header {
-  position: relative;
-  height: 5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4rem 0;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
-}
-.item-comments-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: darken($color-grey, 17%);
-}
-.item-comments-submit {
-  position: relative;
-  flex-basis: 5rem;
-  height: 5rem;
-  margin-right: 4rem;
-  border-radius: 50%;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: $color-white;
-  text-align: center;
-  cursor: pointer;
-  line-height: 4rem;
-  background-color: $color-pink;
-  transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-  }
-  &::before {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 0.3rem / 2);
-    left: calc(50% - 2.5rem / 2);
-    width: 2.5rem;
-    height: 0.3rem;
-    background-color: $color-white;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 2.5rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    width: 0.3rem;
-    height: 2.5rem;
-    background-color: $color-white;
-  }
-}
-.comment-submit--active {
-  transform: rotate(45deg);
-  transition: 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.35);
-}
-.item-comments-list {
-  position: relative;
-  display: flex;
-  width: 100rem;
-  top: 0rem;
-  padding: 3rem 0;
-  left: calc(50% - 100rem / 2);
-  flex-direction: column;
-  justify-content: space-between;
-}
-.item-comments-up {
-  position: fixed;
-  display: block;
-  width: 6rem;
-  height: 6rem;
-  bottom: 5rem;
-  right: 5rem;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  border-radius: 50%;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
-  }
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
-}
-.item-comments-form {
-  position: relative;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 4rem 0;
-  margin-bottom: 4rem;
-  height: 15rem;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
-  background-color: $color-lightblue;
-  transition: 0.5s ease-in-out;
-  &::after {
-    display: block;
-    content: '';
-    top: -7rem;
-    right: 4.5rem;
-    border: solid transparent;
-    height: 4rem;
-    width: 0rem;
-    position: absolute;
-    pointer-events: none;
-    border-color: transparent;
-    border-width: 0rem 2rem 4rem 2rem;
-    border-bottom-color: $color-lightblue;
-    margin-bottom: -10px;
-  }
-  .item-comments-img {
-    width: 10rem;
-    height: 10rem;
-    background-color: $color-pink;
-  }
-  .item-comments-input {
-    flex-basis: 70%;
-    height: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: none;
-  }
-  .item-comments-name {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
-    padding: 1rem;
-    flex-basis: 2rem;
-    width: 60%;
-    appearance: none;
-    outline-color: $color-blue;
-    border: 0.2rem solid lighten($color-blue, 10%);
-  }
-  .item-comments-message {
-    font-size: 1.8rem;
-    color: darken($color-grey, 10%);
-    padding: 1rem;
-    flex-basis: 40%;
-    appearance: none;
-    outline-color: $color-blue;
-    border: 0.2rem solid lighten($color-blue, 10%);
-  }
-  .item-comments-send {
-    position: absolute;
-    display: block;
-    bottom: -2.5rem;
-    right: 12rem;
-    width: 12rem;
-    height: 5rem;
-    cursor: pointer;
-    border-radius: 5rem;
-    background-color: $color-blue;
-    transition: 0.3s ease-in-out;
-    &:hover {
-      background-color: darken($color-blue, 10%);
-      transition: 0.3s ease-in-out;
-    }
-    &::after {
-      position: absolute;
-      display: block;
-      content: '';
-      top: calc(50% - 2rem / 2);
-      left: calc(50% - 2rem / 2);
-      width: 2rem;
-      height: 2rem;
-      background: url('~@/assets/icons/send.svg') no-repeat center / 120%;
-    }
   }
 }
 

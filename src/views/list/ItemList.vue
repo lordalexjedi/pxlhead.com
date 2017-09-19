@@ -14,20 +14,20 @@
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
     mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore'
       :threshold='0.5') {{ loadingText }}
-    a.btn-back(@click='scrollTop')
+    btn-top
 </template>
 
 <script>
-import { TweenLite } from 'gsap'
-import ScrollToPlugin from 'gsap/ScrollToPlugin'
 import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
+import BtnTop from '@/components/BtnTop.vue'
 
 export default {
   name: 'item-list',
 
   components: {
     Item,
+    BtnTop,
     MugenScroll
   },
 
@@ -102,9 +102,6 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.$bar.finish()
-    },
-    scrollTop() {
-      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }
@@ -243,50 +240,6 @@ export default {
     padding: 8rem 2rem;
   };
 }
-.btn-back {
-  position: fixed;
-  bottom: 2rem;
-  right: 5rem;
-  width: 6rem;
-  height: 6rem;
-  border-radius: 50%;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
-  z-index: 100;
-  @include screen-style(ipadPro) {
-    right: 3rem;
-  };
-  @include screen-style(ipadAir) {
-    right: 2rem;
-  };
-  @include screen-style(iphone7) {
-    right: 2rem;
-    width: 5rem;
-    height: 5rem;
-  };
-  @include screen-style(iphoneSE) {
-    right: 2rem;
-    width: 4.5rem;
-    height: 4.5rem;
-  };
-  &:after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 50%;
-    height: 50%;
-    top: 25%;
-    left: 25%;
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 100%;
-  }
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
-}
-
 .item-move, .item-enter-active, .item-leave-active {
   transition: all .5s cubic-bezier(.55,0,.1,1);
 }

@@ -21,9 +21,6 @@
 </template>
 
 <script>
-import { TweenLite } from 'gsap'
-import ScrollToPlugin from 'gsap/ScrollToPlugin'
-
 export default {
   name: 'project-list',
 
@@ -82,9 +79,6 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.$bar.finish()
-    },
-    scrollTop() {
-      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }

@@ -1,13 +1,14 @@
 <template lang='pug'>
   .article-main(v-if='item')
     template(v-if='item')
-      .article-view(:class='{ "article-view--push": read}' v-bind:style='{ backgroundImage: `url(${item.imageURL})` }')
+      .article-view(:class='{ "article-view--push": read}'
+        :style='{ backgroundImage: `url(${item.imageURL})` }')
         .article-view-text
           span.article-view-date 11/12/2017
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
-            a.article-view-btn(@click='scrollRead') READ
+            a.article-view-btn(@click='scrollToText') READ
             a.article-view-btn COMMENT
       .article-view-navbar
         a.article-view-esc
@@ -35,17 +36,21 @@
               a.article-comments-send
           .article-comments-list(v-if='!loading')
             comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-          a.article-comments-up(@click='scrollTop')
+      btn-top(@click.native='read = false')
 </template>
 
 <script>
-import { TweenLite } from 'gsap'
 import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
+import BtnTop from '@/components/BtnTop.vue'
 
 export default {
   name: 'articles-view',
-  components: { Spinner, Comment },
+  components: {
+    Spinner,
+    Comment,
+    BtnTop
+  },
 
   data: () => ({
     loading: true,
@@ -80,13 +85,9 @@ export default {
         })
       }
     },
-    scrollRead() {
-      this.read = true,
+    scrollToText() {
+      this.read = true
       TweenLite.to(window, 0.5, { scrollTo: 1000 })
-    },
-    scrollTop() {
-      this.read = false,
-      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }
@@ -619,50 +620,6 @@ function fetchComments(store, item) {
   left: calc(50% - 100rem / 2);
   flex-direction: column;
   justify-content: space-between;
-}
-.article-comments-up {
-  position: fixed;
-  display: block;
-  width: 6rem;
-  height: 6rem;
-  bottom: 5rem;
-  right: 5rem;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  border-radius: 50%;
-  @include screen-style(ipadPro) {background-color: #D7DEE8;
-    width: 5rem;
-    height: 5rem;
-    bottom: 4rem;
-    right: 2rem;
-  };
-  @include screen-style(ipadAir) {
-    width: 5rem;
-    height: 5rem;
-    bottom: 4rem;
-    right: 2rem;
-  };
-  @include screen-style(iphone7) {
-    display: none;
-  };
-  @include screen-style(iphoneSE) {
-    display: none;
-  };
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
-  }
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
 }
 .article-comments-form {
   position: relative;

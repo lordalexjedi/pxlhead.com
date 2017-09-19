@@ -11,7 +11,7 @@
             p.item-view-description {{ item.description }}
             .item-view-action
               a.item-view-link.link--code VIEW
-              a.item-view-comment(@click='commentDown')
+              a.item-view-comment(@click='scrollToComments')
           .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
           .item-view-social
             a.social-link.link-twitter
@@ -24,14 +24,14 @@
           a.item-view-arrow.arrow-prev PREV ITEM
           h2 SCROLL
           a.item-view-arrow.arrow-next NEXT ITEM
-      .item-comments(v-show='commentClick')
+      .item-comments(v-show='showComments')
         //- spinner(:show='loading')
         .item-comments-header
           .item-comments-title COMMENTS
             span.item-comments-counter (42)
-          a.item-comments-submit(@click='comment=!comment')
+          a.item-comments-submit(@click='showCommentForm = !showCommentForm')
         transition(name='fade')
-          form.item-comments-form(v-show='comment')
+          form.item-comments-form(v-show='showCommentForm')
             .item-comments-img
             .item-comments-input
               input.item-comments-name(placeholder='ex. Marty McFly')
@@ -39,22 +39,27 @@
             a.item-comments-send
         .item-comments-list(v-if='!loading')
           comment(v-for='id in item.commentIds'  :key='id'  :id='id')
-        a.item-comments-up(@click='scrollTop')
+      btn-top
 </template>
 
 <script>
 import Spinner from '@/components/Spinner.vue'
 import Comment from '@/components/Comment.vue'
+import BtnTop from '@/components/BtnTop.vue'
 
 export default {
   name: 'item-view',
-  components: { Spinner, Comment },
+  components: {
+    Spinner,
+    Comment,
+    BtnTop
+  },
 
   data: () => ({
     searching: false,
     loading: true,
-    commentClick: false,
-    comment: false
+    showComments: false,
+    showCommentForm: false
   }),
 
   computed: {
@@ -84,13 +89,9 @@ export default {
         })
       }
     },
-    commentDown() {
-      this.commentClick = true,
+    scrollToComments() {
+      this.showComments = true
       TweenLite.to(window, 0.5, { scrollTo: 1000 })
-    },
-    scrollTop() {
-      this.commentClick = false,
-      TweenLite.to(window, 0.5, { scrollTo: 0 })
     }
   }
 }

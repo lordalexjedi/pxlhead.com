@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .intro
+  .intro(@click='tooltipShow = false')
     transition(name='text-vertical-toggle')
       .intro-text(v-if='frameIdx == 0' key='intro')
         h3.intro-subtitle Turn into a pixel with
@@ -8,8 +8,13 @@
         h1.intro-title {{ frame.title }}
         p.intro-description {{ frame.description }}
     nav.intro-nav
-      a.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
+      li.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
         v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
+        a.nav-point
+    .tooltip(v-show='tooltipShow')
+      p.tooltip-text Click here to launch menu!
+    .mouse-tip
+      .mouse-wheel
 </template>
 
 <script>
@@ -32,6 +37,7 @@ export default {
 
   data() {
     return {
+      tooltipShow: true,
       frameIdx: 0,
       framesData: [{
         name: 'intro',
@@ -41,25 +47,25 @@ export default {
       }, {
         name: 'about',
         title: 'About us',
-        description: 'Some description',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
         camera: { xP: 50, yP: 20, zP: 100, xR: 0.5, yR: 0.2 },
         planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         name: 'team',
         title: 'Our team',
-        description: 'Some description',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
         camera: { xP: 0, yP: 60, zP: 50, xR: 0.1, yR: -1 },
         planet: { xR: 1.9, yR: 0.6, zR: -3.4 },
       }, {
         name: 'projects',
         title: 'Our projects',
-        description: 'Some description',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
         camera: { xP: 40, yP: 60, zP: 80, xR: 0, yR: 0 },
         planet: { xR: -2, yR: -0.9, zR: 0 },
       }, {
         name: 'contacts',
         title: 'Contacts',
-        description: 'Some description',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
         camera: { xP: 30, yP: 73, zP: 40, xR: -0.3, yR: 0 },
         planet: { xR: 0.73, yR: 0.4, zR: 1 },
       }],
@@ -231,6 +237,7 @@ export default {
   background: #14003C;
   overflow: hidden;
   position: relative;
+  user-select: none;
 }
 .intro-title {
   font-family: 'Montserrat', sans-serif;
@@ -238,10 +245,11 @@ export default {
   font-weight: 700;
   letter-spacing: 3px;
   color: #00D6A0;
+  margin: 0;
 }
 .intro-subtitle {
   color: $color-white;
-  opacity: 0.8;
+  opacity: 0.9;
   letter-spacing: 1.5px;
   font-size: 2.6rem;
 }
@@ -249,8 +257,13 @@ export default {
   color: $color-white;
   font-size: 2rem;
   font-weight: 400;
+  line-height: 2.8rem;
   margin-top: 4rem;
-  opacity: 0.8;
+  margin-left: 4rem;
+  opacity: 0.7;
+  @media (orientation: portrait) {
+    margin-left: 0;
+  }
 }
 .intro-text {
   position: absolute;
@@ -263,6 +276,9 @@ export default {
 .info-text {
   position: absolute;
   width: 40vw;
+  @media (orientation: portrait) {
+    width: 50vw;
+  }
   .intro-title {
     font-size: 6rem;
     text-transform: uppercase;
@@ -277,11 +293,11 @@ export default {
   right: 27vw;
 }
 .projects-text {
-  top: 25rem;
+  top: 20rem;
   right: 55vw;
 }
 .contacts-text {
-  top: 35rem;
+  top: 20rem;
   right: 55vw;
 }
 
@@ -289,7 +305,7 @@ export default {
   position: absolute;
   top: calc(50% - 20rem / 2);
   right: 6rem;
-  width: 3rem;
+  width: 4rem;
   height: 30rem;
   display: flex;
   flex-direction: column;
@@ -298,25 +314,79 @@ export default {
   .nav-link {
     height: 1rem;
     width: 1rem;
+    padding: 1rem;
     display: block;
     cursor: pointer;
-    background-color: $color-blue;
+  }
+  .nav-point {
+    display: block;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
+    background-color: $color-blue;
     opacity: 0.7;
     transition: ease-in-out 0.3s;
     &:hover {
       opacity: 1;
+      transition: ease-in-out 0.3s;
     }
   }
   .nav-link--active {
-    height: 1.5rem;
-    width: 1.5rem;
-    opacity: 1;
-    background-color: #43A4F1;
-    transition: ease-in-out 0.3s;
+    .nav-point {
+      transform: scale(1.5);
+      opacity: 1;
+      background-color: #43A4F1;
+      transition: ease-in-out 0.3s;
+    }
   }
 }
-
+.tooltip {
+  position: absolute;
+  top: 10rem;
+  left: 5rem;
+  padding: 2rem;
+  border-radius: 6rem;
+  background-color: darken($color-blue, 30%);
+  &::after {
+    display: block;
+    content: '';
+    top: -5rem;
+    left: 2rem;
+    border: solid transparent;
+    height: 4rem;
+    width: 0rem;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-width: 0rem 1rem 2rem 1rem;
+    border-bottom-color: darken($color-blue, 30%);
+    margin-bottom: -10px;
+  }
+}
+.tooltip-text {
+  color: $color-white;
+  font-size: 1.5rem;
+}
+.mouse-tip {
+  position: absolute;
+  bottom: 10rem;
+  right: 7rem;
+  width: 2rem;
+  height: 3.5rem;
+  opacity: 0.7;
+  border: 2px solid $color-white;
+  border-radius: 1.5rem;
+}
+.mouse-wheel {
+  position: absolute;
+  top: 1rem;
+  left: calc(50% - 0.3rem / 2);
+  width: 0.3rem;
+  height: 0.6rem;
+  background-color: $color-white;
+  border-radius: 1.5rem;
+  animation: scroll 1s ease-in-out infinite;
+}
 .text-vertical-toggle-enter-active,
 .text-vertical-toggle-leave-active {
   transition: all .8s ease-in-out;
@@ -328,5 +398,14 @@ export default {
 .text-vertical-toggle-leave-to {
   transform: translateY(10rem);
   opacity: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
 }
 </style>

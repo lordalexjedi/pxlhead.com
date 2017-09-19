@@ -9,7 +9,7 @@
         a.app-menu-esc(@click='open = !open')
         router-link.app-menu-link(v-show='topView' v-for='link in linksData'
           :style='{ top: link.top, left: link.left }'
-          :to='link.name'  :key='link.name') {{ link.name }}
+          :to='`/${link.name}`'  :key='link.name') {{ link.name }}
 </template>
 
 <script>

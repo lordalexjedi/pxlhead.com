@@ -15,7 +15,7 @@
           a.tag-link(v-for='n in 3') #CSS
         span.project-view-watch 4242
       .project-view-nav
-        a.project-view-arrow(v-for='item in displayedItems')
+        a.project-view-arrow(v-for='n in displayedItems.length')
 </template>
 
 <script>
@@ -48,6 +48,7 @@ export default {
 
   beforeMount() {
     if (this.$root._isMounted) {
+      document.documentElement.classList.add('hide-scrollbar')
       this.sortItems('views')
     }
   },

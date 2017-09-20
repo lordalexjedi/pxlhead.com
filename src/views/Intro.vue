@@ -100,7 +100,6 @@ export default {
 
       this.$el.appendChild(this.renderer.domElement)
 
-      document.documentElement.classList.add('hide-scrollbar')
       window.addEventListener('resize', this.onResize)
       window.addEventListener('wheel', this.onWheel)
     },
@@ -158,6 +157,7 @@ export default {
       this.renderer.render(this.scene, this.camera)
     },
     setSize() {
+      document.documentElement.classList.add('hide-scrollbar')
       this.width = window.innerWidth
       this.height = window.innerHeight
     },

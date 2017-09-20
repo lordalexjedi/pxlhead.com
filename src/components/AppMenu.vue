@@ -201,7 +201,7 @@ export default {
       this.open = false
     },
     open() {
-      if (this.open) {
+      if (this.open || this.$route.path.includes('intro')) {
         document.documentElement.classList.add('hide-scrollbar')
       } else {
         document.documentElement.classList.remove('hide-scrollbar')

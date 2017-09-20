@@ -14,8 +14,9 @@ export default function createListView(type) {
     title: camelize(type),
 
     render(h) {
-      const list = type === 'projects' ? ProjectList : ItemList
-      return h(list, { props: { type }})
+      return type === 'projects'
+      ? h(ProjectList, { props: { type }})
+      : h(ItemList, { props: { type }})
     }
   }
 }

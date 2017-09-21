@@ -1,7 +1,9 @@
 <template lang='pug'>
   .loader
-    - for (var blockNum = 0; blockNum < 23; blockNum++)
-      div(class='block block-' + blockNum)
+    - for (var orbit = 1; orbit < 3; orbit++)
+      div(class='orbit orbit-' + orbit)
+        .planet
+    .planet.center-planet
 </template>
 
 <script>
@@ -17,68 +19,69 @@ export default {
 
 .loader {
   position: absolute;
-  top: calc(50% - 4rem / 2);
-  left: calc(50% - 4rem / 2);
-  width: 4rem;
-  height: 4rem;
+  top: calc(50% - 10rem / 2);
+  left: calc(50% - 10rem / 2);
+  width: 10rem;
+  height: 10rem;
   z-index: 1000;
+  transform: scale(0.6);
+  // animation: scale 5s $easing infinite;
 }
-.block {
-  position: absolute;
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-}
-@for $i from 0 through 23 {
-  .block-#{$i} {
-    left: 0.6rem * round(($i / 5 + 0.5));
-    top: 0.6rem * ($i % 5);
+@for $i from 1 through 3 {
+  .orbit-#{$i} {
+    top: calc(50% - #{$i} * 6rem / 2 - 2px);
+    left: calc(50% - #{$i} * 6rem / 2 - 2px);
+    width: $i * 6rem;
+    height: $i * 6rem;
+    animation: rotate $i + 1.2s linear 0.3s infinite;
   }
 }
-
-.block-11 {
-  display: none;
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid $color-blue;
+}
+.planet {
+  position: absolute;
+  top: -0.5rem;
+  left: calc(50% - 1rem / 2);
+  width: 1rem;
+  height: 1rem;
+  background-color: $color-blue;
+  border-radius: 50%;
+}
+.center-planet {
+  top: calc(50% - 2rem / 2);
+  left: calc(50% - 2rem / 2);
+  width: 2rem;
+  height: 2rem;
+  animation: rotate 1s linear 0.3s infinite;
 }
 
-.block-4, .block-9, .block-14, .block-19, .block-3 {
-  opacity: 0;
-  animation: move 1s steps(2, end) 1 forwards, scale 1s ease-in-out 4s forwards;
-}
-
-.block-8, .block-12, .block-13, .block-16, .block-17, .block-18 {
-  opacity: 0;
-  animation: move 1s steps(2, end) 1s 1 forwards, scale 1s ease-in-out 4s forwards;
-}
-
-.block-0, .block-1, .block-2, .block-5, .block-6, .block-7 {
-  opacity: 0;
-  animation: move 1s steps(2, end) 2s 1 forwards, scale 1s ease-in-out 4s forwards;
-}
-
-.block-10, .block-15, .block-20, .block-21, .block-22 {
-  opacity: 0;
-  animation: move 1s steps(2, end) 3s 1 forwards, scale 1s ease-in-out 4s forwards;
-}
-
-@keyframes move {
+@keyframes rotate {
   0% {
-    opacity: 1;
-    transform: translateY(-1rem)
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
   }
   100% {
-    opacity: 1;
-    transform: translateY(0rem)
+    transform: rotate(360deg) scale(1);
   }
 }
 
 @keyframes scale {
   0% {
-
-    opacity: 1;
+    transform: scale(0);
+  }
+  10% {
+    transform: scale(1);
+  }
+  90% {
+    transform: scale(1);
   }
   100% {
-    opacity: 0;
+    transform: scale(0);
   }
 }
 

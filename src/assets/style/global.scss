@@ -292,12 +292,11 @@ $FULLHD: 1920px;
   opacity: 0
 }
 
-.push-enter-active, .push-leave-active {
-  transition: all 1s cubic-bezier(0.7,0,0.3,1);
+.fade-delay-enter-active, .fade-delay-leave-active {
+  transition: all 0.2s cubic-bezier(0.7,0,0.3,1) 0.3s;
 }
-.push-enter, .push-leave-to {
+.fade-delay-enter, .fade-delay-leave-to {
   opacity: 0;
-  transform: translateY(-100%) scale(0.9);
 }
 
 .item-enter-active, .push-leave-active {

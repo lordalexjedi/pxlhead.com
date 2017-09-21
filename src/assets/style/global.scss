@@ -292,18 +292,10 @@ $FULLHD: 1920px;
   opacity: 0
 }
 
-// .scale-enter-active, .scale-leave-active {
-//   transition: all 1s cubic-bezier(0.7,0,0.3,1);
-// }
-// .scale-enter, .scale-leave-to {
-//   opacity: 0;
-//   transform:  scale(0.8);
-// }
-
-.scale-enter-active, .scale-leave-active {
+.fade-delay-enter-active, .fade-delay-leave-active {
   transition: all 0.2s cubic-bezier(0.7,0,0.3,1) 0.3s;
 }
-.scale-enter, .scale-leave-to {
+.fade-delay-enter, .fade-delay-leave-to {
   opacity: 0;
 }
 

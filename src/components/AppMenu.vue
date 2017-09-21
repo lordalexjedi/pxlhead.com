@@ -5,7 +5,7 @@
     a.app-menu-btn(@click='open = !open')
     span.app-menu-title PXLHEAD
 
-    transition(name='scale' mode='out-in')
+    transition(name='fade-delay' mode='out-in')
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
@@ -576,14 +576,6 @@ export default {
   z-index: 99999;
   pointer-events: none;
 }
-// .overlay:nth-child(2) {
-//   background-color: $color-blue;
-//   animation: overlay 1s ease-in-out 0.1s forwards;
-// }
-// .overlay:nth-child(3) {
-//   background-color: $color-green;
-//   animation: overlay 1s ease-in-out 0.2s forwards;
-// }
 
 .overlay-enter-active{
   animation: overlay 1s ease-in-out;

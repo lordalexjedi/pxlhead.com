@@ -12,7 +12,7 @@
           a.social-link.link-facebook
           a.social-link.link-dribbble
         .project-view-tag
-          a.tag-link(v-for='n in 3') #CSS
+          a.tag-link(v-for='tag in item.tags') {{ tag }}
         span.project-view-watch {{ item.views }}
       .project-view-nav
         a.project-view-arrow(v-for='n in displayedItems.length'

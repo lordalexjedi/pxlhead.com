@@ -12,8 +12,8 @@
           title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
       item(v-for='item in displayedItems'  :key='item.id'  :item='item')
-    mugen-scroll(:handler='loadItems'  :should-handle='!loading && hasMore'
-      :threshold='0.5') {{ loadingText }}
+    mugen-scroll(:handler='loadItems'
+      :should-handle='!loading && hasMore') {{ loadingText }}
     btn-top
 </template>
 

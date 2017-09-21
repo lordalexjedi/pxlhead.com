@@ -1,6 +1,6 @@
 <template lang='pug'>
-  transition-group.project(name='item' tag='div')
-    .project-view(v-for='item in displayedItems'  :key='item.id')
+  transition.project(name='item' tag='div')
+    .project-view
       .project-view-body
         .project-view-text
           h1.project-view-title {{ item.title }}
@@ -12,10 +12,12 @@
           a.social-link.link-facebook
           a.social-link.link-dribbble
         .project-view-tag
-          a.tag-link(v-for='n in 3') #CSS
-        span.project-view-watch 4242
+          a.tag-link(v-for='tag in item.tags') {{ tag }}
+        span.project-view-watch {{ item.views }}
       .project-view-nav
-        a.project-view-arrow(v-for='item in displayedItems')
+        a.project-view-arrow(v-for='n in displayedItems.length'
+          :class='{ "arrow-active": n === activeIndex }'
+          @click='activeIndex = n')
 </template>
 
 <script>
@@ -29,11 +31,15 @@ export default {
   data() {
     return {
       displayedItems: this.$store.getters.activeItems,
-      loading: false
+      loading: false,
+      activeIndex: 1
     }
   },
 
   computed: {
+    item() {
+      return this.displayedItems[this.activeIndex - 1]
+    },
     slice() {
       return this.$store.state.activeSlice
     },
@@ -48,8 +54,21 @@ export default {
 
   beforeMount() {
     if (this.$root._isMounted) {
-      this.sortItems('views')
+      // sort projects by time
+      this.$bar.start()
+      this.$store.commit('SET_ACTIVE_SORT', { sort: 'time' })
+      this.$store.dispatch('FETCH_LIST_DATA', {
+        type: this.type
+      }).then(() => {
+        this.displayedItems = this.$store.getters.activeItems
+      })
+      this.$bar.finish()
     }
+  },
+
+  mounted() {
+    window.addEventListener('wheel', this.onWheel)
+    document.documentElement.classList.add('hide-scrollbar')
   },
 
   methods: {
@@ -65,16 +84,29 @@ export default {
       this.loading = false
       this.$bar.finish()
     },
-    sortItems(sort) {
-      this.$bar.start()
-      this.$store.commit('SET_ACTIVE_SORT', { sort })
-      this.$store.dispatch('FETCH_LIST_DATA', {
-        type: this.type
-      }).then(() => {
-        this.displayedItems = this.$store.getters.activeItems
-      })
-      this.$bar.finish()
+    onWheel(event) {
+      if (!this.delay) {
+        if (event.deltaY > 0 && this.activeIndex < this.displayedItems.length) {
+          this.activeIndex++
+        } else if (event.deltaY < 0 && this.activeIndex > 1) {
+          this.activeIndex--
+        }
+      }
     }
+  },
+
+  watch: {
+    activeIndex() {
+      this.delay = true
+      if (this.activeIndex === this.displayedItems.length && this.hasMore) {
+        this.loadItems()
+      }
+      setTimeout(() => this.delay = false, 1000)
+    }
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('wheel', this.onWheel)
   }
 }
 </script>

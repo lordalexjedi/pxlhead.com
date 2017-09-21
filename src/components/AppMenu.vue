@@ -9,18 +9,9 @@
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
-        router-link.app-menu-link(v-show='topView' v-for='label in labels'
-          :style='{ top: label.top, left: label.left }'
-          :to='label.name'  :key='label.name') {{ label.name }}
-        nav.app-menu-social
-          a.social-link.link--facebook
-          a.social-link.link--twitter
-          a.social-link.link--link
-        .btn-round
-          a.btn-toggle(:class='{ "btn-toggle--on": pauseMusic }'
-          @click='pauseMusic = !pauseMusic')
-          .volume-set.toggle-up(@click='setVolume = setVolume + 0.2')
-          .volume-set.toggle-down(@click='setVolume = setVolume - 0.2')
+        router-link.app-menu-link(v-show='topView' v-for='link in linksData'
+          :style='{ top: link.top, left: link.left }'
+          :to='`/${link.name}`'  :key='link.name') {{ link.name }}
 </template>
 
 <script>
@@ -208,7 +199,7 @@ export default {
       this.open = false
     },
     open() {
-      if (this.open) {
+      if (this.open || this.$route.path.includes('intro')) {
         document.documentElement.classList.add('hide-scrollbar')
       } else {
         document.documentElement.classList.remove('hide-scrollbar')

@@ -41,7 +41,6 @@ body {
 }
 .hide-scrollbar {
   overflow: hidden;
-  height: 100%;
 }
 
 

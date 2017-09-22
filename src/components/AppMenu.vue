@@ -9,6 +9,8 @@
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
+        h2.app-menu-tooltip(v-show='!topView && activeLink'
+          :style='{ top: tooltipTop, left: tooltipLeft }') {{ activeLink }}
         router-link.app-menu-link(v-show='topView' v-for='link in linksData'
           :style='{ top: link.top, left: link.left }'
           :to='`/${link.name}`'  :key='link.name') {{ link.name }}
@@ -24,6 +26,7 @@ import {
   Raycaster,
   DirectionalLight,
   Vector2,
+  Vector3,
   Group
 } from 'three'
 import { drawSpace, drawPlanet, drawOrbit } from '@/util/space'
@@ -37,6 +40,8 @@ export default {
       topView: false,
       showPointer: false,
       activeLink: '',
+      tooltipTop: 0,
+      tooltipLeft: 0,
       linksData: [
         { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002, radius: 50 },
         { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001, radius: 80 },
@@ -75,6 +80,8 @@ export default {
       this.raycaster = new Raycaster()
       this.mouse = new Vector2()
 
+      this.vector = new Vector3()
+
       const container = this.$el.querySelector('.app-menu-modal')
       container.appendChild(this.renderer.domElement)
 
@@ -90,7 +97,6 @@ export default {
       // draw planets with page links
       this.orbitSystem = new Group()
       this.orbitSystem.rotation.x = -1.2
-      this.orbitSystem.position.y = 20
       this.scene.add(this.orbitSystem)
 
       this.planets = []
@@ -100,17 +106,18 @@ export default {
       this.orbitSystem.add(mainPlanet)
       this.planets.push(mainPlanet)
 
-      this.linksData.forEach(data => {
+      this.linksData.forEach((data, i) => {
         const planet = drawPlanet(data)
         planet.name = data.name
 
-        const orbit = drawOrbit(data.radius)
+        const radius = 50 + i * 30
+        const orbit = drawOrbit(radius)
         orbit.speed = data.speed
         this.orbitSystem.add(orbit)
 
-        const xPos = Math.random() * data.radius * 2 - data.radius
+        const xPos = Math.random() * radius * 2 - radius
         const factor = Math.random() < 0.5 ? -1 : 1
-        const yPos = Math.sqrt(Math.pow(data.radius, 2) - Math.pow(xPos, 2)) * factor
+        const yPos = Math.sqrt(Math.pow(radius, 2) - Math.pow(xPos, 2)) * factor
         planet.position.set(xPos, yPos, 0)
         planet.name = data.name
         orbit.add(planet)
@@ -148,6 +155,14 @@ export default {
         const planet = metPlanets[0].object
         this.activeLink = planet.name
         this.showPointer = true
+
+        // compute tooltip position
+        const widthHalf = this.width / 2
+        const heightHalf = this.height / 2
+        this.vector.setFromMatrixPosition(planet.matrixWorld)
+        this.vector.project(this.camera)
+        this.tooltipLeft = (this.vector.x * widthHalf) + widthHalf + 'px'
+        this.tooltipTop = -(this.vector.y * heightHalf ) + heightHalf + 'px'
       } else {
         this.activeLink = ''
         this.showPointer = false
@@ -187,8 +202,8 @@ export default {
       this.width = window.innerWidth
       this.height = window.innerHeight
 
-      this.linksData.forEach(link => {
-        link.top = this.height / 2 - 38 + link.radius * 1.8 + 'px'
+      this.linksData.forEach((link, i) => {
+        link.top = this.height / 2  + 66 + i * 56 + 'px'
         link.left = this.width / 2 - 50 + 'px'
       })
     },
@@ -343,6 +358,18 @@ export default {
     transition: 0.3s ease-in-out;
   }
 }
+.app-menu-tooltip {
+  display: block;
+  position: absolute;
+  font-size: 16px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $color-white;
+  transition: all 0.3s;
+  opacity: 0.8;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 .app-menu-link {
   display: block;
   position: absolute;
@@ -352,7 +379,6 @@ export default {
   text-decoration: none;
   text-align: center;
   color: $color-white;
-  transition: all 0.3s;
   opacity: 0.8;
   cursor: pointer;
 }

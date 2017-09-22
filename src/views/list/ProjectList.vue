@@ -1,12 +1,13 @@
 <template lang='pug'>
-  transition.project(name='item' tag='div')
+  .project
     .project-view
       .project-view-body
-        .project-view-text
-          h1.project-view-title {{ item.title }}
-          p.project-view-description {{ item.description }}
+        transition-group.project-view-text(name='item' tag='div')
+          h1.project-view-title(key='title') {{ item.title }}
+          p.project-view-description(key='description') {{ item.description }}
             a.project-view-link VIEW
-        .project-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        transition(name='item' tag='div')
+          .project-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .project-view-social
           a.social-link.link-twitter
           a.social-link.link-facebook

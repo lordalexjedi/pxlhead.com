@@ -14,6 +14,15 @@
         router-link.app-menu-link(v-show='topView' v-for='link in linksData'
           :style='{ top: link.top, left: link.left }'
           :to='`/${link.name}`'  :key='link.name') {{ link.name }}
+        nav.app-menu-social
+          a.social-link.link--facebook
+          a.social-link.link--twitter
+          a.social-link.link--link
+        .btn-round
+          a.btn-toggle(:class='{ "btn-toggle--on": pauseMusic }'
+          @click='pauseMusic = !pauseMusic')
+          .volume-set.toggle-up(@click='setVolume = setVolume + 0.2')
+          .volume-set.toggle-down(@click='setVolume = setVolume - 0.2')
 </template>
 
 <script>

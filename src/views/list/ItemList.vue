@@ -245,11 +245,10 @@ export default {
 }
 .item-enter {
   opacity: 0;
-  transform: translate(30px, 0);
+  transform: translateY(30px);
 }
 .item-leave-active {
-  position: absolute;
   opacity: 0;
-  transform: translate(30px, 0);
+  transform: translateY(-30px);
 }
 </style>

@@ -11,15 +11,19 @@
           pattern='[a-zA-Z0-9 ]+' maxlength='50' required
           title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
-      item(v-for='item in displayedItems'  :key='item.id'  :item='item')
+      item(v-for='item in displayedItems' @click.native='activeItemId = item.id'
+        :key='item.id'  :item='item')
     mugen-scroll(:handler='loadItems'
       :should-handle='!loading && hasMore') {{ loadingText }}
     btn-top
+
+    item-view(v-if='activeItemId'  :id='activeItemId')
 </template>
 
 <script>
 import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
+import ItemView from '../single/ItemView.vue'
 import BtnTop from '@/components/BtnTop.vue'
 
 export default {
@@ -27,6 +31,7 @@ export default {
 
   components: {
     Item,
+    ItemView,
     BtnTop,
     MugenScroll
   },
@@ -38,7 +43,7 @@ export default {
   data() {
     return {
       displayedItems: this.$store.getters.activeItems,
-
+      activeItemId: '',
       searchedTags: '',
       searching: false,
       loading: false

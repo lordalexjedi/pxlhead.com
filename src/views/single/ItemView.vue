@@ -1,43 +1,44 @@
 <template lang='pug'>
   .item-main(v-if='item')
-    template(v-if='item')
-      .item-view
-        a.item-view-esc
-        .item-view-body
-          .item-view-text
-            h1.item-view-title {{ item.title }}
-            p.item-view-description {{ item.description }}
-            .item-view-action
-              a.item-view-link.link--code VIEW
-              a.item-view-comment(@click='scrollToComments')
-          .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-          playlist(v-if='item.type === "music"')
-          .item-view-social
-            a.social-link.link-twitter
-            a.social-link.link-facebook
-            a.social-link.link-dribbble
-          .item-view-tag
-            a.tag-link(v-for='n in 3') #CSS
-          span.item-view-watch {{ item.views }}
-        .item-view-nav
-          a.item-view-arrow.arrow-prev PREV ITEM
-          h2 SCROLL
-          a.item-view-arrow.arrow-next NEXT ITEM
-      comments(:item='item' v-show='showComments' ref='comments')
-      btn-top
+    .item-view
+      a.item-view-esc
+      .item-view-body
+        .item-view-text
+          h1.item-view-title {{ item.title }}
+          p.item-view-description {{ item.description }}
+          .item-view-action
+            a.item-view-link VIEW
+            a.item-view-comment(@click='scrollToComments')
+        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        playlist(v-if='item.type === "music"')
+        .item-view-social
+          a.social-link.link-twitter
+          a.social-link.link-facebook
+          a.social-link.link-dribbble
+        .item-view-tag
+          a.tag-link(v-for='tag in item.tags') {{ tag }}
+        span.item-view-watch {{ item.views }}
+      .item-view-nav
+        a.item-view-arrow.arrow-prev PREV ITEM
+        h2 SCROLL
+        a.item-view-arrow.arrow-next NEXT ITEM
+    comments(:item='item' v-show='showComments' ref='comments')
 </template>
 
 <script>
 import Comments from '@/components/Comments.vue'
-import BtnTop from '@/components/BtnTop.vue'
 import Playlist from '@/components/Playlist.vue'
 
 export default {
   name: 'item-view',
+
   components: {
     Comments,
-    BtnTop,
     Playlist
+  },
+
+  props: {
+    id: String
   },
 
   data() {
@@ -48,7 +49,7 @@ export default {
 
   computed: {
     item() {
-      return this.$store.state.items[this.$route.params.id]
+      return this.$store.state.items[this.id]
     }
   },
 

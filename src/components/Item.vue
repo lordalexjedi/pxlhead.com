@@ -4,7 +4,7 @@
       .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
       transition(name='slide' appear)
         .item-text
-          router-link.item-name(:to='`/${item.type}/${item.id}`') {{ item.title }}
+          h2.item-name {{ item.title }}
           p.item-description {{ item.description }}
           .item-info
             span.item-views {{ item.views }}

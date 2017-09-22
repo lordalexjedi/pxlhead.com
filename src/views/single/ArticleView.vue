@@ -38,6 +38,10 @@ export default {
     loading: true
   }),
 
+  asyncData({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_ITEMS', { ids: [id] })
+  },
+
   computed: {
     item() {
       return this.$store.state.items[this.$route.params.id]

@@ -326,7 +326,7 @@ export default {
 }
 .app-menu-modal {
   display: block;
-  background-color: #14003C;
+  background: linear-gradient(to top, #0e0844, #251f6b, #1f1f60);
   overflow: hidden;
 }
 .app-menu-esc {

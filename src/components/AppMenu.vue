@@ -52,11 +52,11 @@ export default {
       tooltipTop: 0,
       tooltipLeft: 0,
       linksData: [
-        { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002, radius: 50 },
-        { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001, radius: 80 },
-        { name: 'articles', color: 0x1DC3B0, size: 11, speed: 0.0008, radius: 110 },
-        { name: 'projects', color: 0x3CA1E7, size: 14, speed: 0.0006, radius: 140 },
-        { name: 'experiments', color: 0x5137EF, size: 15, speed: 0.0004, radius: 170 }
+        { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002 },
+        { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001 },
+        { name: 'articles', color: 0x1DC3B0, size: 11, speed: 0.0008 },
+        { name: 'projects', color: 0x3CA1E7, size: 14, speed: 0.0006 },
+        { name: 'experiments', color: 0x5137EF, size: 15, speed: 0.0004 }
       ],
       pauseMusic: false,
       setVolume: 1

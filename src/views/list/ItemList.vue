@@ -57,7 +57,7 @@ export default {
       return this.slice < this.maxSlice
     },
     loadingText() {
-      return this.hasMore ? 'searching for cookies' : 'no more cookies left'
+      return this.hasMore ? 'keep searching...' : 'the end of the road'
     }
   },
 
@@ -232,7 +232,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 6rem 5rem;
+  padding: 6rem 5rem 0rem 5rem;
   @include screen-style(iphone7) {
     padding: 8rem 2rem;
   };
@@ -240,16 +240,24 @@ export default {
     padding: 8rem 2rem;
   };
 }
+.mugen-scroll {
+  display: block;
+  text-align: center;
+  text-transform: capitalize;
+  height: 5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: darken($color-grey, 20%);
+}
 .item-move, .item-enter-active, .item-leave-active {
   transition: all .5s cubic-bezier(.55,0,.1,1);
 }
 .item-enter {
   opacity: 0;
-  transform: translate(30px, 0);
+  transform: translateY(30px);
 }
 .item-leave-active {
-  position: absolute;
   opacity: 0;
-  transform: translate(30px, 0);
+  transform: translateY(-30px);
 }
 </style>

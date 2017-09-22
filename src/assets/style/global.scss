@@ -299,10 +299,10 @@ $FULLHD: 1920px;
   opacity: 0;
 }
 
-.item-enter-active, .push-leave-active {
+.item-enter-active, .item-leave-active {
   transition: all 0.5s cubic-bezier(0.7,0,0.3,1);
 }
-.item-enter, .push-leave-to {
+.item-enter, .item-leave-to {
   opacity: 0;
   transform: translateX(-10%);
 }

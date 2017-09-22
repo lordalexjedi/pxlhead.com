@@ -1,12 +1,14 @@
 <template lang='pug'>
   .item
-    .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-    .item-text
-      router-link.item-name(:to='`/${item.type}/${item.id}`') {{ item.title }}
-      p.item-description {{ item.description }}
-      .item-info
-        span.item-views {{ item.views }}
-        span.item-comment 21
+    .item-container
+      .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+      transition(name='slide' appear)
+        .item-text
+          router-link.item-name(:to='`/${item.type}/${item.id}`') {{ item.title }}
+          p.item-description {{ item.description }}
+          .item-info
+            span.item-views {{ item.views }}
+            span.item-comment 21
 </template>
 
 <script>
@@ -24,31 +26,30 @@ export default {
 <style lang='scss'>
 @import '~style';
 .item {
-  height: 36rem;
-  position: relative;
+  flex-basis: calc(80% / 4);
   margin: 0 2% 7% 2%;
   transition: 0.3s ease-in-out;
   @include screen-style(fullHd) {
-    flex-basis: 20%;
+    flex-basis: calc(84% / 4);
+    // height: 20vw;
   };
   @include screen-style(iMac) {
-    height: 38rem;
-    flex-basis: 29%;
+    flex-basis: calc(84% / 3);
+    // height: 20vw * 1.33;
     .item-name {
       margin-top: 9rem;
     }
   };
   @include screen-style(ipadPro) {
-    height: 38rem;
-    flex-basis: 45%;
+    flex-basis: calc(84% / 2);
+    // height: 20vw * 1.875;
     margin-bottom: 10%;
     .item-name {
       margin-top: 9rem;
     }
   };
   @include screen-style(ipadAir) {
-    height: 30rem;
-    flex-basis: 45%;
+    flex-basis: calc(84% / 2);
     margin-bottom: 10%;
     .item-name {
       margin-top: 7rem;
@@ -62,7 +63,6 @@ export default {
     }
   };
   @include screen-style(iphoneSE) {
-    height: 30rem;
     flex-basis: 100%;
     margin-bottom: 22%;
     .item-name {
@@ -81,6 +81,17 @@ export default {
     left: 0;
     transition: 0.3s ease-in-out;
   }
+}
+.item-container {
+  position: relative;
+  height: 36rem;
+  width: 36rem;
+  @include screen-style(iphone7) {
+    width: auto;
+  };
+  @include screen-style(iphoneSE) {
+    width: auto;
+  };
 }
 .item-img {
   @extend %img;
@@ -142,7 +153,7 @@ export default {
   margin-top: 1rem;
   font-weight: 500;
   width: 80%;
-  max-height: 1.2rem * 3 + 0.7rem / 2;
+  max-height: 1.2rem * 3 + 1rem / 3;
   opacity: 0.8;
 }
 .item-info {
@@ -186,4 +197,12 @@ export default {
     background: url('../assets/icons/comment.svg') no-repeat center / 100%;
   }
 }
+
+.slide-enter-active, .slide-leave-active {
+  transition: all 0.5s ease-in-out 0.3s;
+}
+.slide-enter, .slide-leave-to {
+  transform: translate(-12.5%, -55%);
+}
+
 </style>

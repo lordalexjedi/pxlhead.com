@@ -96,20 +96,6 @@ export default {
     }
   }
 }
-.search-box {
-  @extend %search;
-}
-.search--active {
-  width: 30rem;
-  padding: 0 5rem;
-  cursor: text;
-  @include screen-style(iphone7) {
-    width: 27rem;
-  };
-  @include screen-style(iphoneSE) {
-    width: 22rem;
-  };
-}
 .item-view-esc {
   @extend %btn-esc;
 }

@@ -3,23 +3,23 @@
     template(v-if='item')
       .article-view(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .article-view-text
-          span.article-view-date 11/12/2017
+          span.article-view-date {{ itemDate }}
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
             a.article-view-btn(@click='scrollToText') READ
             a.article-view-btn(@click='scrollToComments') COMMENT
       .article-view-navbar
-        a.article-view-esc
+        router-link.article-view-esc(to='/articles')
         .article-view-social
           a.article-view-link.link--facebook
           a.article-view-link.link--twitter
           a.article-view-link.link--link
-        a.article-view-comment
+        a.article-view-comment(@click='scrollToComments')
       .article-read
         .text-wrapper
           .text-block(v-html='item.text')
-      comments(:item='item' v-show='showComments' ref='comments')
+      comments(:item='item' ref='comments')
       btn-top
 </template>
 
@@ -35,13 +35,16 @@ export default {
   },
 
   data: () => ({
-    loading: true,
-    showComments: false
+    loading: true
   }),
 
   computed: {
     item() {
       return this.$store.state.items[this.$route.params.id]
+    },
+    itemDate() {
+      const date = new Date(this.item.time)
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
   },
 
@@ -55,8 +58,6 @@ export default {
       TweenLite.to(window, 1, { scrollTo: readEl })
     },
     scrollToComments() {
-      this.showComments = true
-
       const commentEl = this.$refs.comments.$el
       TweenLite.to(window, 0.5, { scrollTo: commentEl })
     }

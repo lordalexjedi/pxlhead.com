@@ -10,6 +10,7 @@ const api = createAPI({
 })
 
 function fetch(child, sortBy) {
+  sortBy = sortBy || 'views'
   logRequests && console.log(`fetching ${child}...`)
   const cache = api.cachedItems
   if (cache && cache.has(child)) {
@@ -62,11 +63,19 @@ export function fetchSearchedIds(type, tags) {
 }
 
 export function fetchItem(id) {
-  return fetch(`posts/${id}`, 'views')
+  return fetch(`posts/${id}`)
 }
 
 export function fetchItems(ids) {
   return Promise.all(ids.map(id => fetchItem(id)))
+}
+
+export function fetchItemView({ id, type, views }) {
+  views++
+  return api.ref().update({
+    [`/posts/${id}/views`]: views,
+    [`/postIds/${type}/${id}/views`]: views
+  }).then(() => fetch(`posts/${id}`))
 }
 
 export function fetchComments(ids) {

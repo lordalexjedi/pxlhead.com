@@ -1,5 +1,6 @@
 import {
   fetchItems,
+  fetchItemView,
   fetchIdsByType,
   fetchSearchedIds,
   fetchComments
@@ -45,6 +46,10 @@ export default {
     } else {
       return Promise.resolve()
     }
+  },
+
+  FETCH_ITEM_VIEW: ({ commit, dispatch, state }, { id }) => {
+    return fetchItemView({ id, type: state.activeType, views: state.items[id].views })
   },
 
   FETCH_COMMENTS: ({ commit, state }, { ids }) => {

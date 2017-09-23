@@ -11,8 +11,8 @@
           pattern='[a-zA-Z0-9 ]+' maxlength='50' required
           title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
-      item(v-for='item in displayedItems' @click.native='activeItemId = item.id'
-        :key='item.id'  :item='item')
+      item(v-for='item in displayedItems'  :key='item.id'
+        @click.native='fetchItemView(item.id)'  :item='item')
     mugen-scroll(:handler='loadItems'
       :should-handle='!loading && hasMore') {{ loadingText }}
     btn-top
@@ -107,6 +107,11 @@ export default {
         this.displayedItems = this.$store.getters.activeItems
       })
       this.$bar.finish()
+    },
+    fetchItemView(id) {
+      this.$store.dispatch('FETCH_ITEM_VIEW', { id }).then(() => {
+        this.activeItemId = id
+      })
     }
   }
 }

@@ -9,9 +9,8 @@
         transition(name='item' tag='div')
           .project-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .project-view-social
-          a.social-link.link-twitter
-          a.social-link.link-facebook
-          a.social-link.link-dribbble
+          a.social-link(v-for='(link, social) in socialLinks'  :href='link'
+            :class='`link-${social}`' target='_blank' rel='noopener noreferrer')
         .project-view-tag
           a.tag-link(v-for='tag in item.tags') {{ tag }}
         span.project-view-watch {{ item.views }}
@@ -33,7 +32,13 @@ export default {
     return {
       displayedItems: this.$store.getters.activeItems,
       loading: false,
-      activeIndex: 1
+      activeIndex: 1,
+
+      socialLinks: {
+        twitter: `https://twitter.com/intent/tweet?text=${this.url}`,
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${this.url}`,
+        share: this.url
+      }
     }
   },
 
@@ -50,6 +55,9 @@ export default {
     },
     hasMore() {
       return this.slice < this.maxSlice
+    },
+    url() {
+      return this.$router.fullPath
     }
   },
 
@@ -290,7 +298,7 @@ export default {
     background: url('~@/assets/icons/facebook.svg') no-repeat center / 100%;
   }
 }
-.link-dribbble {
+.link-share {
   &::after {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
   }

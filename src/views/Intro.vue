@@ -42,32 +42,44 @@ export default {
       framesData: [{
         name: 'intro',
         title: 'Pxlhead',
-        camera: { xP: 0, yP: 10, zP: 180, xR: 0, yR: 0, zR: 0 },
+        camera: { xP: 0, yP: 10, zP: 200, xR: 0, yR: 0, zR: 0 },
         planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         name: 'about',
         title: 'About us',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
-        camera: { xP: 50, yP: 20, zP: 100, xR: 0.5, yR: 0.2 },
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
+        Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
+        pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
+        at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis.',
+        camera: { xP: 50, yP: 20, zP: 120, xR: 0.5, yR: 0.2 },
         planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         name: 'team',
         title: 'Our team',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
-        camera: { xP: 0, yP: 60, zP: 50, xR: 0.1, yR: -1 },
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
+        Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
+        pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
+        at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis.',
+        camera: { xP: 0, yP: 60, zP: 70, xR: 0.1, yR: -1 },
         planet: { xR: 1.9, yR: 0.6, zR: -3.4 },
       }, {
         name: 'projects',
         title: 'Our projects',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
-        camera: { xP: 40, yP: 60, zP: 80, xR: 0, yR: 0 },
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
+        Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
+        pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
+        at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis.',
+        camera: { xP: 40, yP: 60, zP: 100, xR: 0, yR: 0 },
         planet: { xR: -2, yR: -0.9, zR: 0 },
       }, {
         name: 'contacts',
         title: 'Contacts',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis pellentesque quam tincidunt aliquam.',
-        camera: { xP: 30, yP: 73, zP: 40, xR: -0.3, yR: 0 },
-        planet: { xR: 0.73, yR: 0.4, zR: 1 },
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
+        Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
+        pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
+        at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis.',
+        camera: { xP: 30, yP: 73, zP: 60, xR: -0.3, yR: 0 },
+        planet: { xR: 0.73, yR: 0.2, zR: 1 },
       }],
 
       distance: 0,
@@ -90,13 +102,17 @@ export default {
 
     this.init()
     this.animate()
+
+    setTimeout(() => {
+      TweenLite.to(this.camera.position, 3, { z: 200, ease: Power1.easeOut })
+    }, 2000)
   },
 
   methods: {
     // setting the scene
     init() {
       this.camera = new PerspectiveCamera(75, this.width / this.height, 0.1, 1000)
-      this.camera.position.set(0, 10, 180)
+      this.camera.position.set(0, 10, 350)
 
       this.renderer = new WebGLRenderer({ alpha: true, antialias: true })
       this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -235,7 +251,7 @@ export default {
 @import '~style';
 
 .intro {
-  background: #14003C;
+  background: linear-gradient(to top, #0e0844, #251f6b, #1f1f60);
   overflow: hidden;
   position: relative;
   user-select: none;

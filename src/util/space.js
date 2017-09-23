@@ -20,7 +20,7 @@ function drawStars({ size, texture }) {
   const starPositions = new Float32Array(200 * 3)
 
   for (let i = 0; i < 200; i++) {
-    const randPos = () => Math.random() * 300 - 150
+    const randPos = () => Math.random() * 400 - 200
     starPositions[i * 3] = randPos() * 1.5
     starPositions[i * 3 + 1] = randPos()
     starPositions[i * 3 + 2] = randPos()

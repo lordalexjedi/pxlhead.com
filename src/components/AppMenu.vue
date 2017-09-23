@@ -9,8 +9,11 @@
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
         a.app-menu-esc(@click='open = !open')
-        h2.app-menu-tooltip(v-show='!topView && activeLink'
-          :style='{ top: tooltipTop, left: tooltipLeft }') {{ activeLink }}
+        transition(name='tooltip')
+          .app-menu-tooltip(v-show='!topView && activeLink'
+            :style='{ top: tooltipTop, left: tooltipLeft }')
+            transition(name='tooltip-icon')
+              i.tooltip-icon.material-icons(v-show='!topView && activeLink') {{ activeIcon }}
         router-link.app-menu-link(v-show='topView' v-for='link in linksData'
           :style='{ top: link.top, left: link.left }'
           :to='`/${link.name}`'  :key='link.name') {{ link.name }}
@@ -49,14 +52,15 @@ export default {
       topView: false,
       showPointer: false,
       activeLink: '',
+      activeIcon: '',
       tooltipTop: 0,
       tooltipLeft: 0,
       linksData: [
-        { name: 'art', color: 0xD72DA9, size: 9, speed: 0.002 },
-        { name: 'music', color: 0xB42DD7, size: 10, speed: 0.001 },
-        { name: 'articles', color: 0x1DC3B0, size: 11, speed: 0.0008 },
-        { name: 'projects', color: 0x3CA1E7, size: 14, speed: 0.0006 },
-        { name: 'experiments', color: 0x5137EF, size: 15, speed: 0.0004 }
+        { name: 'art', icon: 'palette', color: 0xD72DA9, size: 9, speed: 0.002 },
+        { name: 'music', icon: 'music_note', color: 0xB42DD7, size: 10, speed: 0.001 },
+        { name: 'articles', icon: 'description', color: 0x1DC3B0, size: 11, speed: 0.0008 },
+        { name: 'projects', icon: 'slideshow', color: 0x3CA1E7, size: 14, speed: 0.0006 },
+        { name: 'experiments', icon: 'extension', color: 0x5137EF, size: 15, speed: 0.0004 }
       ],
       pauseMusic: false,
       setVolume: 1
@@ -118,6 +122,7 @@ export default {
       this.linksData.forEach((data, i) => {
         const planet = drawPlanet(data)
         planet.name = data.name
+        planet.icon = data.icon
 
         const radius = 50 + i * 30
         const orbit = drawOrbit(radius)
@@ -163,6 +168,7 @@ export default {
       if (metPlanets.length > 0) {
         const planet = metPlanets[0].object
         this.activeLink = planet.name
+        this.activeIcon = planet.icon
         this.showPointer = true
 
         // compute tooltip position
@@ -171,9 +177,10 @@ export default {
         this.vector.setFromMatrixPosition(planet.matrixWorld)
         this.vector.project(this.camera)
         this.tooltipLeft = (this.vector.x * widthHalf) + widthHalf + 'px'
-        this.tooltipTop = -(this.vector.y * heightHalf ) + heightHalf + 'px'
+        this.tooltipTop = -(this.vector.y * heightHalf) + heightHalf + 'px'
       } else {
         this.activeLink = ''
+        this.activeIcon = ''
         this.showPointer = false
       }
     },
@@ -368,16 +375,30 @@ export default {
   }
 }
 .app-menu-tooltip {
-  display: block;
   position: absolute;
-  font-size: 16px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: $color-white;
-  transition: all 0.3s;
-  opacity: 0.8;
-  cursor: pointer;
-  transition: all 0.3s;
+  width: 7rem;
+  height: 7rem;
+  background-color: $color-white;
+  border-radius: 50%;
+  .tooltip-icon {
+    position: absolute;
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    left: calc(50% - 3rem / 2);
+    top: calc(50% - 3rem / 2);
+    color: $color-pink;
+  }
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: -1rem;
+    left: calc(50% - 2rem / 2);
+    width: 2rem;
+    height: 2rem;
+    background: url('~@/assets/icons/tooltip.svg') no-repeat center / 100%;
+  }
 }
 .app-menu-link {
   display: block;
@@ -402,16 +423,21 @@ export default {
   justify-content: space-between;
 }
 .social-link {
-  @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
   display: block;
   background-color: transparent;
   box-shadow: none;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
   &:hover {
     background-color: transparentize(#fff, 0.9);
   }
   &::after {
+    position: absolute;
+    content: '';
+    display: block;
     @include center-pos(2rem);
   }
 }
@@ -625,6 +651,22 @@ export default {
 .overlay-leave-to {
   animation: overlay 1s ease-in-out reverse;
   transition: all 0.1s linear 0.9s;
+}
+
+.tooltip-enter-active, .tooltip-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.tooltip-enter, .tooltip-leave-to {
+  transform: translateY(2rem);
+  opacity: 0;
+}
+
+.tooltip-icon-enter-active, .tooltip-icon-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+.tooltip-icon-enter, .tooltip-icon-leave-to {
+  transform: translateY(-2rem);
+  opacity: 0;
 }
 
 @keyframes overlay {

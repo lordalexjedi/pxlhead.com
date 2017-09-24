@@ -307,6 +307,13 @@ $FULLHD: 1920px;
   transform: translateX(-10%);
 }
 
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: all 0.7s cubic-bezier(0.7,0,0.3,1) 0.3s;
+}
+.slide-up-enter, .slide-up-leave-to {
+  transform: translateY(100%);
+}
+
 //keyframes
 
 @keyframes anim-click {

@@ -4,7 +4,7 @@
       .item-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
       transition(name='slide' appear)
         .item-text
-          router-link.item-name(:to='`/${item.type}/${item.id}`') {{ item.title }}
+          h2.item-name {{ item.title }}
           p.item-description {{ item.description }}
           .item-info
             span.item-views {{ item.views }}
@@ -26,47 +26,47 @@ export default {
 <style lang='scss'>
 @import '~style';
 .item {
-  flex-basis: calc(80% / 4);
-  margin: 0 2% 7% 2%;
+  flex-basis: calc(88% / 4);
+  margin: 0 2% 5% 2%;
   transition: 0.3s ease-in-out;
   @include screen-style(fullHd) {
     flex-basis: calc(84% / 4);
     // height: 20vw;
   };
   @include screen-style(iMac) {
-    flex-basis: calc(84% / 3);
+    flex-basis: calc(88% / 3);
     // height: 20vw * 1.33;
     .item-name {
-      margin-top: 9rem;
+      margin-top: 5rem;
     }
   };
   @include screen-style(ipadPro) {
-    flex-basis: calc(84% / 2);
+    flex-basis: calc(88% / 2);
     // height: 20vw * 1.875;
     margin-bottom: 10%;
     .item-name {
-      margin-top: 9rem;
+      margin-top: 5rem;
     }
   };
   @include screen-style(ipadAir) {
-    flex-basis: calc(84% / 2);
+    flex-basis: calc(88% / 2);
     margin-bottom: 10%;
     .item-name {
-      margin-top: 7rem;
+      margin-top: 3rem;
     }
   };
   @include screen-style(iphone7) {
     flex-basis: 100%;
     margin-bottom: 18%;
     .item-name {
-      margin-top: 7rem;
+      margin-top: 3rem;
     }
   };
   @include screen-style(iphoneSE) {
     flex-basis: 100%;
     margin-bottom: 22%;
     .item-name {
-      margin-top: 7rem;
+      margin-top: 3rem;
     }
   };
 }
@@ -84,7 +84,7 @@ export default {
 }
 .item-container {
   position: relative;
-  height: 36rem;
+  height: 40rem;
   width: 36rem;
   @include screen-style(iphone7) {
     width: auto;
@@ -99,7 +99,7 @@ export default {
   top: 0;
   left: 0;
   width: 80%;
-  height: 70%;
+  height: 60%;
   cursor: pointer;
   z-index: 10;
   box-shadow: 4px 4px 30px rgba(0, 0, 0, 0.25);
@@ -113,10 +113,10 @@ export default {
 }
 .item-text {
   position: absolute;
-  bottom: -3rem;
+  bottom: 0;
   left: 10%;
   width: 80%;
-  height: 70%;
+  height: 60%;
   color: $color-white;
   display: flex;
   flex-direction: column;
@@ -136,7 +136,7 @@ export default {
   font-family: 'Montserrat', sans-serif;
   font-size: 1.8rem;
   font-weight: 600;
-  margin-top: 8rem;
+  margin-top: 5rem;
   width: 80%;
   max-height: 1.8rem * 2 + 1rem / 2;
   overflow: hidden;

@@ -35,17 +35,13 @@ export default {
     BtnTop
   },
 
-  props: {
-    id: String
-  },
-
   data: () => ({
     loading: true
   }),
 
   computed: {
     item() {
-      return this.$store.state.items[this.id]
+      return this.$store.state.items[this.$route.params.id]
     },
     itemDate() {
       const date = new Date(this.item.time)

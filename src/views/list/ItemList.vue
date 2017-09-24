@@ -17,14 +17,13 @@
       :should-handle='!loading && hasMore') {{ loadingText }}
     btn-top
 
-    component(:is='activeView' v-if='activeItemId'  :id='activeItemId')
+    item-view(v-if='activeItemId'  :id='activeItemId')
 </template>
 
 <script>
 import MugenScroll from 'vue-mugen-scroll'
 import Item from '@/components/Item.vue'
 import ItemView from '../single/ItemView.vue'
-import ArticleView from '../single/ArticleView.vue'
 import BtnTop from '@/components/BtnTop.vue'
 
 export default {
@@ -32,6 +31,7 @@ export default {
 
   components: {
     Item,
+    ItemView,
     BtnTop,
     MugenScroll
   },
@@ -51,9 +51,6 @@ export default {
   },
 
   computed: {
-    activeView() {
-      return this.type === 'articles' ? ArticleView : ItemView
-    },
     slice() {
       return this.$store.state.activeSlice
     },
@@ -113,7 +110,11 @@ export default {
     },
     fetchItemView(id) {
       this.$store.dispatch('FETCH_ITEM_VIEW', { id }).then(() => {
-        this.activeItemId = id
+        if (this.type === 'articles') {
+          this.$router.push(`/articles/${id}`)
+        } else {
+          this.activeItemId = id
+        }
       })
     }
   }

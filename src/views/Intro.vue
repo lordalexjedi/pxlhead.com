@@ -1,20 +1,22 @@
 <template lang='pug'>
   .intro(@click='tooltipShow = false')
-    transition(name='text-vertical-toggle')
-      .intro-text(v-if='frameIdx == 0' key='intro')
-        h3.intro-subtitle Turn into a pixel with
-        h1.intro-title Pxlhead
-      .info-text(v-else v-bind='{ key: frame.name, class: `${frame.name}-text` }')
-        h1.intro-title {{ frame.title }}
-        p.intro-description {{ frame.description }}
-    nav.intro-nav
-      li.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
-        v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
-        a.nav-point
+    transition(name='text-anim' appear)
+      .intro-textgroup(v-if='showNavigation')
+        .intro-text(v-if='frameIdx == 0' key='intro')
+          h3.intro-subtitle Turn into a pixel with
+          h1.intro-title Pxlhead
+        .info-text(v-else v-bind='{ key: frame.name, class: `${frame.name}-text` }')
+          h1.intro-title {{ frame.title }}
+          p.intro-description {{ frame.description }}
+    transition-group(name='nav-anim' appear)
+      nav.intro-nav(v-if='showNavigation' key='nav')
+        li.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
+          v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
+          a.nav-point
+      .mouse-tip(v-if='showNavigation' key='tip')
+        .mouse-wheel
     .tooltip(v-show='tooltipShow')
       p.tooltip-text Click here to launch menu!
-    .mouse-tip
-      .mouse-wheel
 </template>
 
 <script>
@@ -38,6 +40,7 @@ export default {
   data() {
     return {
       tooltipShow: true,
+      showNavigation: false,
       frameIdx: 0,
       framesData: [{
         name: 'intro',
@@ -105,6 +108,7 @@ export default {
 
     setTimeout(() => {
       TweenLite.to(this.camera.position, 3, { z: 200, ease: Power1.easeOut })
+      this.showNavigation = true
     }, 2000)
   },
 
@@ -404,16 +408,32 @@ export default {
   border-radius: 1.5rem;
   animation: scroll 1s ease-in-out infinite;
 }
-.text-vertical-toggle-enter-active,
-.text-vertical-toggle-leave-active {
-  transition: all .8s ease-in-out;
+// .text-vertical-toggle-enter-active,
+// .text-vertical-toggle-leave-active {
+//   transition: all .8s ease-in-out;
+// }
+// .text-vertical-toggle-enter-active {
+//   transition-delay: 0.5s;
+// }
+// .text-vertical-toggle-enter,
+// .text-vertical-toggle-leave-to {
+//   transform: translateY(10rem);
+//   opacity: 0;
+// }
+
+.text-anim-enter-active, .text-anim-leave-active {
+  transition: all 1.3s ease-in-out 0.5s;
 }
-.text-vertical-toggle-enter-active {
-  transition-delay: 0.5s;
+.text-anim-enter, .text-anim-leave-to {
+  transform: translateX(-300%);
+  opacity: 0;
 }
-.text-vertical-toggle-enter,
-.text-vertical-toggle-leave-to {
-  transform: translateY(10rem);
+
+.nav-anim-enter-active, .nav-anim-leave-active {
+  transition: all 0.8s ease-in-out 0.5s;
+}
+.nav-anim-enter, .nav-anim-leave-to {
+  transform: translateX(300%);
   opacity: 0;
 }
 

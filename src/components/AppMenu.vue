@@ -8,7 +8,7 @@
     transition(name='fade-delay' mode='out-in')
       .app-menu-modal(v-show='open' @click='changePage'
         :class='{ pointer: showPointer }')
-        a.app-menu-esc(@click='open = !open')
+        a.app-menu-esc.material-icons(@click='open = !open') close
         transition(name='tooltip')
           .app-menu-tooltip(v-show='!topView && activeLink'
             :style='{ top: tooltipTop, left: tooltipLeft }')
@@ -18,9 +18,9 @@
           :style='{ top: link.top, left: link.left }'
           :to='`/${link.name}`'  :key='link.name') {{ link.name }}
         nav.app-menu-social
-          a.social-link.link--facebook
-          a.social-link.link--twitter
-          a.social-link.link--link
+          a.app-menu-social-link.link--facebook
+          a.app-menu-social-link.link--twitter
+          a.app-menu-social-link.link--link
         .btn-round
           a.btn-toggle(:class='{ "btn-toggle--on": pauseMusic }'
           @click='pauseMusic = !pauseMusic')
@@ -345,35 +345,43 @@ export default {
   right: 5rem;
   width: 5rem;
   height: 5rem;
+  font-size: 3rem;
+  color: transparentize(#E0E0E0, 0.3);
+  text-align: center;
+  line-height: 5rem;
   border-radius: 50%;
   cursor: pointer;
   background-color: transparentize(#E0E0E0, 0.8);
   transition: 0.3s ease-in-out;
-  &::before {
+  &:hover {
+    background-color: transparentize(#E0E0E0, 0.3);
+    transition: 0.3s ease-in-out;
+  }
+}
+.app-menu-tooltip {
+  position: absolute;
+  width: 7rem;
+  height: 7rem;
+  background-color: $color-white;
+  border-radius: 50%;
+  .tooltip-icon {
     position: absolute;
-    content: '';
-    display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    transform: rotate(45deg);
-    width: 0.3rem;
-    height: 2rem;
-    background-color: $color-white;
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    left: calc(50% - 3rem / 2);
+    top: calc(50% - 3rem / 2);
+    color: $color-pink;
   }
   &::after {
     position: absolute;
-    content: '';
     display: block;
-    top: calc(50% - 2rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    transform: rotate(-45deg);
-    width: 0.3rem;
+    content: '';
+    bottom: -1rem;
+    left: calc(50% - 2rem / 2);
+    width: 2rem;
     height: 2rem;
-    background-color: $color-white;
-  }
-  &:hover {
-    background-color: transparentize(#fff, 0.4);
-    transition: 0.3s ease-in-out;
+    background: url('~@/assets/icons/tooltip.svg') no-repeat center / 100%;
   }
 }
 .app-menu-tooltip {
@@ -424,7 +432,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
 }
-.social-link {
+.app-menu-social-link {
   position: relative;
   flex-basis: 5rem;
   display: block;

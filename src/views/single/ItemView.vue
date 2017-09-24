@@ -1,28 +1,34 @@
 <template lang='pug'>
   .item-main(v-if='item')
-    .item-view
-      a.item-view-esc
-      .item-view-body
-        .item-view-text
-          h1.item-view-title {{ item.title }}
-          p.item-view-description {{ item.description }}
-          .item-view-action
-            a.item-view-link VIEW
-            a.item-view-comment(@click='scrollToComments')
-        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-        playlist(v-if='item.type === "music"')
-        .item-view-social
-          a.social-link.link-twitter
-          a.social-link.link-facebook
-          a.social-link.link-dribbble
-        .item-view-tag
-          a.tag-link(v-for='tag in item.tags') {{ tag }}
-        span.item-view-watch {{ item.views }}
-      .item-view-nav
-        a.item-view-arrow.arrow-prev PREV ITEM
-        h2 SCROLL
-        a.item-view-arrow.arrow-next NEXT ITEM
-    comments(:item='item' v-show='showComments' ref='comments')
+    transition(name='fade' appear)
+    .item-overlay(v-if='item')
+    transition(name='slide-up' appear)
+      .item-view(v-if='item')
+        .item-view-body
+          .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+          .item-view-text
+            h1.item-view-title {{ item.title }}
+            p.item-view-description {{ item.description }}
+            .item-view-action
+              a.item-view-link VIEW
+              a.item-view-comment.material-icons(@click='scrollToComments') comment
+          playlist(v-if='item.type === "music"')
+          .item-view-tag
+            a.tag-link(v-for='tag in item.tags') {{ tag }}
+          .item-view-watch
+            i.material-icons remove_red_eye
+            span.watch-counter {{ item.views }}
+          .item-view-date
+            i.material-icons date_range
+            span.view-date {{ item.time }}
+          .item-view-social
+            a.social-link.link-twitter
+            a.social-link.link-facebook
+            a.social-link.link-dribbble
+        a.item-view-esc.material-icons close
+        a.item-view-arrow.material-icons.arrow-prev keyboard_arrow_left
+        a.item-view-arrow.material-icons.arrow-next keyboard_arrow_right
+        comments(:item='item' v-show='showComments' ref='comments')
 </template>
 
 <script>
@@ -71,38 +77,45 @@ export default {
 <style lang='scss'>
 @import '~style';
 
-.item-view {
-  position: relative;
+.item-overlay {
+  position: fixed;
   top: 0;
   left: 0;
+  width: 100vw;
   height: 100vh;
-  background: #fff;
-  z-index: 100;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 73%;
-    height: 100%;
-    background: #f2f2f2;
-  }
-  @media (orientation: portrait) {
-    &::after {
-      bottom: 0;
-      height: 70%;
-      width: 100%;
-      top: 100% - 70%;
-    }
-  }
+  z-index: 1000;
+  background-color: rgba(51, 51, 51, 0.8);
+}
+.item-view {
+  position: fixed;
+  overflow-y: auto;
+  bottom: 0;
+  left: 25vw;
+  height: 90vh;
+  width: 50vw;
+  background: $color-white;
+  z-index: 1001;
 }
 .item-view-esc {
-  @extend %btn-esc;
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  font-size: 4rem;
+  color: $color-white;
+  right: -20rem;
+  top: 0;
+  opacity: 0.8;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  background: transparent;
+  &:hover {
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+  }
 }
 .item-view-img {
-  flex-basis: 80rem;
-  height: 60rem;
+  width: 100%;
+  flex-basis: 55rem;
   @extend %img;
   @include screen-style(iMac) {
     flex-basis: 65rem;
@@ -114,168 +127,77 @@ export default {
   }
 }
 .item-view-body {
-  position: absolute;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  top: 20%;
-  left: calc(50% - 75% / 2);
-  width: 75%;
-  height: 60%;
-  z-index: 100;
-  @include screen-style(iMac) {
-    width: 85%;
-    left: calc(45% - 85% / 2);
-  };
-  @media (orientation: portrait) {
-    top: 18%;
-    height: 70%;
-    width: 75%;
-    left: calc(50% - 75% / 2);
-    flex-direction: column-reverse;
-  }
-}
-.item-view-text {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
-  flex-basis: 50rem;
-  height: 95%;
-  @media (orientation: portrait) {
-    flex-basis: 30%;
-    align-items: center;
-    width: 90%;
-  }
-  @include screen-style(iphone7) {
-    flex-basis: 60%;
-    margin-top: 4rem;
-  };
-  @include screen-style(iphoneSE) {
-    flex-basis: 60%;
-    margin-top: 4rem;
-  }
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+}
+.item-view-text {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem 0;
 }
 .item-view-title {
-  @extend %heading;
   max-width: 50rem;
-  flex-basis: 50%;
-  text-align: right;
+  font-size: 3rem;
+  text-align: left;
   color: #4f4f4f;
   margin: 0;
-  @media (orientation: portrait) {
-    max-width: 90rem;
-    font-size: 5rem;
-    line-height: 5rem;
-    text-align: center;
-    min-height: 5rem * 2 + 5rem / 2;
-  }
-  @include screen-style(iphone7) {
-    max-width: 100%;
-    min-width: 30rem;
-    font-size: 4rem;
-    line-height: 4rem;
-    text-align: left;
-    min-height: 7rem;
-    flex-basis: 30%;
-  };
-  @include screen-style(iphoneSE) {
-    max-width: 100%;
-    min-width: 30rem;
-    font-size: 4rem;
-    line-height: 4rem;
-    text-align: left;
-    min-height: 7rem;
-    flex-basis: 30%;
-  }
 }
-.item-view-watch {
-  position: absolute;
-  display: block;
-  bottom: -9rem;
-  right: 70rem;
-  font-size: 1.7rem;
-  color: $color-grey;
-  @include screen-style(iMac) {
-    right: 56rem;
-  };
-  @media (orientation: portrait) {
-    top: -5rem;
-    left: 4rem;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    width: 2rem;
-    height: 2rem;
-    top: 0;
-    left: -4rem;
-    background: url('~@/assets/icons/eye-black.svg') no-repeat center / 100%;
-  }
-}
+
 .item-view-description {
   @extend %paragraph;
+  padding: 2rem 0 1rem 0;
   flex-basis: 50%;
-  margin-left: 5rem;
-  max-height: 2rem * 6 + 2.5rem / 2;
+  width: 100%;
+  max-width: 100%;
+  font-size: 2rem;
+  line-height: 2rem;
+  min-height: 1.5rem * 2 + 2rem / 2;
+  max-height: 1.5rem * 3 + 2rem / 2;
   color: darken($color-grey, 10%);
-  @media (orientation: portrait) {
-    text-align: justify;
-    max-width: 80rem;
-    margin: 0;
-  }
-  @include screen-style(iphone7) {
-    font-size: 1.7rem;
-    max-height: 1.7rem * 4 + 2.5rem / 2;
-  };
-  @include screen-style(iphoneSE) {
-    font-size: 1.7rem;
-    max-height: 1.7rem * 4 + 2.5rem / 2;
-  }
+  text-align: justify;
 }
 .item-view-action {
-  flex-basis: 6rem;
-  width: 25rem;
+  position: absolute;
+  top: -7rem;
+  right: 4rem;
+  width: 22rem;
   display: flex;
   justify-content: space-between;
-  @include screen-style(ipadPro) {
-    position: absolute;
-    top: 45rem - 6rem / 2;
-    right: 10%;
-  };
-  @include screen-style(ipadAir) {
-    position: absolute;
-    top: 45rem - 6rem / 2;
-    right: 10%;
-  };
-  @include screen-style(iphone7) {
-    align-self: flex-start;
-    width: 18rem;
-  }
-  @include screen-style(iphoneSE) {
-    align-self: flex-start;
-    width: 18rem;
-  }
 }
 .item-view-link {
   @extend %btn-text;
-  @include screen-style(iphone7) {
-    width: 12rem;
-    height: 5rem;
-    line-height: 5rem;
-  };
-  @include screen-style(iphoneSE) {
-    width: 10rem;
-    height: 4rem;
-    line-height: 4rem;
+  box-shadow: none;
+  width: 14rem;
+  height: 5rem;
+  line-height: 5rem;
+  &:hover {
+    box-shadow: $shadow;
   }
 }
 .item-view-comment {
-  @extend %btn-icon;
-  position: relative;
-  width: 6rem;
-  height: 6rem;
+  width: 5rem;
+  height: 5rem;
+  color: $color-white;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 5rem;
+  background-color: $color-pink;
+  transition: all 0.3s ease-in-out;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    box-shadow: $shadow;
+    background-color: darken($color-pink, 10%);
+    transition: all 0.3s ease-in-out;
+  }
   @include screen-style(iphone7) {
     width: 5rem;
     height: 5rem;
@@ -284,193 +206,126 @@ export default {
     width: 4rem;
     height: 4rem;
   }
-  &::after {
-    @include center-pos(4rem);
-    background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
+}
+.item-view-watch {
+  position: absolute;
+  display: block;
+  top: -4rem;
+  left: 4rem;
+  font-size: 1.7rem;
+  color: $color-grey;
+  i {
+    position: absolute;
+    display: block;
+    left: -4rem;
+    line-height: 1.7rem;
+  }
+  .view-counter {
+    position: absolute;
+    display: block;
+    left: 0rem;
   }
 }
-.item-view-nav {
+.item-view-date {
   position: absolute;
-  top: 20%;
-  right: 5rem;
-  width: 7rem;
-  height: 60%;
-  display: flex;
-  color: transparentize($color-grey, 0.2);
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 100;
-  @media (orientation: portrait) {
-    bottom: 2%;
-    flex-direction: row;
-    width: 60%;
-    height: 7rem;
-    left: 20%;
-    top: auto;
+  display: block;
+  width: 5rem;
+  height: 2rem;
+  top: -4rem;
+  left: 14rem;
+  font-size: 1.7rem;
+  color: $color-grey;
+  i {
+    position: absolute;
+    display: block;
+    left: -4rem;
+    line-height: 1.7rem;
   }
-  h2 {
-    font-size: 2rem;
-    text-align: center;
-    align-self: center;
-    @media (orientation: portrait) {
-      display: none;
-    }
+  .view-date{
+    position: absolute;
+    display: block;
+    left: 0rem;
   }
 }
 .item-view-arrow {
-  position: relative;
-  width: 100%;
-  font-size: 2rem;
+  position: absolute;
+  top: 20rem;
+  width: 7rem;
+  height: 7rem;
+  font-size: 6rem;
+  color: $color-white;
+  opacity: 0.8;
   text-align: center;
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    color: $color-grey;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    left: calc(50% - 4rem / 2);
-    width: 4rem;
-    height: 4rem;
+    opacity: 1;
+    transition: 0.3s ease-in-out;
   }
 }
 .arrow-prev {
-  &::after {
-    top: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
-  @media (orientation: portrait) {
-    &::after {
-      left: -3rem;
-      top: -1rem;
-      transform: rotate(-90deg)
-    }
-  }
+  left: -10rem;
 }
 .arrow-next {
-  &::after {
-    transform: rotate(180deg);
-    bottom: -5rem;
-    background: url('~@/assets/icons/arrow.svg') no-repeat center / 100%;
-  }
-  @media (orientation: portrait) {
-    &::after {
-      right: -3rem;
-      left: auto;
-      top: -1rem;
-      transform: rotate(90deg);
-    }
-  }
+  right: -10rem;
 }
 .item-view-tag {
-  position: absolute;
-  bottom: -10rem;
-  right: 5rem;
-  width: 44rem;
-  height: 4rem;
+  position: relative;
+  width: 35rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  @include screen-style(iMac) {
-    right: 2rem;
-  };
-  @media (orientation: portrait) {
-    width: 60%;
-    top: -6rem;
-    right: 0;
-  }
 }
 .tag-link {
   @extend %btn-text;
-  flex-basis: 12rem;
-  height: 5rem;
+  flex-basis: 10rem;
+  height: 4rem;
   background-color: $color-blue;
-  line-height: 5rem;
+  line-height: 4rem;
+  box-shadow: none;
   &:hover {
+    box-shadow: $shadow;
     background-color: darken($color-blue, 10%);
-  }
-  @include screen-style(ipadPro) {
-    box-shadow: none;
-    flex-basis: 10rem;
-    height: 4rem;
-    line-height: 4rem;
-  };
-  @include screen-style(ipadAir) {
-    box-shadow: none;
-    flex-basis: 10rem;
-    height: 4rem;
-    line-height: 4rem;
-  };
-  @include screen-style(iphone7) {
-    box-shadow: none;
-    flex-basis: 7rem;
-    height: 3rem;
-    line-height: 3rem;
-  };
-  @include screen-style(iphoneSE) {
-    box-shadow: none;
-    flex-basis: 6rem;
-    height: 3rem;
-    line-height: 3rem;
-    font-size: 1.2rem;
   }
 }
 .item-view-social {
   position: absolute;
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
-  width: 5rem;
-  height: 25rem;
-  top: calc(50% - 25rem / 2);
-  right: -2.5rem;
-  @media (orientation: portrait) {
-    top: 18%;
-  }
-  @include screen-style(iphone7) {
-    height: 18rem;
-  };
-  @include screen-style(iphoneSE) {
-    height: 18rem;
-  }
+  width: 18rem;
+  height: 5rem;
+  top: -5.5rem;
+  right: 0rem;
 }
 .social-link {
-  @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
-  @include screen-style(iphone7) {
-    flex-basis: 4rem;
-    width: 4rem;
-  };
-  @include screen-style(iphoneSE) {
-    flex-basis: 4rem;
-    width: 4rem;
+  transition: all 0.3s ease-in-out;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(200, 200, 200, 0.8);
+    transition: all 0.3s ease-in-out;
   }
   &::after {
+    position: absolute;
+    content: '';
+    display: block;
     @include center-pos(2rem);
-  }
-  @include screen-style(iphoneSE) {
-    &::after {
-      @include center-pos(1.5rem);
-    }
   }
 }
 .link-twitter {
   &::after {
-    background: url('~@/assets/icons/twitter.svg') no-repeat center / 100%;
+    background: url('~@/assets/icons/twitter-black.svg') no-repeat center / 100%;
   }
 }
 .link-facebook {
   &::after {
-    background: url('~@/assets/icons/facebook.svg') no-repeat center / 100%;
+    background: url('~@/assets/icons/facebook-black.svg') no-repeat center / 100%;
   }
 }
 .link-dribbble {
   &::after {
-    background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
+    background: url('~@/assets/icons/link-black.svg') no-repeat center / 120%;
   }
 }
 

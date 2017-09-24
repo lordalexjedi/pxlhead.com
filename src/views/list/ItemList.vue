@@ -15,7 +15,8 @@
         @click.native='fetchItemView(item.id)'  :item='item')
     mugen-scroll(:handler='loadItems'
       :should-handle='!loading && hasMore') {{ loadingText }}
-    btn-top
+    transition(name='slide-up' appear)
+      btn-top
 
     item-view(v-if='activeItemId'  :id='activeItemId')
 </template>

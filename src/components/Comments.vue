@@ -4,14 +4,15 @@
     .comments-header
       .comments-title COMMENTS
         span.comments-counter ({{ commentsCount }})
-      a.comments-submit(@click='showCommentForm = !showCommentForm')
+      a.comments-submit.material-icons(@click='showCommentForm = !showCommentForm'
+        :class='{"comment-submit--active": showCommentForm}') add
     transition(name='fade')
       form.comments-form(v-if='showCommentForm')
         .comments-img
         .comments-input
           input.comments-name(placeholder='ex. Marty McFly')
           textarea.comments-message(placeholder='Dont panic')
-        a.comments-send
+        a.comments-send.material-icons send
     .comments-list(v-if='!loading')
       .comment(v-for='id in item.commentIds')
         .comment-img
@@ -82,19 +83,15 @@ function fetchComments(store, item) {
 
 .comments {
   position: relative;
+  padding: 0 10%;
   background-color: #F8FCFF;
-  min-height: 100vh;
 }
 .comments-header {
   position: relative;
-  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 4rem 0;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
 }
 .comments-title {
   font-size: 2.5rem;
@@ -108,40 +105,24 @@ function fetchComments(store, item) {
   position: relative;
   flex-basis: 5rem;
   height: 5rem;
-  margin-right: 4rem;
   border-radius: 50%;
-  font-size: 1.3rem;
+  font-size: 3rem;
+  line-height: 5rem;
+  margin-right: 4rem;
   font-weight: bold;
   color: $color-white;
   text-align: center;
   cursor: pointer;
-  line-height: 4rem;
   background-color: $color-pink;
   transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
   &:hover {
     background-color: darken($color-pink, 10%);
     transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
   }
-  &::before {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 0.3rem / 2);
-    left: calc(50% - 2.5rem / 2);
-    width: 2.5rem;
-    height: 0.3rem;
-    background-color: $color-white;
-  }
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 2.5rem / 2);
-    left: calc(50% - 0.3rem / 2);
-    width: 0.3rem;
-    height: 2.5rem;
-    background-color: $color-white;
-  }
+}
+.comment-submit--active {
+  transform: rotate(45deg);
+  transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
 }
 .comments-list {
   position: relative;
@@ -153,32 +134,6 @@ function fetchComments(store, item) {
   flex-direction: column;
   justify-content: space-between;
 }
-.comments-up {
-  position: fixed;
-  display: block;
-  width: 6rem;
-  height: 6rem;
-  bottom: 5rem;
-  right: 5rem;
-  cursor: pointer;
-  background-color: $color-pink;
-  transition: 0.3s ease-in-out;
-  border-radius: 50%;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: calc(50% - 3rem / 2);
-    left: calc(50% - 3rem / 2);
-    width: 3rem;
-    height: 3rem;
-    background: url('~@/assets/icons/arrow-small.svg') no-repeat center / 120%;
-  }
-  &:hover {
-    background-color: darken($color-pink, 10%);
-    transition: 0.3s ease-in-out;
-  }
-}
 .comments-form {
   position: relative;
   display: flex;
@@ -187,9 +142,6 @@ function fetchComments(store, item) {
   padding: 4rem 0;
   margin-bottom: 4rem;
   height: 15rem;
-  width: 100rem;
-  top: 0;
-  left: calc(50% - 100rem / 2);
   background-color: $color-lightblue;
   transition: 0.5s ease-in-out;
   &::after {
@@ -246,6 +198,10 @@ function fetchComments(store, item) {
     right: 12rem;
     width: 12rem;
     height: 5rem;
+    font-size: 3rem;
+    text-align: center;
+    color: $color-white;
+    line-height: 5rem;
     cursor: pointer;
     border-radius: 5rem;
     background-color: $color-blue;
@@ -253,16 +209,6 @@ function fetchComments(store, item) {
     &:hover {
       background-color: darken($color-blue, 10%);
       transition: 0.3s ease-in-out;
-    }
-    &::after {
-      position: absolute;
-      display: block;
-      content: '';
-      top: calc(50% - 2rem / 2);
-      left: calc(50% - 2rem / 2);
-      width: 2rem;
-      height: 2rem;
-      background: url('~@/assets/icons/send.svg') no-repeat center / 120%;
     }
   }
 }

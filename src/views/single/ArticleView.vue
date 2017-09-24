@@ -29,6 +29,7 @@ import BtnTop from '@/components/BtnTop.vue'
 
 export default {
   name: 'article-view',
+
   components: {
     Comments,
     BtnTop
@@ -37,10 +38,6 @@ export default {
   data: () => ({
     loading: true
   }),
-
-  asyncData({ store, route: { params: { id }}}) {
-    return store.dispatch('FETCH_ITEMS', { ids: [id] })
-  },
 
   computed: {
     item() {

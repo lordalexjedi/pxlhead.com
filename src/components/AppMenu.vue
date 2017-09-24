@@ -114,15 +114,15 @@ export default {
 
       this.planets = []
 
-      const mainPlanet = drawPlanet({ color: 0xD8DF72, size: 28 })
-      mainPlanet.name = 'intro'
+      const introData = { name: 'intro', icon: 'home', color: 0xD8DF72, size: 28 }
+      const mainPlanet = drawPlanet(introData)
+      mainPlanet.data = introData
       this.orbitSystem.add(mainPlanet)
       this.planets.push(mainPlanet)
 
       this.linksData.forEach((data, i) => {
         const planet = drawPlanet(data)
-        planet.name = data.name
-        planet.icon = data.icon
+        planet.data = data
 
         const radius = 50 + i * 30
         const orbit = drawOrbit(radius)
@@ -133,7 +133,6 @@ export default {
         const factor = Math.random() < 0.5 ? -1 : 1
         const yPos = Math.sqrt(Math.pow(radius, 2) - Math.pow(xPos, 2)) * factor
         planet.position.set(xPos, yPos, 0)
-        planet.name = data.name
         orbit.add(planet)
         this.planets.push(planet)
       })
@@ -167,17 +166,20 @@ export default {
 
       if (metPlanets.length > 0) {
         const planet = metPlanets[0].object
-        this.activeLink = planet.name
-        this.activeIcon = planet.icon
+        this.activeLink = planet.data.name
         this.showPointer = true
 
-        // compute tooltip position
-        const widthHalf = this.width / 2
-        const heightHalf = this.height / 2
-        this.vector.setFromMatrixPosition(planet.matrixWorld)
-        this.vector.project(this.camera)
-        this.tooltipLeft = (this.vector.x * widthHalf) + widthHalf + 'px'
-        this.tooltipTop = -(this.vector.y * heightHalf) + heightHalf + 'px'
+        if (!this.topView) {
+          this.activeIcon = planet.data.icon
+          // compute tooltip position
+          const wHalf = this.width / 2
+          const hHalf = this.height / 2
+          const pSize = planet.data.size * 2
+          this.vector.setFromMatrixPosition(planet.matrixWorld)
+          this.vector.project(this.camera)
+          this.tooltipLeft = (this.vector.x * wHalf) + wHalf - 35 + 'px'
+          this.tooltipTop = -(this.vector.y * hHalf) + hHalf - 80 - pSize + 'px'
+        }
       } else {
         this.activeLink = ''
         this.activeIcon = ''
@@ -361,6 +363,32 @@ export default {
   width: 7rem;
   height: 7rem;
   background-color: $color-white;
+  border-radius: 50%;
+  .tooltip-icon {
+    position: absolute;
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    left: calc(50% - 3rem / 2);
+    top: calc(50% - 3rem / 2);
+    color: $color-pink;
+  }
+  &::after {
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: -1rem;
+    left: calc(50% - 2rem / 2);
+    width: 2rem;
+    height: 2rem;
+    background: url('~@/assets/icons/tooltip.svg') no-repeat center / 100%;
+  }
+}
+.app-menu-tooltip {
+  position: absolute;
+  width: 7rem;
+  height: 7rem;
+  background-color: #FFFFFF;
   border-radius: 50%;
   .tooltip-icon {
     position: absolute;

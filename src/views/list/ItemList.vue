@@ -111,7 +111,11 @@ export default {
     },
     fetchItemView(id) {
       this.$store.dispatch('FETCH_ITEM_VIEW', { id }).then(() => {
-        this.activeItemId = id
+        if (this.type === 'articles') {
+          this.$router.push(`/articles/${id}`)
+        } else {
+          this.activeItemId = id
+        }
       })
     }
   }

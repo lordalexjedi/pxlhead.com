@@ -213,7 +213,7 @@ function fetchComments(store, item) {
 }
 
 .comment {
-  width: 100rem;
+  width: 100%;
   flex-basis: 16rem;
   position: relative;
   margin-bottom: 5rem;

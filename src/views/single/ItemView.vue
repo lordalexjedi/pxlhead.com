@@ -117,14 +117,6 @@ export default {
   width: 100%;
   flex-basis: 55rem;
   @extend %img;
-  @include screen-style(iMac) {
-    flex-basis: 65rem;
-    height: 55rem;
-  };
-  @media (orientation: portrait) {
-    width: 100%;
-    flex-basis: 45rem;
-  }
 }
 .item-view-body {
   position: relative;

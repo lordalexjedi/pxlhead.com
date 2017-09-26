@@ -15,7 +15,7 @@
 import { timeAgo } from '../util/filters'
 
 export default {
-  name: 'news-item',
+  name: 'item',
   props: ['item'],
   serverCacheKey: ({ item: { id, __lastUpdated, time }}) => {
     return `${id}::${__lastUpdated}::${timeAgo(time)}`

@@ -245,6 +245,7 @@ export default {
   },
 
   beforeDestroy() {
+    document.documentElement.classList.remove('hide-scrollbar')
     window.removeEventListener('resize', this.onResize)
     window.removeEventListener('wheel', this.onWheel)
   }

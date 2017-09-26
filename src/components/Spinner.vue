@@ -1,5 +1,5 @@
 <template lang='pug'>
-  .loader
+  .loader(v-show='show')
     - for (var orbit = 1; orbit < 3; orbit++)
       div(class='orbit orbit-' + orbit)
         .planet

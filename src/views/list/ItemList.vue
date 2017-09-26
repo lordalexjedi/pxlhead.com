@@ -11,14 +11,21 @@
           pattern='[a-zA-Z0-9 ]+' maxlength='50' required
           title='These aren\'t the Droids you\'re looking for')
     transition-group.gallery(name='item' tag='div')
-      item(v-for='item in displayedItems'  :key='item.id'
-        @click.native='fetchItemView(item.id)'  :item='item')
+      item(v-for='(item, index) in displayedItems'  :key='item.id'
+        @click.native='fetchItemView(item.id, index)'  :item='item')
     mugen-scroll(:handler='loadItems'
       :should-handle='!loading && hasMore') {{ loadingText }}
-    transition(name='slide-up' appear)
-      btn-top
+    btn-top
 
-    item-view(v-if='activeItemId'  :id='activeItemId')
+    transition(name='fade' appear)
+      div(v-if='activeId')
+        .item-view-overlay(@click='activeId = ""')
+        a.item-view-esc.material-icons(@click='activeId = ""') close
+        a.item-view-arrow.material-icons.arrow-prev(@click='changeActiveId(-1)'
+          v-show='activeIndex > 0') keyboard_arrow_left
+        a.item-view-arrow.material-icons.arrow-next(@click='changeActiveId(1)'
+          v-show='activeIndex < displayedItems.length') keyboard_arrow_right
+    item-view(:id='activeId')
 </template>
 
 <script>
@@ -44,7 +51,8 @@ export default {
   data() {
     return {
       displayedItems: this.$store.getters.activeItems,
-      activeItemId: '',
+      activeId: '',
+      activeIndex: -1,
       searchedTags: '',
       searching: false,
       loading: false
@@ -109,14 +117,20 @@ export default {
       })
       this.$bar.finish()
     },
-    fetchItemView(id) {
+    fetchItemView(id, index) {
       this.$store.dispatch('FETCH_ITEM_VIEW', { id }).then(() => {
         if (this.type === 'articles') {
           this.$router.push(`/articles/${id}`)
         } else {
-          this.activeItemId = id
+          this.activeIndex = index
+          this.activeId = id
         }
       })
+    },
+    changeActiveId(direction) {
+      const newIndex = this.activeIndex + direction
+      this.activeId = this.displayedItems[newIndex].id
+      this.activeIndex = newIndex
     }
   }
 }
@@ -264,6 +278,57 @@ export default {
   font-weight: 600;
   color: darken($color-grey, 20%);
 }
+.item-view-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: rgba(51, 51, 51, 0.8);
+}
+.item-view-esc {
+  position: absolute;
+  width: 5rem;
+  height: 5rem;
+  z-index: 1001;
+  font-size: 4rem;
+  color: $color-white;
+  right: 2rem;
+  top: 2rem;
+  opacity: 0.8;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  background: transparent;
+  &:hover {
+    opacity: 1;
+    transition: all 0.3s ease-in-out;
+  }
+}
+.item-view-arrow {
+  position: absolute;
+  top: 30rem;
+  width: 7rem;
+  height: 7rem;
+  z-index: 1001;
+  font-size: 4rem;
+  color: $color-white;
+  opacity: 0.8;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    opacity: 1;
+    transition: 0.3s ease-in-out;
+  }
+}
+.arrow-prev {
+  left: 20rem;
+}
+.arrow-next {
+  right: 20rem;
+}
+
 .item-move, .item-enter-active, .item-leave-active {
   transition: all .5s cubic-bezier(.55,0,.1,1);
 }

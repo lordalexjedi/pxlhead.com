@@ -511,10 +511,36 @@ export default {
   }
   .nav-link--active {
     .nav-point {
+      position: relative;
       transform: scale(1.5);
       opacity: 1;
       background-color: #43A4F1;
       transition: ease-in-out 0.3s;
+      &::before {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 200%;
+        height: 200%;
+        border-radius: 50%;
+        top: calc(50% - 200% / 2 - 1px);
+        left: calc(50% - 200% / 2 - 1px);
+        border: 1px solid $color-blue;
+      }
+      &::after {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 50%;
+        height: 50%;
+        border-radius: 50%;
+        top: calc(150% - 50% / 2);
+        left: calc(50% - 50% / 2);
+        background-color: #43A4F1;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        animation: rotate 2s linear infinite;
+        transform-origin: 50% -150%;
+      }
     }
   }
 }
@@ -554,6 +580,7 @@ export default {
   opacity: 0.7;
   border: 2px solid $color-white;
   border-radius: 1.5rem;
+  // background-color: $color-blue;
   @media (orientation: portrait) {
     width: 3rem;
     height: 5rem;
@@ -567,10 +594,10 @@ export default {
 }
 .mouse-wheel {
   position: absolute;
-  top: 1rem;
-  left: calc(50% - 0.3rem / 2);
-  width: 0.3rem;
-  height: 0.6rem;
+  top: 0.5rem;
+  left: calc(50% - 0.6rem / 2);
+  width: 0.6rem;
+  height: 1rem;
   background-color: $color-white;
   border-radius: 1.5rem;
   animation: scroll 1s ease-in-out infinite;
@@ -598,6 +625,14 @@ export default {
   }
   100% {
     transform: translateY(100%);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

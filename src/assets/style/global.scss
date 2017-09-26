@@ -59,10 +59,10 @@ $FULLHD: 1920px;
 // common styles
 
 ::selection {
-  background: $color-green; /* WebKit/Blink Browsers */
+  background: $color-blue; /* WebKit/Blink Browsers */
 }
 ::-moz-selection {
-  background: $color-green; /* Gecko Browsers */
+  background: $color-blue; /* Gecko Browsers */
 }
 
 %heading {

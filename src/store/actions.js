@@ -3,7 +3,8 @@ import {
   fetchItemView,
   fetchIdsByType,
   fetchSearchedIds,
-  fetchComments
+  fetchComments,
+  uploadComment
 } from '../api'
 
 export default {
@@ -29,20 +30,16 @@ export default {
     })
   },
 
-  FETCH_ITEMS: ({ commit, state }, { ids }) => {
+  FETCH_ITEMS: ({ commit, state }, { ids, type = 'posts', refresh = false }) => {
     const now = Date.now()
     ids = ids.filter(id => {
       const item = state.items[id]
-      if (!item) {
-        return true
-      }
-      if (now - item.__lastUpdated > 1000 * 60 * 3) {
-        return true
-      }
-      return false
+      return !item || refresh || now - item.__lastUpdated > 1000 * 60 * 3
     })
     if (ids.length) {
-      return fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+      return type === 'posts'
+      ? fetchItems(ids).then(items => commit('SET_ITEMS', { items }))
+      : fetchComments(ids).then(comments => commit('SET_COMMENTS', { comments }))
     } else {
       return Promise.resolve()
     }
@@ -52,7 +49,10 @@ export default {
     return fetchItemView({ id, type: state.activeType, views: state.items[id].views })
   },
 
-  FETCH_COMMENTS: ({ commit, state }, { ids }) => {
-    return fetchComments(ids).then(comments => commit('SET_COMMENTS', { comments }))
+  UPLOAD_COMMENT: ({ commit, dispatch, state }, { comment }) => {
+    return uploadComment(comment).then(comment => {
+      commit('SET_COMMENTS', { comments: [ comment ] })
+      return dispatch('FETCH_ITEMS', { ids: [ comment.postId ], refresh: true })
+    })
   }
 }

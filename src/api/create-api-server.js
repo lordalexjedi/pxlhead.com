@@ -8,6 +8,7 @@ export function createAPI({ config }) {
   } else {
     Firebase.initializeApp(config)
     api = process.__API__ = Firebase.database()
+    api.ServerValue = Firebase.database.ServerValue
 
     api.onServer = true
 

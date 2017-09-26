@@ -200,7 +200,7 @@ export default {
   flex-basis: 20%;
   max-height: 2rem * 6 + 2.5rem / 2;
   color: darken($color-grey, 10%);
-  background-color: #fff;
+  background-color: $color-blue;
   opacity: 1;
   padding: 5rem;
 }

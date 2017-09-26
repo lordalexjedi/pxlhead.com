@@ -4,18 +4,19 @@
       .article-view(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .article-view-text
           span.article-view-date {{ itemDate }}
+            i.date-icon.material-icons date_range
           h1.article-view-title {{ item.title }}
           p.article-view-description {{ item.description }}
           .article-view-action
             a.article-view-btn(@click='scrollToText') READ
             a.article-view-btn(@click='scrollToComments') COMMENT
       .article-view-navbar
-        router-link.article-view-esc(to='/articles')
+        router-link.article-view-esc.material-icons(to='/articles') close
         .article-view-social
           a.article-view-link.link--facebook
           a.article-view-link.link--twitter
           a.article-view-link.link--link
-        a.article-view-comment(@click='scrollToComments')
+        a.article-view-comment.material-icons(@click='scrollToComments') comment
       .article-read
         .text-wrapper
           .text-block(v-html='item.text')
@@ -49,9 +50,9 @@ export default {
     }
   },
 
-  title() {
-    return this.item.title
-  },
+  // title() {
+  //   return this.item.title
+  // },
 
   methods: {
     scrollToText() {
@@ -69,12 +70,31 @@ export default {
 <style lang='scss'>
 @import '~style';
 
+.article-main .comments {
+  padding: 0 24%;
+  @include screen-style(iMac) {
+    padding: 0 20%;
+  };
+  @include screen-style(ipadPro) {
+    padding: 0 10%;
+  };
+  @include screen-style(ipadAir) {
+    padding: 0 10%;
+  };
+  @include screen-style(iphone7) {
+    padding: 0 8%;
+  };
+  @include screen-style(iphoneSE) {
+    padding: 0 8%;
+  };
+}
+
 .article-view {
   height: 100vh;
   position: relative;
   background: $color-blue;
   background-size: cover;
-  z-index: 100;
+  z-index: 101;
   opacity: 1;
   transition: all 1s cubic-bezier(0.7,0,0.3,1);
   &::after {
@@ -91,41 +111,52 @@ export default {
 }
 .article-view-text {
   position: absolute;
-  top: 25vh;
+  bottom: 20vh;
   left: 10rem;
-  height: 60vh;
   width: 50vw;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   z-index: 101;
+  @media (orientation: portrait) {
+    width: 70vw;
+    left: 5rem;
+  }
   @include screen-style(iphone7) {
     left: 10%;
   };
-  @media (orientation: portrait) {
-    width: 70vw;
-    top: 20vh;
-    height: 70vh;
-    left: 5rem;
-  }
+  @include screen-style(iphoneSE) {
+    left: 10%;
+  };
 }
 .article-view-date {
+  position: relative;
+  margin-left: 4rem;
   flex-basis: 1.5rem;
   font-size: 1.5rem;
   font-weight: 700;
   color: $color-white;
 }
+.date-icon {
+  position: absolute;
+  top: 0;
+  left: -4rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 2rem;
+  line-height: 1.5rem;
+}
 .article-view-title {
   @extend %heading;
   margin: 2rem 0;
   @include screen-style(iphone7) {
-    font-size: 6rem;
-    line-height: 8rem;
+    font-size: 4rem;
+    line-height: 4rem;
     max-height: 6rem * 5 + 8rem / 2;
   };
   @include screen-style(iphoneSE) {
-    font-size: 6rem;
-    line-height: 8rem;
+    font-size: 4rem;
+    line-height: 4rem;
     max-height: 6rem * 5 + 8rem / 2;
   };
 }
@@ -134,12 +165,16 @@ export default {
   margin: 2rem 0rem 2rem 4rem;
   overflow: hidden;
   font-size: 2rem;
-  min-height: 2rem * 2 + 2.5rem / 2;
-  max-height: 2rem * 5 + 2.5rem / 2;
   max-width: 60rem;
   @media (orientation: portrait) {
     margin: 2rem 0;
   }
+  @include screen-style(iphone7) {
+    display: none;
+  };
+  @include screen-style(iphoneSE) {
+    display: none;
+  };
 }
 .article-view-action {
   margin: 2rem 0;
@@ -183,11 +218,11 @@ export default {
     line-height: 5rem;
   };
   @include screen-style(iphoneSE) {
-    width: 12rem;
-    height: 5rem;
+    width: 10rem;
+    height: 4rem;
     border-radius: 5rem;
     font-size: 1.4rem;
-    line-height: 5rem;
+    line-height: 4rem;
   };
 }
 .article-view-btn:nth-of-type(2){
@@ -204,6 +239,10 @@ export default {
     left: 5rem;
     width: 6rem;
     height: 6rem;
+    font-size: 3rem;
+    color: $color-white;
+    text-align: center;
+    line-height: 6rem;
     border-radius: 50%;
     cursor: pointer;
     z-index: 101;
@@ -212,14 +251,21 @@ export default {
       background-color: darken($color-blue, 10%);
       transition: 0.3s ease-in-out;
     }
-    &::after {
-      position: absolute;
-      content: '';
-      display: block;
-      @include center-pos(4rem);
-      background: url('~@/assets/icons/comment.svg') no-repeat center / 50%;
-    }
   }
+  @include screen-style(iphone7) {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
+    line-height: 5rem;
+  };
+  @include screen-style(iphoneSE) {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    top: calc(50% - 4rem / 2);
+    line-height: 4rem;
+    left: 3rem;
+  };
 }
 .article-view-navbar {
   @media (orientation: portrait) {
@@ -233,14 +279,44 @@ export default {
   }
 }
 .article-view-esc {
-  @extend %btn-esc;
+  position: absolute;
+  text-decoration: none;
+  top: 3rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  cursor: pointer;
   right: 5rem;
+  font-size: 3rem;
+  text-align: center;
+  line-height: 5rem;
   z-index: 101;
+  color: $color-white;
   background-color: transparentize(#000, 0.9);
+  transition: 0.3s ease-in-out;
   @media (orientation: portrait) {
     top: calc(50% - 6rem / 2);
     width: 6rem;
     height: 6rem;
+    line-height: 6rem;
+  }
+  @include screen-style(iphone7) {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
+    line-height: 5rem;
+  };
+  @include screen-style(iphoneSE) {
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    top: calc(50% - 4rem / 2);
+    line-height: 4rem;
+    right: 3rem;
+  };
+  &:hover {
+    background-color: darken($color-blue, 10%);
+    transition: 0.3s ease-in-out;
   }
 }
 .article-view-social {
@@ -259,6 +335,14 @@ export default {
     height: 5rem;
     flex-direction: row;
   }
+  @include screen-style(iphone7) {
+    width: 15rem;
+    left: calc(50% - 15rem / 2);
+  };
+  @include screen-style(iphoneSE) {
+    width: 14rem;
+    left: calc(50% - 14rem / 2);
+  };
 }
 .article-view-link {
   @extend %btn-icon;
@@ -319,6 +403,7 @@ export default {
   font-family: 'Roboto Slab', serif;
   font-weight: 400;
   padding: 5rem 0;
+  text-align: justify;
   color: darken($color-grey, 17%);
   .text-bold {
     font-weight: bold;
@@ -326,19 +411,37 @@ export default {
   .first-letter {
     &:first-letter {
       font-size: 5rem;
+      @include screen-style(iphone7) {
+        font-size: 4rem;
+      };
+      @include screen-style(iphoneSE) {
+        font-size: 3rem;
+      };
     }
   }
   p {
     font-size: 2rem;
     line-height: 3rem;
     margin-bottom: 3rem;
+    @include screen-style(iphone7) {
+      font-size: 1.5rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 1.4rem;
+    };
   }
-  h2.text-title {
+  .text-title {
     font-size: 3rem;
     line-height: 3rem;
     margin-bottom: 7rem;
     text-transform: uppercase;
     position: relative;
+    @include screen-style(iphone7) {
+      font-size: 2.5rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 2.2rem;
+    };
     &::after {
       position: absolute;
       display: block;
@@ -348,12 +451,24 @@ export default {
       width: 100%;
       height: 0.3rem;
       background-color: #D7DEE8;
+      @include screen-style(iphone7) {
+        top: 5rem;
+      };
+      @include screen-style(iphoneSE) {
+        top: 5rem;
+      };
     }
   }
-  h3.text-subtitle {
+  .text-subtitle {
     font-size: 2.5rem;
     line-height: 3rem;
     margin-bottom: 3rem;
+    @include screen-style(iphone7) {
+      font-size: 2rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 1.8rem;
+    };
   }
 }
 .text-codebox {
@@ -398,6 +513,12 @@ export default {
     width: 80%;
     padding: 0 3rem;
   }
+  @include screen-style(iphone7) {
+    font-size: 1.5rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 1.4rem;
+  };
 }
 .text-attention {
   position: relative;
@@ -408,6 +529,12 @@ export default {
   background-color: $color-lightblue;
   border: 2px solid lighten($color-pink,10%);
   padding: 2rem 4rem;
+  @include screen-style(iphone7) {
+    font-size: 1.5rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 1.4rem;
+  };
   &::before {
     position: absolute;
     display: block;
@@ -438,6 +565,12 @@ export default {
   color: $color-pink;
   padding: 1rem;
   background-color: #D7DEE8;
+  @include screen-style(iphone7) {
+    font-size: 1.5rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 1.4rem;
+  };
 }
 .text-summary {
   position: relative;
@@ -448,6 +581,12 @@ export default {
   background-color: $color-lightblue;
   border: 2px solid #42b983;
   padding: 2rem 4rem;
+  @include screen-style(iphone7) {
+    font-size: 1.5rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 1.4rem;
+  };
   &::before {
     position: absolute;
     display: block;

@@ -3,5 +3,7 @@ import 'firebase/database'
 
 export function createAPI({ config }) {
   Firebase.initializeApp(config)
-  return Firebase.database()
+  const db = Firebase.database()
+  db.ServerValue = Firebase.database.ServerValue
+  return db
 }

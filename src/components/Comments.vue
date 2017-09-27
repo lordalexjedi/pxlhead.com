@@ -3,23 +3,28 @@
     spinner(:show='loading')
     .comments-header
       .comments-title COMMENTS
-        span.comments-counter ({{ commentsCount }})
-      a.comments-submit.material-icons(@click='showCommentForm = !showCommentForm' v-bind:class='{"comment-submit--active": showCommentForm}') add
+        span.comments-counter ({{ ids.length }})
+      a.comments-submit.material-icons(@click='showCommentForm = !showCommentForm'
+        :class='{"comment-submit--active": showCommentForm}') add
     transition(name='fade')
-      form.comments-form(v-if='showCommentForm')
+      form.comments-form(v-show='showCommentForm' @submit.prevent='submitComment')
         .comments-img
         .comments-input
-          input.comments-name(placeholder='ex. Marty McFly')
-          textarea.comments-message(placeholder='Dont panic')
-        a.comments-send.material-icons send
-    .comments-list(v-if='!loading')
-      .comment(v-for='id in item.commentIds')
+          input.comments-name(type='text' v-model.trim.lazy='newCommentBy' maxlength='30'
+            pattern='[a-zA-Z0-9. ]+' placeholder='Marty McFly' required
+            title='Invalid input. Self destruction mode activated. 3... 2... 1...')
+          textarea.comments-message(v-model.trim.lazy='newCommentText'
+            maxlength='250' placeholder='Nobody calls me chicken.' required
+            title='')
+        button.comments-send.material-icons(type='submit') send
+    .comments-list(v-if='!loading && ids.length')
+      .comment(v-for='id in ids')
         .comment-img
         .comment-body
           .comment-info
-            h2.comment-author {{ comment(id).by }}
-            span.comment-date {{ comment(id).time }}
-          p.comment-text {{ comment(id).text }}
+            h2.comment-author {{ commentById(id).by }}
+            span.comment-date {{ commentById(id).time }}
+          p.comment-text {{ commentById(id).text }}
 </template>
 
 <script>
@@ -28,51 +33,55 @@ import Spinner from '@/components/Spinner.vue'
 export default {
   name: 'comments',
   components: { Spinner },
-  props: ['item'],
+  props: ['ids', 'postId'],
 
   data() {
     return {
-      loading: true,
-      showCommentForm: false
+      loading: false,
+      showCommentForm: false,
+      newCommentBy: '',
+      newCommentText: ''
     }
   },
 
   beforeMount() {
-    this.fetchComments()
+    if (this.ids.length) {
+      this.fetchComments()
+    } else {
+      this.showCommentForm = true
+    }
   },
 
   watch: {
-    item: 'fetchComments'
-  },
-
-  computed: {
-    comment(id) {
-      return this.$store.state.comments[id]
-    },
-    commentsCount() {
-      return this.item.commentIds
-      ? this.item.commentIds.length
-      : 0
-    }
+    ids: 'fetchComments'
   },
 
   methods: {
     fetchComments() {
-      if (this.item.commentIds) {
-        this.loading = true
-        fetchComments(this.$store, this.item).then(() => {
-          this.loading = false
-        })
-      }
+      this.loading = true
+      this.$store.dispatch('FETCH_ITEMS', {
+        ids: this.ids,
+        type: 'comments'
+      }).then(() => {
+        this.loading = false
+      })
+    },
+    submitComment() {
+      this.loading = true
+      this.$store.dispatch('UPLOAD_COMMENT', {
+        comment: {
+          postId: this.postId,
+          by: this.newCommentBy,
+          text: this.newCommentText
+        }
+      }).then(() => {
+        this.fetchComments()
+        this.showCommentForm = false
+      })
+    },
+    commentById(id) {
+      return this.$store.state.comments[id]
     }
-  }
-}
-
-function fetchComments(store, item) {
-  if (item && item.commentIds) {
-    return store.dispatch('FETCH_COMMENTS', {
-      ids: item.commentIds
-    })
   }
 }
 </script>
@@ -200,6 +209,8 @@ function fetchComments(store, item) {
     font-size: 3rem;
     text-align: center;
     color: $color-white;
+    border: none;
+    outline: none;
     line-height: 5rem;
     cursor: pointer;
     border-radius: 5rem;

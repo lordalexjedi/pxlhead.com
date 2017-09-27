@@ -1,34 +1,29 @@
 <template lang='pug'>
-  .item-main(v-if='item')
-    transition(name='fade' appear)
-    .item-overlay(v-if='item')
-    transition(name='slide-up' appear)
-      .item-view(v-if='item')
-        .item-view-body
-          .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
-          .item-view-text
-            h1.item-view-title {{ item.title }}
-            p.item-view-description {{ item.description }}
-            .item-view-action
-              a.item-view-link VIEW
-              a.item-view-comment.material-icons(@click='scrollToComments') comment
-          playlist(v-if='item.type === "music"')
-          .item-view-tag
-            a.tag-link(v-for='tag in item.tags') {{ tag }}
-          .item-view-watch
-            i.material-icons remove_red_eye
-            span.watch-counter {{ item.views }}
-          .item-view-date
-            i.material-icons date_range
-            span.view-date {{ item.time }}
-          .item-view-social
-            a.social-link.link-twitter
-            a.social-link.link-facebook
-            a.social-link.link-dribbble
-        a.item-view-esc.material-icons close
-        a.item-view-arrow.material-icons.arrow-prev keyboard_arrow_left
-        a.item-view-arrow.material-icons.arrow-next keyboard_arrow_right
-        comments(:item='item' v-show='showComments' ref='comments')
+  transition(name='slide-up' appear)
+    .item-view(v-if='item')
+      .item-view-body
+        .item-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
+        .item-view-text
+          h1.item-view-title {{ item.title }}
+          p.item-view-description {{ item.description }}
+          .item-view-action
+            a.item-view-link VIEW
+            a.item-view-comment.material-icons(@click='toggleComments') comment
+        playlist(v-if='item.type === "music"')
+        .item-view-tag
+          a.tag-link(v-for='tag in item.tags') {{ tag }}
+        .item-view-watch
+          i.material-icons remove_red_eye
+          span.watch-counter {{ item.views }}
+        .item-view-date
+          i.material-icons date_range
+          span.view-date {{ item.time }}
+        .item-view-social
+          a.social-link.link-twitter
+          a.social-link.link-facebook
+          a.social-link.link-dribbble
+      comments(v-show='showComments' ref='comments'
+        v-bind='{ ids: item.commentIds ? Object.keys(item.commentIds) : [], postId: id }')
 </template>
 
 <script>
@@ -47,6 +42,12 @@ export default {
     id: String
   },
 
+  watch: {
+    id() {
+      this.showComments = false
+    }
+  },
+
   data() {
     return {
       showComments: false
@@ -59,16 +60,13 @@ export default {
     }
   },
 
-  title() {
-    return this.item.title
-  },
-
   methods: {
-    scrollToComments() {
-      this.showComments = true
-
-      const commentEl = this.$refs.comments.$el
-      TweenLite.to(window, 0.5, { scrollTo: commentEl })
+    toggleComments() {
+      this.showComments = !this.showComments
+      if (this.showComments) {
+        const commentEl = this.$refs.comments.$el
+        TweenLite.to(window, 0.5, { scrollTo: commentEl })
+      }
     }
   }
 }
@@ -77,15 +75,6 @@ export default {
 <style lang='scss'>
 @import '~style';
 
-.item-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
-  background-color: rgba(51, 51, 51, 0.8);
-}
 .item-view {
   position: fixed;
   overflow-y: auto;
@@ -95,23 +84,6 @@ export default {
   width: 50vw;
   background: $color-white;
   z-index: 1001;
-}
-.item-view-esc {
-  position: absolute;
-  width: 5rem;
-  height: 5rem;
-  font-size: 4rem;
-  color: $color-white;
-  right: -20rem;
-  top: 0;
-  opacity: 0.8;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-  background: transparent;
-  &:hover {
-    opacity: 1;
-    transition: all 0.3s ease-in-out;
-  }
 }
 .item-view-img {
   width: 100%;
@@ -238,28 +210,6 @@ export default {
     display: block;
     left: 0rem;
   }
-}
-.item-view-arrow {
-  position: absolute;
-  top: 20rem;
-  width: 7rem;
-  height: 7rem;
-  font-size: 6rem;
-  color: $color-white;
-  opacity: 0.8;
-  text-align: center;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    opacity: 1;
-    transition: 0.3s ease-in-out;
-  }
-}
-.arrow-prev {
-  left: -10rem;
-}
-.arrow-next {
-  right: -10rem;
 }
 .item-view-tag {
   position: relative;

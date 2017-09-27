@@ -79,5 +79,20 @@ export function fetchItemView({ id, type, views }) {
 }
 
 export function fetchComments(ids) {
-  return Promise.all(ids.map(id => fetch(`comments/${id}`)))
+  return Promise.all(ids.map(id => fetch(`comments/${id}`, 'time')))
+}
+
+export function uploadComment(comment) {
+  comment.id = api.ref().child('comments').push().key
+  comment.time = api.ServerValue.TIMESTAMP
+
+  return api.ref().update({
+    [`/posts/${comment.postId}/commentIds/${comment.id}/time`]: comment.time,
+    [`/comments/${comment.id}`]: comment
+  }).then(() => {
+    const cache = api.cachedItems
+    comment.__lastUpdated = Date.now()
+    cache && cache.set(comment.id, comment)
+    return comment
+  })
 }

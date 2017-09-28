@@ -92,6 +92,7 @@ export default {
 .comments {
   position: relative;
   padding: 0 10%;
+  min-height: 40rem;
   background-color: #F8FCFF;
 }
 .comments-header {

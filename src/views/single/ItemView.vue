@@ -10,14 +10,16 @@
             a.item-view-link VIEW
             a.item-view-comment.material-icons(@click='toggleComments') comment
         playlist(v-if='item.type === "music"')
-        .item-view-tag
-          a.tag-link(v-for='tag in item.tags') {{ tag }}
-        .item-view-watch
-          i.material-icons remove_red_eye
-          span.watch-counter {{ item.views }}
-        .item-view-date
-          i.material-icons date_range
-          span.view-date {{ item.time }}
+        .item-view-infobar
+          .item-view-stats
+            .item-view-watch
+              i.material-icons remove_red_eye
+              span.watch-counter {{ item.views }}
+            .item-view-date
+              i.material-icons date_range
+              span.view-date {{ item.time }}
+          .item-view-tag
+            a.tag-link(v-for='tag in item.tags') {{ tag }}
         .item-view-social
           a.social-link.link-twitter
           a.social-link.link-facebook
@@ -76,18 +78,17 @@ export default {
 @import '~style';
 
 .item-view {
-  position: fixed;
-  overflow-y: auto;
-  bottom: 0;
-  left: 25vw;
-  height: 90vh;
-  width: 50vw;
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  height: 90%;
+  width: 50%;
   background: $color-white;
   z-index: 1001;
 }
 .item-view-img {
   width: 100%;
-  flex-basis: 55rem;
+  flex-basis: 70%;
   @extend %img;
 }
 .item-view-body {
@@ -95,20 +96,18 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 80%;
-  height: 80%;
-  margin: 10%;
+  width: 90%;
+  height: 89%;
+  padding: 5%;
 }
 .item-view-text {
   position: relative;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 3rem 0;
+  padding: 4rem 2rem;
 }
 .item-view-title {
-  max-width: 50rem;
   font-size: 3rem;
   text-align: left;
   color: #4f4f4f;
@@ -116,11 +115,8 @@ export default {
 }
 
 .item-view-description {
-  @extend %paragraph;
   padding: 2rem 0 1rem 0;
   flex-basis: 50%;
-  width: 100%;
-  max-width: 100%;
   font-size: 2rem;
   line-height: 2rem;
   min-height: 1.5rem * 2 + 2rem / 2;
@@ -130,7 +126,7 @@ export default {
 }
 .item-view-action {
   position: absolute;
-  top: -7rem;
+  top: -2.5rem;
   right: 4rem;
   width: 22rem;
   display: flex;
@@ -171,12 +167,22 @@ export default {
     height: 4rem;
   }
 }
+.item-view-infobar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-view-stats {
+  flex-basis: 20%;
+  display: flex;
+  justify-content: space-between;
+}
 .item-view-watch {
-  position: absolute;
+  position: relative;
   display: block;
-  top: -4rem;
-  left: 4rem;
   font-size: 1.7rem;
+  margin-left: 4rem;
   color: $color-grey;
   i {
     position: absolute;
@@ -191,13 +197,12 @@ export default {
   }
 }
 .item-view-date {
-  position: absolute;
+  position: relative;
   display: block;
   width: 5rem;
   height: 2rem;
-  top: -4rem;
-  left: 14rem;
   font-size: 1.7rem;
+  margin-left: 4rem;
   color: $color-grey;
   i {
     position: absolute;

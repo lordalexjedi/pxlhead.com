@@ -10,7 +10,7 @@
           @blur='clearSearch' @keyup.esc='clearSearch'
           pattern='[a-zA-Z0-9 ]+' maxlength='50' required
           title='These aren\'t the Droids you\'re looking for')
-    transition-group.gallery(name='item' tag='div')
+    transition-group.gallery(name='translate-up' tag='div')
       item(v-for='(item, index) in displayedItems'  :key='item.id'
         @click.native='fetchItemView(item.id, index)'  :item='item')
     mugen-scroll(:handler='loadItems'
@@ -18,15 +18,14 @@
     transition(name='slide-up' appear)
       btn-top
 
-    transition(name='fade' appear)
-      div(v-if='activeId')
-        .item-view-overlay(@click='activeId = ""')
-        a.item-view-esc.material-icons(@click='activeId = ""') close
-        a.item-view-arrow.material-icons.arrow-prev(@click='changeActiveId(-1)'
-          v-show='activeIndex > 0') keyboard_arrow_left
-        a.item-view-arrow.material-icons.arrow-next(@click='changeActiveId(1)'
-          v-show='activeIndex < displayedItems.length') keyboard_arrow_right
-    item-view(:id='activeId')
+    transition-group(name='fade')
+      .item-view-overlay(@click.self='closeView' v-if='activeId' key='overlay')
+        item-view(:id='activeId')
+      a.item-view-esc.material-icons(@click='closeView' v-if='activeId' key='close') close
+      a.item-view-arrow.material-icons.arrow-prev(@click='changeActiveId(-1)'
+        v-show='activeIndex > 0' key='left') keyboard_arrow_left
+      a.item-view-arrow.material-icons.arrow-next(@click='changeActiveId(1)'
+        v-show='activeIndex < displayedItems.length' key='right') keyboard_arrow_right
 </template>
 
 <script>
@@ -123,10 +122,15 @@ export default {
         if (this.type === 'articles') {
           this.$router.push(`/articles/${id}`)
         } else {
+          document.documentElement.classList.add('hide-scrollbar')
           this.activeIndex = index
           this.activeId = id
         }
       })
+    },
+    closeView() {
+      document.documentElement.classList.remove('hide-scrollbar')
+      this.activeId = ''
     },
     changeActiveId(direction) {
       const newIndex = this.activeIndex + direction
@@ -283,13 +287,14 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
+  overflow-y: scroll;
   background-color: rgba(51, 51, 51, 0.8);
 }
 .item-view-esc {
-  position: absolute;
+  position: fixed;
   width: 5rem;
   height: 5rem;
   z-index: 1001;
@@ -307,12 +312,13 @@ export default {
   }
 }
 .item-view-arrow {
-  position: absolute;
+  position: fixed;
   top: 30rem;
   width: 7rem;
   height: 7rem;
   z-index: 1001;
-  font-size: 4rem;
+  font-size: 5rem;
+  line-height: 5rem;
   color: $color-white;
   opacity: 0.8;
   text-align: center;
@@ -324,20 +330,20 @@ export default {
   }
 }
 .arrow-prev {
-  left: 20rem;
+  left: 16vw;
 }
 .arrow-next {
-  right: 20rem;
+  right: 16vw;
 }
 
-.item-move, .item-enter-active, .item-leave-active {
+.translate-up-move, .translate-up-enter-active, .translate-up-leave-active {
   transition: all .5s cubic-bezier(.55,0,.1,1);
 }
-.item-enter {
+.translate-up-enter {
   opacity: 0;
   transform: translateY(30px);
 }
-.item-leave-active {
+.translate-up-leave-active {
   opacity: 0;
   transform: translateY(-30px);
 }

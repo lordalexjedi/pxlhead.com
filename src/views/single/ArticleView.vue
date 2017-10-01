@@ -16,7 +16,7 @@
           a.article-view-link.link--twitter
           a.article-view-link.link--link
         a.article-view-comment(@click='scrollToComments')
-      .article-read
+      .article-read(ref='read')
         .text-wrapper
           .text-block(v-html='item.text')
       comments(:item='item' ref='comments')
@@ -55,8 +55,7 @@ export default {
 
   methods: {
     scrollToText() {
-      const readEl = this.$el.querySelector('.article-read')
-      TweenLite.to(window, 1, { scrollTo: readEl })
+      TweenLite.to(window, 1, { scrollTo: this.$refs.read })
     },
     scrollToComments() {
       const commentEl = this.$refs.comments.$el

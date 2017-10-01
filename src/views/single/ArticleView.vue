@@ -19,7 +19,8 @@
       .article-read(ref='read')
         .text-wrapper
           .text-block(v-html='item.text')
-      comments(:item='item' ref='comments')
+      comments(ref='comments'
+        v-bind='{ ids: item.commentIds ? Object.keys(item.commentIds) : [], postId: item.id }')
       btn-top
 </template>
 
@@ -47,6 +48,10 @@ export default {
       const date = new Date(this.item.time)
       return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
+  },
+
+  asyncData ({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_ITEMS', { ids: [id] })
   },
 
   title() {

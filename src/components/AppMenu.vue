@@ -352,6 +352,12 @@ export default {
   cursor: pointer;
   background-color: transparentize(#E0E0E0, 0.8);
   transition: 0.3s ease-in-out;
+  @include screen-style(iphone7) {
+    right: 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    right: 2rem;
+  };
   &:hover {
     background-color: transparentize(#E0E0E0, 0.3);
     transition: 0.3s ease-in-out;
@@ -430,6 +436,12 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @include screen-style(iphone7) {
+    right: 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    right: 2rem;
+  };
 }
 .app-menu-social-link {
   position: relative;
@@ -437,6 +449,7 @@ export default {
   display: block;
   background-color: transparent;
   box-shadow: none;
+  opacity: 0.8;
   border-radius: 50%;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
@@ -482,6 +495,14 @@ export default {
   transform: scale(0.6);
   transition: 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.35);
   cursor: pointer;
+  @include screen-style(iphone7) {
+    left: 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    left: 2rem;
+    width: 4rem;
+    height: 4rem;
+  };
   &:hover {
     transform: scale(1);
     transition: 0.5s cubic-bezier(0.68, -0.15, 0.265, 1.35);

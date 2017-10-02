@@ -31,7 +31,6 @@ html {
 }
 body {
   height: 100%;
-  overflow: auto;
   font-family: 'Roboto', sans-serif;
 }
 .hide-scrollbar {

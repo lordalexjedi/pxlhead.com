@@ -291,6 +291,15 @@ export default {
   letter-spacing: 3px;
   color: #00D6A0;
   margin: 0;
+  @media (orientation: portrait) {
+    font-size: 6rem;
+  }
+  @include screen-style(iphone7) {
+    font-size: 5rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 4rem;
+  }
   span {
     display: inline-block;
   }
@@ -300,6 +309,12 @@ export default {
   opacity: 0.9;
   letter-spacing: 1.5px;
   font-size: 2.6rem;
+  @media (orientation: portrait) {
+    font-size: 2rem;
+  }
+  @include screen-style(iphoneSE) {
+    font-size: 1.5rem;
+  }
 }
 .intro-description {
   color: $color-white;
@@ -313,12 +328,31 @@ export default {
   @media (orientation: portrait) {
     margin-left: 0;
   }
+  @include screen-style(iphone7) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 2rem;
+  };
+  @include screen-style(iphoneSE) {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 2rem;
+  }
 }
 .intro-text {
   position: absolute;
   top: 60vh;
   left: 10rem;
   text-transform: uppercase;
+  @media (orientation: portrait) {
+    left: 5rem;
+  }
+  @include screen-style(iphone7) {
+    top: 20vh;
+  };
+  @include screen-style(iphoneSE) {
+    top: 20vh;
+  }
 }
 
 // text positioning
@@ -326,28 +360,124 @@ export default {
   position: absolute;
   width: 40vw;
   @media (orientation: portrait) {
-    width: 50vw;
+    width: 60%;
+  }
+  @include screen-style(iphone7) {
+    width: 80%;
+  };
+  @include screen-style(iphoneSE) {
+    width: 80%;
   }
   .intro-title {
     font-size: 6rem;
     text-transform: uppercase;
+    @include screen-style(iphone7) {
+      font-size: 3rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 3rem;
+    }
   }
 }
 .about-text {
-  top: 15rem;
+  top: 12rem;
   left: 22vw;
+  @include screen-style(iphone7) {
+    top: 12rem;
+    left: 12vw;
+  };
+  @include screen-style(iphoneSE) {
+    top: 12rem;
+    left: 12vw;
+  }
+  .intro-title {
+    font-size: 6rem;
+    text-transform: uppercase;
+    @include screen-style(iphone7) {
+      font-size: 3rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 3rem;
+    }
+  }
 }
 .team-text {
   top: 10rem;
   right: 27vw;
+  @media (orientation: portrait) {
+    top: 12rem;
+    left: 22vw;
+  }
+  @include screen-style(iphone7) {
+    top: 12rem;
+    left: 12vw;
+  };
+  @include screen-style(iphoneSE) {
+    top: 12rem;
+    left: 12vw;
+  }
+  .intro-title {
+    font-size: 6rem;
+    text-transform: uppercase;
+    @include screen-style(iphone7) {
+      font-size: 3rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 3rem;
+    }
+  }
 }
 .projects-text {
   top: 20rem;
   right: 55vw;
+  @media (orientation: portrait) {
+    top: 12rem;
+    left: 22vw;
+  }
+  @include screen-style(iphone7) {
+    top: 12rem;
+    left: 12vw;
+  };
+  @include screen-style(iphoneSE) {
+    top: 12rem;
+    left: 12vw;
+  }
+  .intro-title {
+    font-size: 6rem;
+    text-transform: uppercase;
+    @include screen-style(iphone7) {
+      font-size: 3rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 3rem;
+    }
+  }
 }
 .contacts-text {
   top: 20rem;
   right: 55vw;
+  @media (orientation: portrait) {
+    top: 12rem;
+    left: 22vw;
+  }
+  @include screen-style(iphone7) {
+    top: 12rem;
+    left: 12vw;
+  };
+  @include screen-style(iphoneSE) {
+    top: 12rem;
+    left: 12vw;
+  }
+  .intro-title {
+    font-size: 6rem;
+    text-transform: uppercase;
+    @include screen-style(iphone7) {
+      font-size: 3rem;
+    };
+    @include screen-style(iphoneSE) {
+      font-size: 3rem;
+    }
+  }
 }
 
 .intro-nav {
@@ -360,12 +490,39 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  @include screen-style(iphone7) {
+    flex-direction: row;
+    width: 25rem;
+    height: 4rem;
+    top: auto;
+    bottom: 5%;
+  };
+  @include screen-style(iphoneSE) {
+    flex-direction: row;
+    width: 25rem;
+    height: 4rem;
+    top: auto;
+    bottom: 5%;
+    right: calc(50% - 25rem / 2);
+  }
   .nav-link {
     height: 1rem;
     width: 1rem;
     padding: 1rem;
     display: block;
     cursor: pointer;
+    @media (orientation: portrait) {
+      height: 2rem;
+      width: 2rem;
+    }
+    @include screen-style(iphone7) {
+      height: 1rem;
+      width: 1rem;
+    };
+    @include screen-style(iphoneSE) {
+      height: 1rem;
+      width: 1rem;
+    }
   }
   .nav-point {
     display: block;
@@ -382,10 +539,36 @@ export default {
   }
   .nav-link--active {
     .nav-point {
+      position: relative;
       transform: scale(1.5);
       opacity: 1;
       background-color: #43A4F1;
       transition: ease-in-out 0.3s;
+      &::before {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 200%;
+        height: 200%;
+        border-radius: 50%;
+        top: calc(50% - 200% / 2 - 1px);
+        left: calc(50% - 200% / 2 - 1px);
+        border: 1px solid $color-blue;
+      }
+      &::after {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 50%;
+        height: 50%;
+        border-radius: 50%;
+        top: calc(150% - 50% / 2);
+        left: calc(50% - 50% / 2);
+        background-color: #43A4F1;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        animation: rotate 2s linear infinite;
+        transform-origin: 50% -150%;
+      }
     }
   }
 }
@@ -425,16 +608,43 @@ export default {
   opacity: 0.7;
   border: 2px solid $color-white;
   border-radius: 1.5rem;
+  // background-color: $color-blue;
+  @media (orientation: portrait) {
+    width: 3rem;
+    height: 5rem;
+  }
+  @include screen-style(iphone7) {
+    display: none;
+  };
+  @include screen-style(iphoneSE) {
+    display: none;
+  }
 }
 .mouse-wheel {
   position: absolute;
-  top: 1rem;
-  left: calc(50% - 0.3rem / 2);
-  width: 0.3rem;
-  height: 0.6rem;
+  top: 0.5rem;
+  left: calc(50% - 0.6rem / 2);
+  width: 0.6rem;
+  height: 1rem;
   background-color: $color-white;
   border-radius: 1.5rem;
   animation: scroll 1s ease-in-out infinite;
+}
+
+.slide-left-enter-active, .slide-left-leave-active {
+  transition: all 1.3s ease-in-out 0.5s;
+}
+.slide-left-enter, .slide-left-leave-to {
+  transform: translateX(-300%);
+  opacity: 0;
+}
+
+.slide-right-enter-active, .slide-right-leave-active {
+  transition: all 0.8s ease-in-out 0.5s;
+}
+.slide-right-enter, .slide-right-leave-to {
+  transform: translateX(300%);
+  opacity: 0;
 }
 
 @keyframes scroll {
@@ -443,6 +653,14 @@ export default {
   }
   100% {
     transform: translateY(100%);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

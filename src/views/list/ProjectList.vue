@@ -9,8 +9,11 @@
         transition(name='item' tag='div')
           .project-view-img(:style='{ backgroundImage: `url(${item.imageURL})` }')
         .project-view-social
-          a.social-link(v-for='(link, social) in socialLinks'  :href='link'
-            :class='`link-${social}`' target='_blank' rel='noopener noreferrer')
+          a.project-social-link(v-for='(link, social) in socialLinks'  :href='link'
+            :class='`link--${social}`' target='_blank' rel='noopener noreferrer')
+        .project-view-date
+          i.material-icons date_range
+          span.view-date {{ item.time }}
         .project-view-tag
           a.tag-link(v-for='tag in item.tags') {{ tag }}
         span.project-view-watch {{ item.views }}
@@ -131,17 +134,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #fff;
-  &::after {
-    position: absolute;
-    display: block;
-    content: '';
-    top: 0;
-    left: 0;
-    width: 55%;
-    height: 100%;
-    background: #f2f2f2;
-  }
+  background-color: $color-main;
 }
 .project-view-img {
   position: absolute;
@@ -177,14 +170,14 @@ export default {
   max-width: 50rem;
   flex-basis: 30%;
   text-align: left;
-  color: #4f4f4f;
+  color: $color-white;
   max-width: 80rem;
 }
 .project-view-watch {
   position: absolute;
   display: block;
   bottom: -9rem;
-  right: 70rem;
+  right: 80rem;
   font-size: 1.7rem;
   color: $color-grey;
   &::after {
@@ -207,7 +200,7 @@ export default {
   flex-basis: 20%;
   max-height: 2rem * 6 + 2.5rem / 2;
   color: darken($color-grey, 10%);
-  background-color: #fff;
+  background-color: $color-blue;
   opacity: 1;
   padding: 5rem;
 }
@@ -264,10 +257,10 @@ export default {
   @extend %btn-text;
   flex-basis: 12rem;
   height: 5rem;
-  background-color: $color-blue;
+  background-color: darken($color-blue, 10%);
   line-height: 5rem;
   &:hover {
-    background-color: darken($color-blue, 10%);
+    background-color: darken($color-blue, 20%);
   }
 }
 .project-view-social {
@@ -280,7 +273,7 @@ export default {
   top: calc(50% - 25rem / 2);
   right: -3rem;
 }
-.social-link {
+.project-social-link {
   @extend %btn-icon;
   position: relative;
   flex-basis: 5rem;
@@ -288,19 +281,40 @@ export default {
     @include center-pos(2rem);
   }
 }
-.link-twitter {
+.link--twitter {
   &::after {
     background: url('~@/assets/icons/twitter.svg') no-repeat center / 100%;
   }
 }
-.link-facebook {
+.link--facebook {
   &::after {
     background: url('~@/assets/icons/facebook.svg') no-repeat center / 100%;
   }
 }
-.link-share {
+.link--share {
   &::after {
     background: url('~@/assets/icons/link.svg') no-repeat center / 120%;
+  }
+}
+.project-view-date {
+  position: absolute;
+  display: block;
+  width: 5rem;
+  height: 2rem;
+  bottom: -9rem;
+  right: 65rem;
+  font-size: 1.7rem;
+  color: $color-grey;
+  i {
+    position: absolute;
+    display: block;
+    left: -4rem;
+    line-height: 1.7rem;
+  }
+  .view-date{
+    position: absolute;
+    display: block;
+    left: 0rem;
   }
 }
 </style>

@@ -91,7 +91,8 @@ export default {
 
 .comments {
   position: relative;
-  padding: 0 10%;
+  padding: 0 5%;
+  min-height: 40rem;
   background-color: #F8FCFF;
 }
 .comments-header {
@@ -135,10 +136,8 @@ export default {
 .comments-list {
   position: relative;
   display: flex;
-  width: 100rem;
-  top: 0rem;
+  width: 100%;
   padding: 3rem 0;
-  left: calc(50% - 100rem / 2);
   flex-direction: column;
   justify-content: space-between;
 }
@@ -224,29 +223,51 @@ export default {
 }
 
 .comment {
-  width: 100rem;
-  flex-basis: 16rem;
+  width: 100%;
   position: relative;
   margin-bottom: 5rem;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  @include screen-style(iphone7) {
+    flex-direction: column;
+  };
+  @include screen-style(iphoneSE) {
+    flex-direction: column;
+  };
 }
 .comment-img {
-  position: absolute;
-  top: calc(50% - 7rem / 2);
-  left: 0;
-  width: 7rem;
-  height: 7rem;
+  position: relative;
+  width: 7vh;
+  height: 7vh;
+  align-self: center;
   border-radius: 50%;
   background: $color-pink;
   background-position: center;
   background-size: cover;
+  @include screen-style(iphone7) {
+    position: absolute;
+    top: 0vh;
+    width: 7vh;
+    height: 7vh;
+    right: 5vh;
+    z-index: 1002;
+  };
+  @include screen-style(iphoneSE) {
+    position: absolute;
+    top: 0vh;
+    width: 7vh;
+    height: 7vh;
+    right: 5vh;
+    z-index: 1002;
+  };
 }
 .comment-body {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 75rem;
+  position: relative;
+  flex-basis: 75%;
   min-height: 10rem;
-  padding: 2rem 5rem;
+  padding: 2rem 5%;
+  margin-left: 4rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -255,35 +276,51 @@ export default {
     display: block;
     content: '';
     top: calc(50% - 3rem / 2);
-    left: -6rem;
+    left: -4rem;
     border: solid transparent;
     height: 0;
-    width: 4rem;
+    width: 3rem;
     position: absolute;
     pointer-events: none;
     border-color: transparent;
-    border-width: 2rem 4rem 2rem 0;
+    border-width: 2rem 3rem 2rem 0;
     border-right-color: $color-lightblue;
     margin-left: -10px;
   }
+  @include screen-style(iphone7) {
+    margin-left: 0;
+    margin-top: 3.5vh;
+    &::after {
+      display: none;
+    }
+  };
+  @include screen-style(iphoneSE) {
+    margin-left: 0;
+    margin-top: 3.5vh;
+    &::after {
+      display: none;
+    }
+  };
 }
 .comment-info {
   flex-basis: 5rem;
   width: 100%;
   position: relative;
+  display: flex;
+  justify-content: space-between;
   color: darken($color-grey, 17%);
+  @include screen-style(iphone7) {
+    flex-direction: column;
+  };
+  @include screen-style(iphoneSE) {
+    flex-direction: column;
+  };
 }
 .comment-author {
-  position: absolute;
-  top: 1rem;
-  left: 0;
   font-size: 2rem;
   font-weight: bold;
 }
 .comment-date {
-  position: absolute;
-  top: 1rem;
-  right: 0;
   font-size: 1.3rem;
   opacity: 0.8;
 }

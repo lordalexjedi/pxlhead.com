@@ -58,12 +58,16 @@ $FULLHD: 1920px;
 
 // common styles
 
+::selection {
+  background: $color-blue; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: $color-blue; /* Gecko Browsers */
+}
+
 %heading {
   overflow: hidden;
-  min-width: 40rem;
-  min-height: 7rem * 2 + 9rem / 2;
   max-width: 80rem;
-  max-height: 7rem * 3 + 9rem / 2;
   color: $color-white;
   text-transform: uppercase;
   font-weight: 700;
@@ -74,9 +78,7 @@ $FULLHD: 1920px;
 
 %paragraph {
   overflow: hidden;
-  min-height: 2.5rem * 2 + 2.5rem / 2;
   max-width: 40rem;
-  max-height: 2.5rem * 3 + 2.5rem / 2;
   color: $color-white;
   font-size: 2.5rem;
   line-height: 2.5rem;
@@ -286,10 +288,10 @@ $FULLHD: 1920px;
 // transition
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+  transition: opacity .5s ease-in-out;
 }
 .fade-enter, .fade-leave-to {
-  opacity: 0
+  opacity: 0;
 }
 
 .fade-delay-enter-active, .fade-delay-leave-active {
@@ -299,13 +301,13 @@ $FULLHD: 1920px;
   opacity: 0;
 }
 
-.item-enter-active, .item-leave-active {
-  transition: all 0.5s cubic-bezier(0.7,0,0.3,1);
-}
-.item-enter, .item-leave-to {
-  opacity: 0;
-  transform: translateX(-10%);
-}
+// .slide-left-enter-active, .slide-left-leave-active {
+//   transition: all 0.5s cubic-bezier(0.7,0,0.3,1);
+// }
+// .slide-left-enter, .slide-left-leave-to {
+//   opacity: 0;
+//   transform: translateX(-10%);
+// }
 
 .slide-up-enter-active, .slide-up-leave-active {
   transition: all 0.7s cubic-bezier(0.7,0,0.3,1) 0.3s;

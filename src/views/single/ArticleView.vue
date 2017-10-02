@@ -494,24 +494,22 @@ export default {
   pre {
     overflow: auto;
     height: 100%;
+    counter-reset: line;
   }
   span {
-    position: absolute;
-    display: block;
-    // overflow: hidden;
-    white-space: normal;
-    top: 0;
-    left: 0;
-    width: 3rem;
-    height: 100%;
-    padding: 0 1%;
-    background-color: #D7DEE8;
-  }
-  code {
     position: relative;
     height: 100%;
-    width: 80%;
-    padding: 0 3rem;
+    width: 100%;
+    padding: 0 1rem;
+    &:before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      border-right: 1px solid #ddd;
+      padding: 0 .5em;
+      margin-right: .5em;
+      color: #888
+    }
   }
   @include screen-style(iphone7) {
     font-size: 1.5rem;

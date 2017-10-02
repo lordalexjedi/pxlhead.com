@@ -23,9 +23,9 @@
         item-view(:id='activeId')
       a.item-view-esc.material-icons(@click='closeView' v-if='activeId' key='close') close
       a.item-view-arrow.material-icons.arrow-prev(@click='changeActiveId(-1)'
-        v-show='activeIndex > 0' key='left') keyboard_arrow_left
+        v-if='activeId' key='left') keyboard_arrow_left
       a.item-view-arrow.material-icons.arrow-next(@click='changeActiveId(1)'
-        v-show='activeIndex < displayedItems.length' key='right') keyboard_arrow_right
+        v-if='activeId' key='right') keyboard_arrow_right
 </template>
 
 <script>
@@ -170,7 +170,7 @@ export default {
     justify-content: center;
     left: 0;
     bottom: -5rem;
-    background-color: #fff;
+    background-color: $color-lightblue;
   };
   @include screen-style(iphoneSE) {
     position: absolute;
@@ -178,7 +178,7 @@ export default {
     justify-content: center;
     left: 0;
     bottom: -5rem;
-    background-color: #fff;
+    background-color: $color-lightblue;
   };
 }
 .sort-item {
@@ -299,6 +299,8 @@ export default {
   height: 5rem;
   z-index: 1001;
   font-size: 4rem;
+  text-align: center;
+  line-height: 5rem;
   color: $color-white;
   right: 2rem;
   top: 2rem;
@@ -309,6 +311,13 @@ export default {
   &:hover {
     opacity: 1;
     transition: all 0.3s ease-in-out;
+  }
+  @media (orientation: portrait) {
+    right: 2rem;
+    top: 3rem;
+    background-color: $color-blue;
+    opacity: 1;
+    border-radius: 50%;
   }
 }
 .item-view-arrow {
@@ -327,6 +336,9 @@ export default {
   &:hover {
     opacity: 1;
     transition: 0.3s ease-in-out;
+  }
+  @media (orientation: portrait) {
+    display: none;
   }
 }
 .arrow-prev {

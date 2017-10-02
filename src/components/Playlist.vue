@@ -5,17 +5,17 @@
         .volume-toggle(v-show='showVolume')
           .volume-toggler(v-for='n in 6')
     a.playlist-btn(@click='showPlaylist = !showPlaylist')
-      transition(name='fade')
-        .playlist-body(v-show='showPlaylist')
-          li.playlist-list
-            .playlist-player(v-for='n in 5')
-              a.player-play
-              .player-info
-                .player-content
-                  h2.player-name Soundtrack name
-                  span.player-date 29/12/2017
-                .player-control
-                  input.player-timeline(type='range')
+    transition(name='fade')
+      .playlist-body(v-show='showPlaylist')
+        li.playlist-list
+          .playlist-player(v-for='n in 5')
+            a.player-play
+            .player-info
+              .player-content
+                h2.player-name Soundtrack name
+                span.player-date 29/12/2017
+              .player-control
+                input.player-timeline(type='range')
 </template>
 
 <script>
@@ -35,8 +35,8 @@ export default {
 
 .playlist-btn {
   @extend %btn-icon;
-  top: 3rem;
-  left: 50%;
+  top: 7%;
+  right: 10%;
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
@@ -46,8 +46,8 @@ export default {
 }
 .playlist-volume {
   @extend %btn-icon;
-  top: 3rem;
-  left: 55%;
+  top: 15%;
+  right: 10%;
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
@@ -58,10 +58,11 @@ export default {
 .volume-toggle {
   position: absolute;
   display: flex;
-  top: calc(50% - 4rem / 2);
-  left: 5rem;
-  width: 6rem;
-  height: 2rem;
+  flex-direction: column;
+  left: calc(50% - 4rem / 2);
+  top: 5rem;
+  width: 2rem;
+  height: 6rem;
   padding: 1rem;
   justify-content: space-around;
   align-items: center;
@@ -71,7 +72,7 @@ export default {
 }
 .volume-toggler {
   flex-basis: 0.7rem;
-  height: 100%;
+  width: 100%;
   opacity: 1;
   background-color: $color-white;
   &:hover ~ .volume-toggler {
@@ -81,28 +82,13 @@ export default {
 .playlist-body {
   position: absolute;
   display: block;
-  top: 7rem;
-  left: -4rem;
-  width: 50rem;
-  height: 46rem;
+  top: 5%;
+  left: 5%;
+  width: 50%;
+  height: 55vh;
   cursor: auto;
   color: $color-grey;
-  background-color: $color-white;
-  &::before {
-    display: block;
-    content: '';
-    top: -4rem;
-    left: 5rem;
-    border: solid transparent;
-    height: 2rem;
-    width: 0rem;
-    position: absolute;
-    pointer-events: none;
-    border-color: transparent;
-    border-width: 0rem 1rem 2rem 1rem;
-    border-bottom-color: $color-white;
-    margin-bottom: -10px;
-  }
+  background-color: transparentize($color-lightblue, 0.2);
   h2 {
     text-transform: uppercase;
     color: darken($color-grey, 10%);

@@ -20,7 +20,8 @@
       .article-read
         .text-wrapper
           .text-block(v-html='item.text')
-      comments(:item='item' ref='comments')
+      comments(ref='comments'
+        v-bind='{ ids: item.commentIds ? Object.keys(item.commentIds) : [], postId: item.id }')
       btn-top
 </template>
 
@@ -50,14 +51,17 @@ export default {
     }
   },
 
-  // title() {
-  //   return this.item.title
-  // },
+  asyncData ({ store, route: { params: { id }}}) {
+    return store.dispatch('FETCH_ITEMS', { ids: [id] })
+  },
+
+  title() {
+    return this.item.title
+  },
 
   methods: {
     scrollToText() {
-      const readEl = this.$el.querySelector('.article-read')
-      TweenLite.to(window, 1, { scrollTo: readEl })
+      TweenLite.to(window, 1, { scrollTo: this.$refs.read })
     },
     scrollToComments() {
       const commentEl = this.$refs.comments.$el

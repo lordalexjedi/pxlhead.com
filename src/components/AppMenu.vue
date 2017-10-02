@@ -7,7 +7,7 @@
 
     transition(name='fade-delay' mode='out-in')
       .app-menu-modal(v-show='open' @click='changePage'
-        :class='{ pointer: showPointer }')
+        :class='{ pointer: showPointer }' ref='modal')
         a.app-menu-esc.material-icons(@click='open = !open') close
         transition(name='tooltip')
           .app-menu-tooltip(v-show='!topView && activeLink'
@@ -95,8 +95,7 @@ export default {
 
       this.vector = new Vector3()
 
-      const container = this.$el.querySelector('.app-menu-modal')
-      container.appendChild(this.renderer.domElement)
+      this.$refs.modal.appendChild(this.renderer.domElement)
 
       window.addEventListener('resize', this.onResize)
       window.addEventListener('wheel', this.onWheel)

@@ -1,22 +1,22 @@
 <template lang='pug'>
   .intro(@click='tooltipShow = false')
-    transition(name='slide-left' appear)
-      .intro-textgroup(v-if='showNavigation')
-        .intro-text(v-if='frameIdx == 0' key='intro')
-          h3.intro-subtitle Turn into a pixel with
-          h1.intro-title Pxlhead
-        .info-text(v-else v-bind='{ key: frame.name, class: `${frame.name}-text` }')
-          h1.intro-title {{ frame.title }}
-          p.intro-description {{ frame.description }}
-    transition-group(name='slide-right' appear)
-      nav.intro-nav(v-if='showNavigation' key='nav')
-        li.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
-          v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
-          a.nav-point
-      .mouse-tip(v-if='showNavigation' key='mouse')
-        .mouse-wheel
+    transition(:css='false' @before-enter='textEnter' @before-leave='textLeave' appear)
+      .intro-text(v-if='frameIdx === 0' key='intro')
+        .intro-title
+          span(v-for='letter in framesData[0].title.split("")') {{ letter }}
+        h3.intro-subtitle Turn into a pixel
+      .info-text(v-else :key='frame.name'  :class='[ `${frame.name}-text` ]')
+        .intro-title
+          span(v-for='letter in frame.title.split("")') {{ letter }}
+        p.intro-description {{ frame.description }}
+    nav.intro-nav
+      li.nav-link(v-for='n in 5' @click='frameIdx = n - 1'
+        v-bind:class='{ "nav-link--active": n == frameIdx + 1 }')
+        a.nav-point
+    .mouse-tip
+      .mouse-wheel
     .tooltip(v-show='tooltipShow')
-      p.tooltip-text Click here to launch menu!
+      p.tooltip-text Click here to launch menu
 </template>
 
 <script>
@@ -49,7 +49,7 @@ export default {
         planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         name: 'about',
-        title: 'About us',
+        title: 'About_us',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
         Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
         pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
@@ -58,7 +58,7 @@ export default {
         planet: { xR: 0, yR: 0, zR: 0 },
       }, {
         name: 'team',
-        title: 'Our team',
+        title: 'Our_team',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
         Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
         pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
@@ -67,13 +67,13 @@ export default {
         planet: { xR: 1.9, yR: 0.6, zR: -3.4 },
       }, {
         name: 'projects',
-        title: 'Our projects',
+        title: 'Our_projects',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\
         Donec blandit consectetur hendrerit. Curabitur eget nibh a magna tempor\
         pulvinar. Vivamus non elementum sem, eget dapibus dui. Ut tristique nulla\
         at ante elementum dictum. Donec non sagittis mi. Nunc congue turpis.',
         camera: { xP: 40, yP: 60, zP: 100, xR: 0, yR: 0 },
-        planet: { xR: -2, yR: -0.9, zR: 0 },
+        planet: { xR: -2, yR: -1, zR: 0 },
       }, {
         name: 'contacts',
         title: 'Contacts',
@@ -106,13 +106,37 @@ export default {
     this.init()
     this.animate()
 
-    setTimeout(() => {
-      TweenLite.to(this.camera.position, 3, { z: 200, ease: Power1.easeOut })
-      this.showNavigation = true
-    }, 2000)
+    // move camera close to planet
+    TweenLite.to(this.camera.position, 3, { z: 200, delay: 1.5, ease: Power1.easeOut })
   },
 
   methods: {
+    textEnter(el) {
+      const titleSpans = [ ...el.firstChild.childNodes ]
+      const textEl = el.lastChild
+      titleSpans.forEach((span, i, arr) => {
+        TweenLite.fromTo(span, arr.length * 0.3,
+          { x: -100, opacity: 0 },
+          { x: 0, opacity: 1, delay: i * 0.3, ease: Power1.easeOut }
+        )
+      })
+      TweenLite.fromTo(textEl, 2,
+        { x: -100, opacity: 0 },
+        { x: 0, opacity: 1, ease: Power1.easeOut }
+      )
+    },
+    textLeave(el) {
+      const titleSpans = [ ...el.firstChild.childNodes ]
+      const textEl = el.lastChild
+      titleSpans.forEach((span, i, arr) => {
+        TweenLite.to(span, arr.length * 0.3,
+          { x: 100, opacity: 0, delay: i * 0.3, ease: Power1.easeOut }
+        )
+      })
+      TweenLite.to(textEl, 2,
+        { x: -100, opacity: 0, ease: Power1.easeOut }
+      )
+    },
     // setting the scene
     init() {
       this.camera = new PerspectiveCamera(75, this.width / this.height, 0.1, 1000)
@@ -175,7 +199,7 @@ export default {
       requestAnimationFrame(this.animate)
 
       if (this.planet) {
-        this.planet.rotation.y += 0.0002
+        this.planet.rotation.y += 0.0001
         this.moons.rotation.y += 0.0005
         this.space.rotation.y += 0.0005
       }
@@ -199,6 +223,7 @@ export default {
         this.distance += this.speed
         if (Math.floor(this.distance) > this.frameIdx) {
           this.frameIdx++
+          if (this.frameIdx === this.framesData.length) this.frameIdx = 0
         }
       } else if (this.distance > 0 && !this.delay) {
         this.distance -= this.speed
@@ -209,8 +234,6 @@ export default {
     },
     // transition to frames
     changeFrame() {
-      if (this.frameIdx === this.framesData.length) this.frameIdx = 0
-
       const data = this.framesData[this.frameIdx]
       const targets = ['camera', 'planet']
       targets.forEach(target => this.moveTo(this[target], data[target]))
@@ -226,7 +249,7 @@ export default {
     }) {
       TweenLite.to(target.position, 2, { x: xP, y: yP, z: zP, ease })
       TweenLite.to(target.rotation, 2, { x: xR, y: yR, z: zR, ease })
-    },
+    }
   },
 
   computed: {
@@ -277,6 +300,9 @@ export default {
   @include screen-style(iphoneSE) {
     font-size: 4rem;
   }
+  span {
+    display: inline-block;
+  }
 }
 .intro-subtitle {
   color: $color-white;
@@ -292,6 +318,7 @@ export default {
 }
 .intro-description {
   color: $color-white;
+  display: inline-block;
   font-size: 2rem;
   font-weight: 400;
   line-height: 2.8rem;
@@ -549,9 +576,9 @@ export default {
   position: absolute;
   top: 10rem;
   left: 5rem;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 6rem;
-  background-color: darken($color-blue, 30%);
+  background-color: $color-blue;
   &::after {
     display: block;
     content: '';
@@ -564,7 +591,7 @@ export default {
     pointer-events: none;
     border-color: transparent;
     border-width: 0rem 1rem 2rem 1rem;
-    border-bottom-color: darken($color-blue, 30%);
+    border-bottom-color: $color-blue;
     margin-bottom: -10px;
   }
 }

@@ -17,7 +17,7 @@
           a.article-view-link.link--twitter
           a.article-view-link.link--link
         a.article-view-comment.material-icons(@click='scrollToComments') comment
-      .article-read
+      .article-read(ref='read')
         .text-wrapper
           .text-block(v-html='item.text')
       comments(ref='comments'

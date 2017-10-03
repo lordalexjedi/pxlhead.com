@@ -8,7 +8,7 @@
           p.item-description {{ item.description }}
           .item-info
             span.item-views {{ item.views }}
-            span.item-comment 21
+            span.item-comment {{ item.commentIds ? Object.keys(item.commentIds).length : 0 }}
 </template>
 
 <script>

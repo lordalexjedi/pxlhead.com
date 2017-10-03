@@ -11,7 +11,7 @@
         .comments-img
         .comments-input
           input.comments-name(type='text' v-model.trim.lazy='newCommentBy' maxlength='30'
-            pattern='[a-zA-Z0-9. ]+'  :placeholder='placeholder.by' required
+            pattern='[a-zA-Z0-9-\. ]+'  :placeholder='placeholder.by' required
             title='Only alphanumeric characters, dashes, dots and spaces should be here.')
           textarea.comments-message(v-model.trim.lazy='newCommentText'
             maxlength='250'  :placeholder='placeholder.text' required
@@ -103,6 +103,8 @@ export default {
       }).then(() => {
         this.fetchComments()
         this.showCommentForm = false
+        this.newCommentBy = ''
+        this.newCommentText = ''
       })
     },
     commentById(id) {

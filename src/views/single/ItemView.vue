@@ -71,10 +71,7 @@ export default {
   methods: {
     toggleComments() {
       this.showComments = !this.showComments
-      if (this.showComments) {
-        const commentEl = this.$refs.comments.$el
-        TweenLite.to(window, 0.5, { scrollTo: commentEl })
-      }
+      if (this.showComments) this.$emit('scroll')
     }
   }
 }

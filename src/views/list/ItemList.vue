@@ -8,8 +8,8 @@
         input.search(type='search' placeholder='Droids you\'re looking for...'
           v-model.lazy='searchedTags'  :class='{ "search--active": searching }'
           @blur='clearSearch' @keyup.esc='clearSearch'
-          pattern='[a-zA-Z0-9 ]+' maxlength='50' required
-          title='These aren\'t the Droids you\'re looking for')
+          pattern='[a-zA-Z0-9- ]+' maxlength='50' required
+          title='Droid\'s serial number can contain only alphanumeric characters, dashes and spaces.')
     transition-group.gallery(name='translate-up' tag='div')
       item(v-for='(item, index) in displayedItems'  :key='item.id'
         @click.native='fetchItemView(item.id, index)'  :item='item')
@@ -19,9 +19,9 @@
       btn-top
 
     transition-group(name='fade')
-      .item-view-overlay(@click.self='closeView' v-if='activeId' key='overlay')
-        item-view(:id='activeId')
-      a.item-view-esc.material-icons(@click='closeView' v-if='activeId' key='close') close
+      .item-view-overlay(@click.self='activeId = ""' v-if='activeId'  ref='overlay' key='overlay')
+        item-view(:id='activeId' @scroll='scrollOverlay' ref='view')
+      a.item-view-esc.material-icons(@click='activeId = ""' v-if='activeId' key='close') close
       a.item-view-arrow.material-icons.arrow-prev(@click='changeActiveId(-1)'
         v-if='activeId' key='left') keyboard_arrow_left
       a.item-view-arrow.material-icons.arrow-next(@click='changeActiveId(1)'
@@ -81,6 +81,14 @@ export default {
     }
   },
 
+  watch: {
+    activeId() {
+      this.activeId
+      ? document.documentElement.classList.add('hide-scrollbar')
+      : document.documentElement.classList.remove('hide-scrollbar')
+    }
+  },
+
   methods: {
     loadItems() {
       this.$bar.start()
@@ -122,20 +130,19 @@ export default {
         if (this.type === 'articles') {
           this.$router.push(`/articles/${id}`)
         } else {
-          document.documentElement.classList.add('hide-scrollbar')
           this.activeIndex = index
           this.activeId = id
         }
       })
     },
-    closeView() {
-      document.documentElement.classList.remove('hide-scrollbar')
-      this.activeId = ''
-    },
     changeActiveId(direction) {
       const newIndex = this.activeIndex + direction
       this.activeId = this.displayedItems[newIndex].id
       this.activeIndex = newIndex
+    },
+    scrollOverlay() {
+      const commentEl = this.$refs.view.$refs.comments.$el
+      TweenLite.to(this.$refs.overlay, 0.5, { scrollTo: commentEl })
     }
   }
 }

@@ -4,7 +4,7 @@
       .intro-text(v-if='frameIdx === 0' key='intro')
         .intro-title
           span(v-for='letter in framesData[0].title.split("")') {{ letter }}
-        h3.intro-subtitle Turn into a pixel
+        h3.intro-subtitle Turn into a pixel with
       .info-text(v-else :key='frame.name'  :class='[ `${frame.name}-text` ]')
         .intro-title
           span(v-for='letter in frame.title.split("")') {{ letter }}
@@ -115,13 +115,13 @@ export default {
       const titleSpans = [ ...el.firstChild.childNodes ]
       const textEl = el.lastChild
       titleSpans.forEach((span, i, arr) => {
-        TweenLite.fromTo(span, arr.length * 0.3,
-          { x: -100, opacity: 0 },
-          { x: 0, opacity: 1, delay: i * 0.3, ease: Power1.easeOut }
+        TweenLite.fromTo(span, arr.length * 0.15,
+          { x: -200, opacity: 0 },
+          { x: 0, opacity: 1, delay: (arr.length - i) * 0.15, ease: Power1.easeOut }
         )
       })
       TweenLite.fromTo(textEl, 2,
-        { x: -100, opacity: 0 },
+        { x: -200, opacity: 0 },
         { x: 0, opacity: 1, ease: Power1.easeOut }
       )
     },
@@ -129,12 +129,12 @@ export default {
       const titleSpans = [ ...el.firstChild.childNodes ]
       const textEl = el.lastChild
       titleSpans.forEach((span, i, arr) => {
-        TweenLite.to(span, arr.length * 0.3,
-          { x: 100, opacity: 0, delay: i * 0.3, ease: Power1.easeOut }
+        TweenLite.to(span, arr.length * 0.15,
+          { x: 200, opacity: 0, delay: i * 0.15, ease: Power1.easeOut }
         )
       })
       TweenLite.to(textEl, 2,
-        { x: -100, opacity: 0, ease: Power1.easeOut }
+        { x: -200, opacity: 0, ease: Power1.easeOut }
       )
     },
     // setting the scene
@@ -343,6 +343,8 @@ export default {
   position: absolute;
   top: 60vh;
   left: 10rem;
+  display: flex;
+  flex-direction: column-reverse;
   text-transform: uppercase;
   @media (orientation: portrait) {
     left: 5rem;

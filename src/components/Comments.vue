@@ -18,13 +18,14 @@
             title='')
         button.comments-send.material-icons(type='submit') send
     .comments-list(v-if='!loading && ids.length')
-      .comment(v-for='id in ids')
-        .comment-img
-        .comment-body
-          .comment-info
-            h2.comment-author {{ commentById(id).by }}
-            span.comment-date {{ commentById(id).time }}
-          p.comment-text {{ commentById(id).text }}
+      transition(name='slide-down')
+        .comment(v-for='id in ids')
+          .comment-img
+          .comment-body
+            .comment-info
+              h2.comment-author {{ commentById(id).by }}
+              span.comment-date {{ commentById(id).time }}
+            p.comment-text {{ commentById(id).text }}
 </template>
 
 <script>

@@ -21,6 +21,7 @@
           a.app-menu-social-link.link--facebook
           a.app-menu-social-link.link--twitter
           a.app-menu-social-link.link--link
+        span.app-menu-helper scroll to change view
         .btn-round
           a.btn-toggle(:class='{ "btn-toggle--on": pauseMusic }'
           @click='pauseMusic = !pauseMusic')
@@ -220,8 +221,8 @@ export default {
       this.height = window.innerHeight
 
       this.linksData.forEach((link, i) => {
-        link.top = this.height / 2  + 66 + i * 56 + 'px'
-        link.left = this.width / 2 - 50 + 'px'
+        link.top = this.height / 2  + 75 + i * 60 + 'px'
+        link.left = this.width / 2 - 75 + 'px'
       })
     },
     onResize() {
@@ -418,14 +419,24 @@ export default {
 .app-menu-link {
   display: block;
   position: absolute;
-  font-size: 16px;
-  width: 100px;
-  text-transform: uppercase;
+  font-size: 2rem;
+  width: 150px;
+  font-weight: bold;
+  text-transform: uppercase;  padding: 3vh 0;
   text-decoration: none;
   text-align: center;
   color: $color-white;
   opacity: 0.8;
   cursor: pointer;
+}
+.app-menu-helper {
+  position: absolute;
+  color: $color-white;
+  opacity: 0.7;
+  bottom: 6rem;
+  right: calc(50% - 19rem / 2);
+  font-size: 2rem;
+  width: 19rem;
 }
 .app-menu-social {
   position: absolute;

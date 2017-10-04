@@ -11,11 +11,11 @@
         .comments-img
         .comments-input
           input.comments-name(type='text' v-model.trim.lazy='newCommentBy' maxlength='30'
-            pattern='[a-zA-Z0-9. ]+' placeholder='Marty McFly' required
-            title='Invalid input. Self destruction mode activated. 3... 2... 1...')
+            pattern='[a-zA-Z0-9-\. ]+'  :placeholder='placeholder.by' required
+            title='Only alphanumeric characters, dashes, dots and spaces should be here.')
           textarea.comments-message(v-model.trim.lazy='newCommentText'
-            maxlength='250' placeholder='Nobody calls me chicken.' required
-            title='')
+            maxlength='250'  :placeholder='placeholder.text' required
+            title='Brevity is the soul of wit')
         button.comments-send.material-icons(type='submit') send
     .comments-list(v-if='!loading && ids.length')
       transition(name='slide-down')
@@ -41,7 +41,24 @@ export default {
       loading: false,
       showCommentForm: false,
       newCommentBy: '',
-      newCommentText: ''
+      newCommentText: '',
+
+      placeholders: [
+        { by: 'Buzz Lightyear', text: 'To infinity and beyond!' },
+        { by: 'Marty McFly', text: 'Nobody calls me chicken.' },
+        { by: 'Forrest Gump', text: 'Stupid is as stupid does.' },
+        { by: 'Joker', text: 'If you gotta go, go with a smile.' },
+        { by: 'Dory', text: 'Just keep swimming.' },
+        { by: 'Terminator', text: 'Hasta la vista, baby.' },
+        { by: 'Lord Vader', text: 'I am your father.' },
+        { by: 'Joker', text: 'Why so serious?' },
+        { by: 'Bond', text: 'Bond. James Bond.' },
+        { by: 'Gollum', text: 'My precious.' },
+        { by: 'Yoda', text: 'Do. Or do not. There is no try.' },
+        { by: 'Neo', text: 'There is no spoon!' },
+        { by: 'Morpheus', text: 'Free your mind.' }
+      ],
+      activePlaceholder: 0
     }
   },
 
@@ -53,8 +70,17 @@ export default {
     }
   },
 
+  computed: {
+    placeholder() {
+      return this.placeholders[this.activePlaceholder]
+    }
+  },
+
   watch: {
-    ids: 'fetchComments'
+    ids: 'fetchComments',
+    showCommentForm() {
+      if (this.showCommentForm) this.changePlaceholder()
+    }
   },
 
   methods: {
@@ -78,10 +104,15 @@ export default {
       }).then(() => {
         this.fetchComments()
         this.showCommentForm = false
+        this.newCommentBy = ''
+        this.newCommentText = ''
       })
     },
     commentById(id) {
       return this.$store.state.comments[id]
+    },
+    changePlaceholder() {
+      this.activePlaceholder = Math.ceil(Math.random() * (this.placeholders.length - 1))
     }
   }
 }

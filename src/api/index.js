@@ -83,16 +83,20 @@ export function fetchComments(ids) {
 }
 
 export function uploadComment(comment) {
-  comment.id = api.ref().child('comments').push().key
-  comment.time = api.ServerValue.TIMESTAMP
+  return new Promise((resolve, reject) => {
+    if (!/^[a-zA-Z-\.\d\s]+$/i.test(comment.by)) reject
 
-  return api.ref().update({
-    [`/posts/${comment.postId}/commentIds/${comment.id}/time`]: comment.time,
-    [`/comments/${comment.id}`]: comment
-  }).then(() => {
-    const cache = api.cachedItems
-    comment.__lastUpdated = Date.now()
-    cache && cache.set(comment.id, comment)
-    return comment
+    comment.id = api.ref().child('comments').push().key
+    comment.time = api.ServerValue.TIMESTAMP
+
+    api.ref().update({
+      [`/posts/${comment.postId}/commentIds/${comment.id}/time`]: comment.time,
+      [`/comments/${comment.id}`]: comment
+    }).then(() => {
+      const cache = api.cachedItems
+      comment.__lastUpdated = Date.now()
+      cache && cache.set(comment.id, comment)
+      resolve(comment)
+    }, reject)
   })
 }

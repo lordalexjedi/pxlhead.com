@@ -56,7 +56,7 @@ export default {
     }
   };
   @include screen-style(iphone7) {
-    flex-basis: 100%;
+    flex-basis: calc(88% / 2);
     margin-bottom: 18%;
     .item-name {
       margin-top: 3rem;
@@ -86,8 +86,13 @@ export default {
   position: relative;
   height: 40rem;
   width: 36rem;
+  @include screen-style(ipadAir) {
+    height: 35rem;
+    width: 30rem;
+  };
   @include screen-style(iphone7) {
-    width: auto;
+    height: 35rem;
+    width: 30rem;
   };
   @include screen-style(iphoneSE) {
     width: auto;

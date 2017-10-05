@@ -18,8 +18,8 @@
             title='Brevity is the soul of wit')
         button.comments-send.material-icons(type='submit') send
     .comments-list(v-if='!loading && ids.length')
-      transition(name='slide-down')
-        .comment(v-for='id in ids')
+      transition-group(name='slide-down')
+        .comment(v-for='id in ids'  :key='id')
           .comment-img
           .comment-body
             .comment-info
@@ -156,6 +156,13 @@ export default {
   cursor: pointer;
   background-color: $color-pink;
   transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
+  @include screen-style(iphoneSE) {
+    flex-basis: 4rem;
+    height: 4rem;
+    font-size: 2.5rem;
+    line-height: 4rem;
+    margin-right: 0;
+  };
   &:hover {
     background-color: darken($color-pink, 10%);
     transition: 0.3s cubic-bezier(0.68, -0.15, 0.265, 1.35);
@@ -183,6 +190,18 @@ export default {
   height: 15rem;
   background-color: $color-lightblue;
   transition: 0.5s ease-in-out;
+  @include screen-style(ipadAir) {
+    flex-direction: column;
+    height: auto;
+  };
+  @include screen-style(iphone7) {
+    flex-direction: column;
+    height: auto;
+  };
+  @include screen-style(iphoneSE) {
+    flex-direction: column;
+    height: auto;
+  };
   &::after {
     display: block;
     content: '';
@@ -197,11 +216,23 @@ export default {
     border-width: 0rem 2rem 4rem 2rem;
     border-bottom-color: $color-lightblue;
     margin-bottom: -10px;
+    @include screen-style(iphoneSE) {
+      display: none;
+    };
   }
   .comments-img {
     width: 10rem;
     height: 10rem;
     background-color: $color-pink;
+    @include screen-style(ipadAir) {
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphone7) {
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphoneSE) {
+      margin-bottom: 1rem;
+    };
   }
   .comments-input {
     flex-basis: 70%;
@@ -210,6 +241,21 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     border: none;
+    @include screen-style(ipadAir) {
+      flex-direction: column;
+      width: 90%;
+      flex-basis: 90%;
+    };
+    @include screen-style(iphone7) {
+      flex-direction: column;
+      width: 90%;
+      flex-basis: 90%;
+    };
+    @include screen-style(iphoneSE) {
+      flex-direction: column;
+      width: 90%;
+      flex-basis: 90%;
+    };
   }
   .comments-name {
     font-size: 1.8rem;
@@ -220,6 +266,21 @@ export default {
     appearance: none;
     outline-color: $color-blue;
     border: 0.2rem solid lighten($color-blue, 10%);
+    @include screen-style(ipadAir) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphone7) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphoneSE) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
   }
   .comments-message {
     font-size: 1.8rem;
@@ -229,6 +290,21 @@ export default {
     appearance: none;
     outline-color: $color-blue;
     border: 0.2rem solid lighten($color-blue, 10%);
+    @include screen-style(ipadAir) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphone7) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
+    @include screen-style(iphoneSE) {
+      width: calc(100% - 2rem);
+      flex-basis: 50%;
+      margin-bottom: 1rem;
+    };
   }
   .comments-send {
     position: absolute;
@@ -247,6 +323,15 @@ export default {
     border-radius: 5rem;
     background-color: $color-blue;
     transition: 0.3s ease-in-out;
+    @include screen-style(ipadAir) {
+      right: calc(50% - 12rem / 2);
+    };
+    @include screen-style(iphone7) {
+      right: calc(50% - 12rem / 2);
+    };
+    @include screen-style(iphoneSE) {
+      right: calc(50% - 12rem / 2);
+    };
     &:hover {
       background-color: darken($color-blue, 10%);
       transition: 0.3s ease-in-out;

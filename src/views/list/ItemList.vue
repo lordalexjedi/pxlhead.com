@@ -306,7 +306,7 @@ export default {
   background-color: rgba(51, 51, 51, 0.8);
 }
 .item-view-esc {
-  position: fixed;
+  position: absolute;
   width: 5rem;
   height: 5rem;
   z-index: 1001;
@@ -314,8 +314,8 @@ export default {
   text-align: center;
   line-height: 5rem;
   color: $color-white;
-  right: 2rem;
-  top: 2rem;
+  right: 1rem;
+  top: 1rem;
   opacity: 0.8;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
@@ -339,16 +339,20 @@ export default {
   height: 7rem;
   z-index: 1001;
   font-size: 5rem;
-  line-height: 5rem;
+  line-height: 7rem;
   color: $color-white;
   opacity: 0.8;
   text-align: center;
   cursor: pointer;
+  outline: none;
   transition: 0.3s ease-in-out;
   &:hover {
     opacity: 1;
     transition: 0.3s ease-in-out;
   }
+  @include screen-style(ipadPro) {
+    display: none;
+  };
   @media (orientation: portrait) {
     display: none;
   }
